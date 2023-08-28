@@ -1,15 +1,15 @@
 package org.persistence;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 
-import javax.persistence.*;
-import static javax.persistence.TemporalType.DATE;
-import static javax.persistence.TemporalType.TIMESTAMP;
-import static javax.persistence.InheritanceType.JOINED;
-import static javax.persistence.InheritanceType.SINGLE_TABLE;
-import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import org.persistence.Schedule;
+import javax.persistence.OneToOne;
+import javax.persistence.Enumerated;
+import static javax.persistence.EnumType.STRING;
 
 @Entity
 @Table(name = "Lecture")
@@ -23,10 +23,10 @@ public class Lecture implements Serializable {
 	@Id
 	private long id;
 	private String name;
-	@Temporal(DATE)
-	private Calendar lectureDate;
-	@Temporal(TIMESTAMP)
-	private Date lectureTime;
+	@ManyToOne
+	private Course course;
+	@OneToOne(mappedBy = "lecture")
+	private Schedule schedule;
 
 	public long getId() {
 		return id;
@@ -44,20 +44,20 @@ public class Lecture implements Serializable {
 		this.name = param;
 	}
 
-	public Calendar getDate() {
-		return lectureDate;
+	public Course getCourse() {
+	    return course;
 	}
 
-	public void setDate(Calendar param) {
-		this.lectureDate = param;
+	public void setCourse(Course param) {
+	    this.course = param;
 	}
 
-	public Date getLectureTime() {
-		return lectureTime;
+	public Schedule getSchedule() {
+	    return schedule;
 	}
 
-	public void setLectureTime(Date param) {
-		this.lectureTime = param;
+	public void setSchedule(Schedule param) {
+	    this.schedule = param;
 	}
 
 }

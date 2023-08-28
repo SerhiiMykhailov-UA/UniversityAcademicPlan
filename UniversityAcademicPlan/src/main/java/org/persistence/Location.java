@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import org.persistence.Course;
 import java.util.List;
 import javax.persistence.OneToMany;
 

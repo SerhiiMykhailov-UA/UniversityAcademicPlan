@@ -27,10 +27,12 @@ public class Course implements Serializable {
 	private List<Student> student;
 	@ManyToMany
 	private List<Teacher> teacher;
-	@OneToMany
-	private List<Lecture> lecture;
 	@ManyToOne
 	private Location location;
+	@OneToMany(mappedBy = "course")
+	private List<Schedule> schedule;
+	@OneToMany(mappedBy = "course")
+	private List<Lecture> lecture;
 	public long getId() {
 		return id;
 	}
@@ -63,20 +65,28 @@ public class Course implements Serializable {
 	    this.teacher = param;
 	}
 
-	public List<Lecture> getLecture() {
-	    return lecture;
-	}
-
-	public void setLecture(List<Lecture> param) {
-	    this.lecture = param;
-	}
-
 	public Location getLocation() {
 	    return location;
 	}
 
 	public void setLocation(Location param) {
 	    this.location = param;
+	}
+
+	public List<Schedule> getSchedule() {
+	    return schedule;
+	}
+
+	public void setSchedule(List<Schedule> param) {
+	    this.schedule = param;
+	}
+
+	public List<Lecture> getLecture() {
+	    return lecture;
+	}
+
+	public void setLecture(List<Lecture> param) {
+	    this.lecture = param;
 	}
 
 }

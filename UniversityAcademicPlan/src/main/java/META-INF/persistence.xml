@@ -8,5 +8,6 @@
 		<class>org.persistence.Teacher</class>
 		<class>org.persistence.Lecture</class>
 		<class>org.persistence.Location</class>
+		<class>org.persistence.Schedule</class>
 	</persistence-unit>
 </persistence>
