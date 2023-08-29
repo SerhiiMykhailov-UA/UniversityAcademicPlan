@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><entities>
+	<entity>
+		<entity-name>org.persistence.Group</entity-name>
+		<entity-width>101</entity-width>
+		<entity-height>146</entity-height>
+		<entity-X-Coordinate>50</entity-X-Coordinate>
+		<entity-Y-Coordinate>50</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>org.persistence.Teacher</entity-name>
+		<entity-width>91</entity-width>
+		<entity-height>128</entity-height>
+		<entity-X-Coordinate>620</entity-X-Coordinate>
+		<entity-Y-Coordinate>50</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>org.persistence.Lecture</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>166</entity-height>
+		<entity-X-Coordinate>445</entity-X-Coordinate>
+		<entity-Y-Coordinate>344</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>org.persistence.User</entity-name>
+		<entity-width>131</entity-width>
+		<entity-height>148</entity-height>
+		<entity-X-Coordinate>630</entity-X-Coordinate>
+		<entity-Y-Coordinate>500</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>org.persistence.Schedule</entity-name>
+		<entity-width>103</entity-width>
+		<entity-height>206</entity-height>
+		<entity-X-Coordinate>225</entity-X-Coordinate>
+		<entity-Y-Coordinate>334</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>org.persistence.Location</entity-name>
+		<entity-width>101</entity-width>
+		<entity-height>146</entity-height>
+		<entity-X-Coordinate>515</entity-X-Coordinate>
+		<entity-Y-Coordinate>164</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>org.persistence.Student</entity-name>
+		<entity-width>121</entity-width>
+		<entity-height>148</entity-height>
+		<entity-X-Coordinate>63</entity-X-Coordinate>
+		<entity-Y-Coordinate>500</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>org.persistence.Course</entity-name>
+		<entity-width>101</entity-width>
+		<entity-height>226</entity-height>
+		<entity-X-Coordinate>298</entity-X-Coordinate>
+		<entity-Y-Coordinate>50</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+</entities>
