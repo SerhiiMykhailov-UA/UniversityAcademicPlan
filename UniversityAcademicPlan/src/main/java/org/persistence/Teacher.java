@@ -2,11 +2,10 @@ package org.persistence;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.List;
 import javax.persistence.ManyToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.TableGenerator;
 
 @Entity
 public class Teacher extends User implements Serializable {
@@ -15,7 +14,9 @@ public class Teacher extends User implements Serializable {
 
 	public Teacher() {
 	}
+	@Column
 	private String firstName;
+	@Column
 	private String lastName;
 	@ManyToMany(mappedBy = "teacher")
 	private List<Course> course;

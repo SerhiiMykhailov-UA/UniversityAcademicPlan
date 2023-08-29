@@ -2,14 +2,12 @@ package org.persistence;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import org.persistence.Schedule;
 import javax.persistence.OneToOne;
-import javax.persistence.Enumerated;
-import static javax.persistence.EnumType.STRING;
 
 @Entity
 @Table(name = "Lecture")
@@ -22,6 +20,7 @@ public class Lecture implements Serializable {
 
 	@Id
 	private long id;
+	@Column
 	private String name;
 	@ManyToOne
 	private Course course;

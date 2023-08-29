@@ -4,11 +4,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.persistence.Student;
 import java.util.List;
 import javax.persistence.OneToMany;
 
@@ -24,6 +24,7 @@ public class Group implements Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private long id;
+	@Column
 	private String name;
 	@OneToMany(mappedBy = "group")
 	private List<Student> student;

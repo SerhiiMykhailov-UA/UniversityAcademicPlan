@@ -2,6 +2,7 @@ package org.persistence;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,8 +19,11 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	@Column
 	private String nickName;
+	@Column
 	private String userTipe;
+	@Column
 	private String password;
 	public long getId() {
 		return id;

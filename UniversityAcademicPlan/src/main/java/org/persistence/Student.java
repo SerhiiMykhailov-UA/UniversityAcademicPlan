@@ -6,19 +6,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.TableGenerator;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.MERGE;
-import javax.persistence.Id;
-import javax.persistence.MapsId;
-import javax.persistence.Cacheable;
-import javax.persistence.Inheritance;
-import static javax.persistence.InheritanceType.JOINED;
-import javax.persistence.Access;
-import static javax.persistence.AccessType.PROPERTY;
-import static javax.persistence.AccessType.FIELD;
-import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Column;
 
 @Entity
 public class Student extends User implements Serializable {
@@ -27,8 +17,10 @@ public class Student extends User implements Serializable {
 
 	public Student() {
 	}
-
+	
+	@Column
 	private String firstName;
+	@Column
 	private String lastName;
 	@ManyToOne(cascade = { PERSIST, MERGE })
 	private Group group;

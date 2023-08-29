@@ -1,13 +1,19 @@
 package org.persistence;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Enumerated;
+import static javax.persistence.EnumType.STRING;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Schedule implements Serializable {
@@ -18,10 +24,16 @@ public class Schedule implements Serializable {
 	}
 
 	@Id
+	@Column
+	@GeneratedValue(strategy = IDENTITY)
 	private long id;
+	@Column
 	private LocalTime startTime;
+	@Column
 	private LocalTime endTime;
-	private LocalTime dayOfWeek;
+	@Column
+	@Enumerated(STRING)
+	private DayOfWeek dayOfWeek;
 	@ManyToOne
 	private Course course;
 	@OneToOne
@@ -68,11 +80,11 @@ public class Schedule implements Serializable {
 		this.lecture = param;
 	}
 
-	public LocalTime getDayOfWeek() {
+	public DayOfWeek getDayOfWeek() {
 		return dayOfWeek;
 	}
 
-	public void setDayOfWeek(LocalTime param) {
+	public void setDayOfWeek(DayOfWeek param) {
 		this.dayOfWeek = param;
 	}
 

@@ -2,6 +2,7 @@ package org.persistence;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -17,9 +18,11 @@ public class Location implements Serializable {
 
 	@Id
 	private long id;
+	@Column
 	private String name;
 	@OneToMany(mappedBy = "location")
 	private List<Course> course;
+	
 	public long getId() {
 		return id;
 	}
