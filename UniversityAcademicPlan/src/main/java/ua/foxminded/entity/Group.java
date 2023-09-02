@@ -1,4 +1,4 @@
-package org.persistence;
+package ua.foxminded.entity;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

@@ -1,26 +1,31 @@
-package org.persistence;
+package ua.foxminded.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import java.util.List;
+
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
+import javax.persistence.Column;
 
 @Entity
-public class Teacher extends User implements Serializable {
+public class Student extends User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Teacher() {
+	public Student() {
 	}
+	
 	@Column
 	private String firstName;
 	@Column
 	private String lastName;
-	@ManyToMany(mappedBy = "teacher")
+	@ManyToOne(cascade = { PERSIST, MERGE })
+	private Group group;
+	@ManyToMany
 	private List<Course> course;
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -35,6 +40,14 @@ public class Teacher extends User implements Serializable {
 
 	public void setLastName(String param) {
 		this.lastName = param;
+	}
+
+	public Group getGroup() {
+	    return group;
+	}
+
+	public void setGroup(Group param) {
+	    this.group = param;
 	}
 
 	public List<Course> getCourse() {

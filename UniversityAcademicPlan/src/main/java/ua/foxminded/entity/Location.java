@@ -1,4 +1,4 @@
-package org.persistence;
+package ua.foxminded.entity;
 
 import java.io.Serializable;
 
