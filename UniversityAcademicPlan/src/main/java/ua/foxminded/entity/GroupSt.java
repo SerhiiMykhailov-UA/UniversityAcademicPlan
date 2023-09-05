@@ -10,23 +10,24 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ua.foxminded.entity.Course;
+import javax.persistence.Table;
 
 @Entity
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode
 @AllArgsConstructor
-//@Table(name = "Course")
-public class Course {
+@Table(name = "GroupSt")
+public class GroupSt {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,22 +35,10 @@ public class Course {
 	@Column
 	@NonNull
 	private String name;
-	@ManyToMany(mappedBy = "course")
+	@OneToMany(mappedBy = "groupSt")
 	private List<Student> student;
 	@ManyToMany
-	@JoinTable(
-			name = "course_teacher",
-			joinColumns = @JoinColumn(name = "course_id"),
-			inverseJoinColumns = @JoinColumn(name = "teacher_id"))
-	private List<Teacher> teacher;
-	@ManyToOne
-	@JoinColumn(name = "location_id", referencedColumnName = "id")
-	private Location location;
-	@OneToMany(mappedBy = "course")
-	private List<Schedule> schedule;
-	@OneToMany(mappedBy = "course")
-	private List<Lecture> lecture;
-	@ManyToMany(mappedBy = "course")
-	private List<GroupSt> groupSt;
+	@JoinTable(name = "groupSt_course", joinColumns = @JoinColumn(name = "groupSt_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private List<Course> course;
 
 }

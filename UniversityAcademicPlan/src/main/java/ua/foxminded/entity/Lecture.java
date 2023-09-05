@@ -5,12 +5,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.OneToOne;
 
 @Entity
-@Table(name = "Lecture")
+//@Table(name = "Lecture")
 public class Lecture implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -23,6 +23,7 @@ public class Lecture implements Serializable {
 	@Column
 	private String name;
 	@ManyToOne
+	@JoinColumn(name = "course_id", referencedColumnName = "id")
 	private Course course;
 	@OneToOne(mappedBy = "lecture")
 	private Schedule schedule;

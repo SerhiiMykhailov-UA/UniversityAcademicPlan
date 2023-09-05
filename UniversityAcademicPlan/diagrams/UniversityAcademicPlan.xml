@@ -1,76 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><entities>
 	<entity>
-		<entity-name>ua.foxminded.entity.Course</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>226</entity-height>
-		<entity-X-Coordinate>50</entity-X-Coordinate>
-		<entity-Y-Coordinate>50</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>ua.foxminded.entity.Group</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>146</entity-height>
-		<entity-X-Coordinate>490</entity-X-Coordinate>
-		<entity-Y-Coordinate>50</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
 		<entity-name>ua.foxminded.entity.Student</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>148</entity-height>
-		<entity-X-Coordinate>270</entity-X-Coordinate>
-		<entity-Y-Coordinate>100</entity-Y-Coordinate>
+		<entity-X-Coordinate>860</entity-X-Coordinate>
+		<entity-Y-Coordinate>77</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
 	</entity>
 
 	<entity>
-		<entity-name>ua.foxminded.entity.User</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>148</entity-height>
-		<entity-X-Coordinate>710</entity-X-Coordinate>
-		<entity-Y-Coordinate>100</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>ua.foxminded.entity.Teacher</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>128</entity-height>
-		<entity-X-Coordinate>490</entity-X-Coordinate>
-		<entity-Y-Coordinate>296</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>ua.foxminded.entity.Lecture</entity-name>
+		<entity-name>ua.foxminded.entity.GroupSt</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>166</entity-height>
-		<entity-X-Coordinate>270</entity-X-Coordinate>
-		<entity-Y-Coordinate>348</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>ua.foxminded.entity.Location</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>146</entity-height>
-		<entity-X-Coordinate>710</entity-X-Coordinate>
-		<entity-Y-Coordinate>348</entity-Y-Coordinate>
+		<entity-X-Coordinate>498</entity-X-Coordinate>
+		<entity-Y-Coordinate>20</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -80,8 +25,63 @@
 		<entity-name>ua.foxminded.entity.Schedule</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>206</entity-height>
-		<entity-X-Coordinate>50</entity-X-Coordinate>
-		<entity-Y-Coordinate>376</entity-Y-Coordinate>
+		<entity-X-Coordinate>90</entity-X-Coordinate>
+		<entity-Y-Coordinate>401</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>ua.foxminded.entity.Course</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>246</entity-height>
+		<entity-X-Coordinate>519</entity-X-Coordinate>
+		<entity-Y-Coordinate>235</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>ua.foxminded.entity.Location</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>146</entity-height>
+		<entity-X-Coordinate>197</entity-X-Coordinate>
+		<entity-Y-Coordinate>5</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>ua.foxminded.entity.Person</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>148</entity-height>
+		<entity-X-Coordinate>1140</entity-X-Coordinate>
+		<entity-Y-Coordinate>63</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>ua.foxminded.entity.Teacher</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>128</entity-height>
+		<entity-X-Coordinate>1150</entity-X-Coordinate>
+		<entity-Y-Coordinate>440</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>ua.foxminded.entity.Lecture</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>166</entity-height>
+		<entity-X-Coordinate>197</entity-X-Coordinate>
+		<entity-Y-Coordinate>195</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>

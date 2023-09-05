@@ -1,25 +1,22 @@
 package ua.foxminded.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.List;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Teacher extends User implements Serializable {
+//@Table(name = "teacher")
+public class Teacher extends Person {
 
-	private static final long serialVersionUID = 1L;
-
-	public Teacher() {
-	}
 	@Column
 	private String firstName;
 	@Column
 	private String lastName;
 	@ManyToMany(mappedBy = "teacher")
 	private List<Course> course;
+	
+	public Teacher() {}
 
 	public String getFirstName() {
 		return firstName;

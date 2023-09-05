@@ -7,7 +7,8 @@ import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Enumerated;
@@ -35,6 +36,7 @@ public class Schedule implements Serializable {
 	@Enumerated(STRING)
 	private DayOfWeek dayOfWeek;
 	@ManyToOne
+	@JoinColumn(name = "course_id", referencedColumnName = "id")
 	private Course course;
 	@OneToOne
 	private Lecture lecture;
