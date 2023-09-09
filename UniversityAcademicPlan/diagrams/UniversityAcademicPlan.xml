@@ -11,22 +11,33 @@
 	</entity>
 
 	<entity>
-		<entity-name>ua.foxminded.entity.GroupSt</entity-name>
+		<entity-name>ua.foxminded.entity.Schedule</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>166</entity-height>
-		<entity-X-Coordinate>498</entity-X-Coordinate>
-		<entity-Y-Coordinate>20</entity-Y-Coordinate>
+		<entity-height>186</entity-height>
+		<entity-X-Coordinate>90</entity-X-Coordinate>
+		<entity-Y-Coordinate>401</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
 	</entity>
 
 	<entity>
-		<entity-name>ua.foxminded.entity.Schedule</entity-name>
+		<entity-name>ua.foxminded.entity.Users</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>206</entity-height>
-		<entity-X-Coordinate>90</entity-X-Coordinate>
-		<entity-Y-Coordinate>401</entity-Y-Coordinate>
+		<entity-height>148</entity-height>
+		<entity-X-Coordinate>1140</entity-X-Coordinate>
+		<entity-Y-Coordinate>278</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>ua.foxminded.entity.Groups</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>166</entity-height>
+		<entity-X-Coordinate>846</entity-X-Coordinate>
+		<entity-Y-Coordinate>289</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -47,19 +58,8 @@
 		<entity-name>ua.foxminded.entity.Location</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>146</entity-height>
-		<entity-X-Coordinate>197</entity-X-Coordinate>
-		<entity-Y-Coordinate>5</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>ua.foxminded.entity.Person</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>148</entity-height>
-		<entity-X-Coordinate>1140</entity-X-Coordinate>
-		<entity-Y-Coordinate>63</entity-Y-Coordinate>
+		<entity-X-Coordinate>521</entity-X-Coordinate>
+		<entity-Y-Coordinate>6</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -69,8 +69,8 @@
 		<entity-name>ua.foxminded.entity.Teacher</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>128</entity-height>
-		<entity-X-Coordinate>1150</entity-X-Coordinate>
-		<entity-Y-Coordinate>440</entity-Y-Coordinate>
+		<entity-X-Coordinate>895</entity-X-Coordinate>
+		<entity-Y-Coordinate>499</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -79,9 +79,9 @@
 	<entity>
 		<entity-name>ua.foxminded.entity.Lecture</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>166</entity-height>
-		<entity-X-Coordinate>197</entity-X-Coordinate>
-		<entity-Y-Coordinate>195</entity-Y-Coordinate>
+		<entity-height>146</entity-height>
+		<entity-X-Coordinate>90</entity-X-Coordinate>
+		<entity-Y-Coordinate>114</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>

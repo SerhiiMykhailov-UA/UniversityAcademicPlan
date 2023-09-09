@@ -11,23 +11,27 @@ import javax.persistence.InheritanceType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Table;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Person")
-public class Person {
+@RequiredArgsConstructor
+public class Users {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
+	@NonNull
 	@Column
 	private String nickName;
+	@NonNull
 	@Column
-	private String userTipe;
+	private UserTipe userTipe;
+	@NonNull
 	@Column
 	private String password;
 

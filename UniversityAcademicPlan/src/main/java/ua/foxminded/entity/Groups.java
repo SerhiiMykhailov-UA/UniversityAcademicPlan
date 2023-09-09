@@ -18,7 +18,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import javax.persistence.Table;
 
 @Entity
 @Data
@@ -26,8 +25,7 @@ import javax.persistence.Table;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @AllArgsConstructor
-@Table(name = "GroupSt")
-public class GroupSt {
+public class Groups {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +33,14 @@ public class GroupSt {
 	@Column
 	@NonNull
 	private String name;
-	@OneToMany(mappedBy = "groupSt")
+	
+	@EqualsAndHashCode.Exclude
+	@OneToMany(mappedBy = "groups")
 	private List<Student> student;
+	
+	@EqualsAndHashCode.Exclude
 	@ManyToMany
-	@JoinTable(name = "groupSt_course", joinColumns = @JoinColumn(name = "groupSt_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	@JoinTable(name = "groups_course", joinColumns = @JoinColumn(name = "groups_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> course;
 
 }
