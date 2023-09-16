@@ -33,11 +33,11 @@
 	</entity>
 
 	<entity>
-		<entity-name>ua.foxminded.entity.Groups</entity-name>
+		<entity-name>ua.foxminded.entity.Location</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>166</entity-height>
-		<entity-X-Coordinate>846</entity-X-Coordinate>
-		<entity-Y-Coordinate>289</entity-Y-Coordinate>
+		<entity-height>146</entity-height>
+		<entity-X-Coordinate>521</entity-X-Coordinate>
+		<entity-Y-Coordinate>6</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -55,11 +55,11 @@
 	</entity>
 
 	<entity>
-		<entity-name>ua.foxminded.entity.Location</entity-name>
+		<entity-name>ua.foxminded.entity.Groups</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>146</entity-height>
-		<entity-X-Coordinate>521</entity-X-Coordinate>
-		<entity-Y-Coordinate>6</entity-Y-Coordinate>
+		<entity-height>166</entity-height>
+		<entity-X-Coordinate>846</entity-X-Coordinate>
+		<entity-Y-Coordinate>289</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>

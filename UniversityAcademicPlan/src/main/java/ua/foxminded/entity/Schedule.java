@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -48,7 +47,7 @@ public class Schedule implements Serializable {
 	@Enumerated(STRING)
 	private DayOfWeek dayOfWeek;
 	@EqualsAndHashCode.Exclude
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne
 	@JoinColumn(name = "course_id", referencedColumnName = "id")
 	private Course course;
 	
