@@ -91,7 +91,51 @@ INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn4', 'ln4',
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn5', 'ln5', 8, 1);
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn6', 'ln6', 9, 2);
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn7', 'ln7', 10, 3);
-
+---------------------------------------------------------------------
 INSERT INTO teacher (first_name, last_name, id) VALUES ('T-fn1', 'T-ln1', 1);
 INSERT INTO teacher (first_name, last_name, id) VALUES ('T-fn2', 'T-ln2', 2);
 INSERT INTO teacher (first_name, last_name, id) VALUES ('T-fn3', 'T-ln3', 3);
+-----------------------------------------------------------------------------
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('MONDAY', '8:00', '9:40', 1);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('MONDAY', '10:00', '11:40', 2);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('MONDAY', '12:00', '13:40', 3);
+
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('TUESDAY', '8:00', '9:40', 4);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('TUESDAY', '10:00', '11:40', 5);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('TUESDAY', '12:00', '13:40', 6);
+
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('WEDNESDAY', '8:00', '9:40', 7);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('WEDNESDAY', '10:00', '11:40', 1);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('WEDNESDAY', '12:00', '13:40', 2);
+
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('THURSDAY', '8:00', '9:40', 3);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('THURSDAY', '10:00', '11:40', 4);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('THURSDAY', '12:00', '13:40', 5);
+
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('FRIDAY', '8:00', '9:40', 6);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('FRIDAY', '10:00', '11:40', 7);
+INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('FRIDAY', '12:00', '13:40', 1);
+--------------------------------------------------------------------------------------------
+INSERT INTO groups_course (groups_id, course_id) VALUES (1, 1);
+INSERT INTO groups_course (groups_id, course_id) VALUES (1, 2);
+INSERT INTO groups_course (groups_id, course_id) VALUES (1, 3);
+INSERT INTO groups_course (groups_id, course_id) VALUES (2, 4);
+INSERT INTO groups_course (groups_id, course_id) VALUES (2, 5);
+INSERT INTO groups_course (groups_id, course_id) VALUES (2, 6);
+INSERT INTO groups_course (groups_id, course_id) VALUES (3, 7);
+INSERT INTO groups_course (groups_id, course_id) VALUES (3, 1);
+INSERT INTO groups_course (groups_id, course_id) VALUES (3, 2);
+INSERT INTO groups_course (groups_id, course_id) VALUES (3, 3);
+INSERT INTO groups_course (groups_id, course_id) VALUES (4, 4);
+INSERT INTO groups_course (groups_id, course_id) VALUES (4, 5);
+INSERT INTO groups_course (groups_id, course_id) VALUES (4, 6);
+-----------------------------------------------------------------------------------------------
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (1, 3);
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (4, 3);
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (2, 2);
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (5, 2);
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (3, 1);
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (6, 1);
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (6, 1);
+INSERT INTO course_teacher (course_id, teacher_id) VALUES (7, 1);
+------------------------------------------------------------------------------------------------
