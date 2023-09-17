@@ -44,11 +44,19 @@
 	</entity>
 
 	<entity>
+<<<<<<< UniversityAcademicPlan/diagrams/UniversityAcademicPlan.xml
 		<entity-name>ua.foxminded.entity.Course</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>246</entity-height>
 		<entity-X-Coordinate>519</entity-X-Coordinate>
 		<entity-Y-Coordinate>235</entity-Y-Coordinate>
+=======
+		<entity-name>org.persistence.Teacher</entity-name>
+		<entity-width>91</entity-width>
+		<entity-height>128</entity-height>
+		<entity-X-Coordinate>620</entity-X-Coordinate>
+		<entity-Y-Coordinate>50</entity-Y-Coordinate>
+>>>>>>> UniversityAcademicPlan/diagrams/UniversityAcademicPlan.xml
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
