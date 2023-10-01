@@ -24,16 +24,18 @@ import javax.persistence.Column;
 @Entity
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @CascadeOnDelete
 public class Student extends Users {
 
+	@NonNull
 	@Column
-	private @NonNull String firstName;
+	private String firstName;
+	@NonNull
 	@Column
-	private @NonNull String lastName;
+	private String lastName;
 	
 	@EqualsAndHashCode.Exclude
 	//@ToString.Exclude

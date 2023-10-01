@@ -1,13 +1,13 @@
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user1', 'password', 'TEACHER');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user2', 'password', 'TEACHER');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user3', 'password', 'TEACHER');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user4', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user5', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user6', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user7', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user8', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user9', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_tipe) VALUES ('user10', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user1', 'password', 'TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user2', 'password', 'TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user3', 'password', 'TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user4', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user5', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user6', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user7', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user8', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user9', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user10', 'password', 'STUDENT');
 ----------------------------------------------------------------------------------
 INSERT INTO groups (name) VALUES ('gr1');
 INSERT INTO groups (name) VALUES ('gr2');

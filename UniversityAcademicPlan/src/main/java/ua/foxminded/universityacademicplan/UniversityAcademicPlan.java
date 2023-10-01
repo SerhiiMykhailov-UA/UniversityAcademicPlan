@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import ua.foxminded.entity.Course;
 import ua.foxminded.entity.Groups;
 import ua.foxminded.entity.Student;
-import ua.foxminded.entity.UserTipe;
+import ua.foxminded.entity.UserType;
 import ua.foxminded.entity.Users;
 
 @Profile("!test")
@@ -25,7 +25,7 @@ public class UniversityAcademicPlan {
 		student.setNickName("tttt");
 		new Student("swhb", "ehjbe");
 		System.out.println(student);
-		Users users = new Users("wed", UserTipe.USER, "swedf");
+		Users users = new Users("wed", UserType.USER, "swedf");
 		users.equals(users);
 		logger.info("srferfsaf");
 	}

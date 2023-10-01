@@ -33,7 +33,7 @@ public class Users {
 	@NonNull
 	@Column
 	@Enumerated(EnumType.STRING)
-	private UserTipe userTipe;
+	private UserType userType;
 	@NonNull
 	@Column
 	private String password;

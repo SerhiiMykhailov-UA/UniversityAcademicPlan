@@ -68,7 +68,7 @@ public class TeacherService {
 		logger.info("Update teacher = {} with courses taught", teacher);
 		Teacher teacherTemp = repository.findById(teacher.getId())
 				.orElseThrow(() -> new TeacherException("Cann't find teacher = " + teacher));
-		teacherTemp.setCourse(teacher.getCourse());
+		teacherTemp.setCourses(teacher.getCourses());
 		Teacher teacherResult = repository.saveAndFlush(teacherTemp);
 		logger.info("OUT. Update teacher = {}", teacherResult);
 		logger.info("------------------------------------------------");

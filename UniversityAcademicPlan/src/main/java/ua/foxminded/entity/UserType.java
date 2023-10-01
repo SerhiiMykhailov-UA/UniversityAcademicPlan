@@ -1,12 +1,12 @@
 package ua.foxminded.entity;
 
-public enum UserTipe {
+public enum UserType {
 	
 	USER("user"), TEACHER("teacher");
 		
 	private String userTipe;
 	
-	UserTipe(String userTipe) {
+	UserType(String userTipe) {
 		this.userTipe = userTipe;
 	}
 

@@ -8,6 +8,8 @@
 
 *.classpath
 
+*.factorypath
+
 *.project
 
 *.log

@@ -30,8 +30,10 @@ public class Teacher extends Users {
 	@NonNull
 	@Column
 	private String lastName;
+	
+	
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-	private List<Course> course;
+	private List<Course> courses;
 	
 }
