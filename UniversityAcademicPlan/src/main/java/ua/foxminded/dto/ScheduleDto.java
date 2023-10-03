@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ua.foxminded.entity.Course;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +22,7 @@ public class ScheduleDto {
 	private LocalTime endTime;
 	@NonNull
 	private DayOfWeek dayOfWeek;
-	private Course course;
+	private CourseDto course;
 	
 
 }

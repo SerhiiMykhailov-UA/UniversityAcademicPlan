@@ -12,11 +12,11 @@ import ua.foxminded.entity.UserType;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UsersDto {
+	private long id;
 	@NonNull
 	private String nickName;
 	@NonNull
 	private String password;
 	private UserType userType;
-	
 	
 }

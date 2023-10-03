@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ua.foxminded.entity.Course;
-import ua.foxminded.entity.Student;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +17,7 @@ public class GroupsDto {
 	private long id;
 	@NonNull
 	private String name;
-	private List<Student> student;
-	private List<Course> course;
+	private List<StudentDto> student;
+	private List<CourseDto> course;
 
 }

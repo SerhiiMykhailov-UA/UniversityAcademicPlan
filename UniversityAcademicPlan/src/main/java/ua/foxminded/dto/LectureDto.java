@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ua.foxminded.entity.Course;
 
 @Data
 @NoArgsConstructor
@@ -16,5 +15,5 @@ public class LectureDto {
 	private long id;
 	@NonNull
 	private String name;
-	private Course course;
+	private CourseDto course;
 }

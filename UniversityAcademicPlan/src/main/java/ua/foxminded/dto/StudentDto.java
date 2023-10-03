@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ua.foxminded.entity.Course;
 import ua.foxminded.entity.Groups;
 
 @Data
@@ -24,5 +23,5 @@ public class StudentDto extends UsersDto{
 		
 		private Groups groups;
 		
-		private List<Course> course;
+		private List<CourseDto> course;
 }
