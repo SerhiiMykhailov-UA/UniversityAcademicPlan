@@ -3,48 +3,58 @@ package ua.foxminded.service;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.entity.Schedule;
 import ua.foxminded.exceptions.ScheduleException;
+import ua.foxminded.mapper.ScheduleMapper;
 import ua.foxminded.repository.ScheduleJPARepository;
 
 @Service
 @Transactional(readOnly = true)
 public class ScheduleService {
+	
+	private ScheduleMapper mapper;
 	private ScheduleJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
 
-	public ScheduleService(ScheduleJPARepository repository) {
+	public ScheduleService(ScheduleJPARepository repository, ScheduleMapper mapper) {
 		this.repository = repository;
+		this.mapper = mapper;
 	}
 
-	public Schedule get(long id) throws ScheduleException {
+	public ScheduleDto get(long id) throws ScheduleException {
 		logger.info("Get schedule id = {}", id);
 		Schedule scheduleResult = repository.findById(id)
 				.orElseThrow(() -> new ScheduleException("Cann't find schdedule by id = " + id));
-		logger.info("OUT result schedule = {}", scheduleResult);
-		return scheduleResult;
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		logger.info("OUT result schedule = {}", scheduleDto);
+		return scheduleDto;
 	}
 
-	public List<Schedule> getAll() {
+	public List<ScheduleDto> getAll() {
 		logger.info("Get all schedule");
-		List<Schedule> scheduleList = repository.findAll();
+		List<ScheduleDto> scheduleList = repository.findAll()
+				.stream().map(mapper::scheduleToScheduleDto).collect(Collectors.toList());
 		logger.info("OUT. Schedule list = {}", scheduleList);
 		logger.info("------------------------------------------------");
 		return scheduleList;
 	}
 
 	@Transactional(readOnly = false)
-	public Schedule add(Schedule schedule) {
+	public ScheduleDto add(ScheduleDto schedule) {
 		logger.info("Add new schedule = {}", schedule);
-		Schedule scheduleResult = repository.saveAndFlush(schedule);
-		logger.info("OUT result shedule = {}", scheduleResult);
-		return scheduleResult;
+		Schedule scheduleDao = mapper.scheduleDtoToSchedule(schedule);
+		Schedule scheduleResult = repository.saveAndFlush(scheduleDao);
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		logger.info("OUT result shedule = {}", scheduleDto);
+		return scheduleDto;
 	}
 
 	@Transactional(readOnly = false)
@@ -61,14 +71,16 @@ public class ScheduleService {
 	}
 	
 	@Transactional(readOnly = false)
-	public Schedule update(Schedule schedule) throws ScheduleException {
+	public ScheduleDto update(ScheduleDto schedule) throws ScheduleException {
 		logger.info("Update schedule = {}", schedule);
-		Schedule scheduleTemp = repository.findByStartTimeAndEndTimeAndDayOfWeek(schedule.getStartTime(), schedule.getEndTime(), schedule.getDayOfWeek())
-				.orElseThrow(()-> new ScheduleException("Cann't find schdedule by id = " + schedule.getId()));
-		scheduleTemp.setCourse(schedule.getCourse());
+		Schedule scheduleDao = mapper.scheduleDtoToSchedule(schedule);
+		Schedule scheduleTemp = repository.findByStartTimeAndEndTimeAndDayOfWeek(scheduleDao.getStartTime(), scheduleDao.getEndTime(), scheduleDao.getDayOfWeek())
+				.orElseThrow(()-> new ScheduleException("Cann't find schdedule by id = " + scheduleDao.getId()));
+		scheduleTemp.setCourse(scheduleDao.getCourse());
 		Schedule scheduleResult = repository.saveAndFlush(scheduleTemp);
-		logger.info("OUT result shedule = {}", scheduleResult);
-		return scheduleResult;
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		logger.info("OUT result shedule = {}", scheduleDto);
+		return scheduleDto;
 	}
 	
 	public boolean existsByStartTimeAndEndTimeAndDayOfWeek(LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek) {
@@ -78,11 +90,12 @@ public class ScheduleService {
 		return scheduleResult;
 	}
 	
-	public Schedule getByStartTimeAndEndTimeAndDayOfWeek(LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek) throws ScheduleException {
+	public ScheduleDto getByStartTimeAndEndTimeAndDayOfWeek(LocalTime startTime, LocalTime endTime, DayOfWeek dayOfWeek) throws ScheduleException {
 		logger.info("Get schedule by StartTime = {}, EndTime = {}, DayOfWeek = {}", startTime, endTime, dayOfWeek);
 		Schedule scheduleResult = repository.findByStartTimeAndEndTimeAndDayOfWeek(startTime, endTime, dayOfWeek)
 				.orElseThrow(()-> new ScheduleException("Cann't find schdedule by StartTime = " + startTime + "EndTime = " + endTime + "DayOfWeek = " + dayOfWeek));
-		logger.info("OUT: result geting schedule = {}", scheduleResult);
-		return scheduleResult;
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		logger.info("OUT: result geting schedule = {}", scheduleDto);
+		return scheduleDto;
 	}
 }

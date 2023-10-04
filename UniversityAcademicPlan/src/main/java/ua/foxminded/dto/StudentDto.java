@@ -16,12 +16,13 @@ import ua.foxminded.entity.Groups;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class StudentDto extends UsersDto{
-		@NonNull
-		private String firstName;
-		@NonNull
-		private String lastName;
+	
+	@NonNull
+	private String firstName;
+	@NonNull
+	private String lastName;
 		
-		private Groups groups;
+	private Groups groups;
 		
-		private List<CourseDto> course;
+	private List<CourseDto> course;
 }

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.transform.ToListResultTransformer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +22,9 @@ public class UsersService {
 	private UsersJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
 
-	public UsersService(UsersJPARepository repository) {
+	public UsersService(UsersJPARepository repository, UsersMapper mapper) {
 		this.repository = repository;
+		this.mapper = mapper;
 	}
 
 	public UsersDto get(long id) throws UsersException {

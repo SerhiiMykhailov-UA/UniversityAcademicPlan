@@ -19,5 +19,8 @@ public class CourseDto {
 	private String name;
 	private List<StudentDto> student;
 	private List<TeacherDto> teacher;
-	
+	private LocationDto location;
+	private List<ScheduleDto> schedule;
+	private List<LectureDto> lecture;
+	private List<GroupsDto> groups;
 }

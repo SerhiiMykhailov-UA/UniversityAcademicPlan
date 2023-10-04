@@ -1,15 +1,14 @@
 package ua.foxminded.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import ua.foxminded.dto.UsersDto;
 import ua.foxminded.entity.Users;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UsersMapper {
 	
-	UsersMapper INSTANCE = Mappers.getMapper(UsersMapper.class);
+//	UsersMapper INSTANCE = Mappers.getMapper(UsersMapper.class);
 	
 	UsersDto usersToUsersDto (Users users);
 	

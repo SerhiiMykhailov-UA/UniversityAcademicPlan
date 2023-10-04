@@ -1,16 +1,17 @@
 package ua.foxminded.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.entity.Teacher;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface TeacherMapper {
 	
-	TeacherMapper INSTANCE = Mappers.getMapper(TeacherMapper.class);
+//	TeacherMapper INSTANCE = Mappers.getMapper(TeacherMapper.class);
 	
 	TeacherDto teacherToTeacherDto (Teacher teacher);
+	
+	Teacher teacherDtoToTeacher (TeacherDto teacherDto);
 
 }
