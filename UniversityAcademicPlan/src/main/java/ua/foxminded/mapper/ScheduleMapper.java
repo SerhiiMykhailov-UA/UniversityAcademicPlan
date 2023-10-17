@@ -11,5 +11,5 @@ public interface ScheduleMapper {
 	ScheduleDto scheduleToScheduleDto (Schedule schedule);
 	
 	Schedule scheduleDtoToSchedule (ScheduleDto scheduleDto);
-
+	
 }

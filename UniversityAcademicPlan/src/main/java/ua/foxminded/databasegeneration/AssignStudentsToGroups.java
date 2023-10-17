@@ -1,4 +1,4 @@
-package ua.foxminded.databaseconfiguration;
+package ua.foxminded.databasegeneration;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import ua.foxminded.entity.Groups;
 import ua.foxminded.entity.Student;
 import ua.foxminded.entity.UserType;
 import ua.foxminded.entity.Users;
+import ua.foxminded.service.CourseService;
 
 @Profile("!test")
 @Component

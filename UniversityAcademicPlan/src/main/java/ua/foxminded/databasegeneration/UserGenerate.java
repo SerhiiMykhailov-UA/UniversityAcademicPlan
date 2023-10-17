@@ -1,4 +1,4 @@
-package ua.foxminded.databaseconfiguration;
+package ua.foxminded.databasegeneration;
 
 import java.util.LinkedHashMap;
 import java.util.List;

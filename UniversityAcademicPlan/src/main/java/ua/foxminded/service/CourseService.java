@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,17 +20,17 @@ import ua.foxminded.repository.CourseJPARepository;
 public class CourseService {
 
 	private CourseMapper mapper;
-	private CourseJPARepository repository;
+	private CourseJPARepository courseJPARepository;
 	private final Logger logger = LogManager.getLogger();
 	
-	public CourseService(CourseJPARepository repository, CourseMapper mapper) {
-		this.repository = repository;
+	public CourseService(CourseJPARepository courseJPARepository, CourseMapper mapper) {
+		this.courseJPARepository = courseJPARepository;
 		this.mapper = mapper;
 	}
 	
 	public CourseDto get(long id) throws CourseException {
 		logger.info("Get course by id = {}", id);
-		Course courseResult = repository.findById(id)
+		Course courseResult = courseJPARepository.findById(id)
 				.orElseThrow(()-> new CourseException("Cann't find by id = " + id));
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
 		logger.info("OUT: result get course = {}", courseDto);
@@ -38,7 +39,7 @@ public class CourseService {
 	
 	public CourseDto getByName(String name) throws CourseException {
 		logger.info("Get course by name = {}", name);
-		Course courseResult = repository.findByName(name)
+		Course courseResult = courseJPARepository.findByName(name)
 				.orElseThrow(()-> new CourseException("Cann't find by name = " + name));
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
 		logger.info("OUT: result geting course = {}", courseDto);
@@ -47,7 +48,7 @@ public class CourseService {
 	
 	public List<CourseDto> getAll() {
 		logger.info("Get all courses");
-		List<CourseDto> courses = repository.findAll()
+		List<CourseDto> courses = courseJPARepository.findAll()
 				.stream().map(mapper::courseToCourseDto).collect(Collectors.toList());
 		logger.info("OUT: result get all courses = {}", courses);
 		return courses;
@@ -57,7 +58,7 @@ public class CourseService {
 	public CourseDto add(CourseDto course) {
 		logger.info("Add new group = {}", course);
 		Course courseDao = mapper.courseDtoToCourse(course);
-		Course courseResult = repository.saveAndFlush(courseDao);
+		Course courseResult = courseJPARepository.saveAndFlush(courseDao);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
 		logger.info("OUT result group = {}", courseDto);
 		return courseDto;
@@ -66,8 +67,8 @@ public class CourseService {
 	@Transactional(readOnly = false)
 	public boolean delete(long id) {
 		logger.info("Delete location by id = {}", id);
-		if (repository.existsById(id)) {
-			repository.deleteById(id);
+		if (courseJPARepository.existsById(id)) {
+			courseJPARepository.deleteById(id);
 			logger.info("Deleting result = {}", true);
 			return true;
 		} else {
@@ -80,7 +81,7 @@ public class CourseService {
 	public CourseDto update(CourseDto course) throws CourseException {
 		logger.info("Update course = {}", course);
 		Course courseDao = mapper.courseDtoToCourse(course);
-		Course courseTemp = repository.findByName(courseDao.getName())
+		Course courseTemp = courseJPARepository.findByName(courseDao.getName())
 				.orElseThrow(()-> new CourseException("Cann't find group by name = " + course.getName()));
 		courseTemp.setGroups(courseDao.getGroups());
 		courseTemp.setLecture(courseDao.getLecture());
@@ -88,7 +89,7 @@ public class CourseService {
 		courseTemp.setSchedule(courseDao.getSchedule());
 		courseTemp.setStudent(courseDao.getStudent());
 		courseTemp.setTeacher(courseDao.getTeacher());
-		Course courseResult = repository.saveAndFlush(courseTemp);
+		Course courseResult = courseJPARepository.saveAndFlush(courseTemp);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
 		logger.info("OUT result course = {}", courseDto);
 		return courseDto;
@@ -96,7 +97,7 @@ public class CourseService {
 	
 	public boolean ifExistsByName(String name) {
 		logger.info("Find group by name = {}", name);
-		boolean groupResult = repository.existsByName(name);
+		boolean groupResult = courseJPARepository.existsByName(name);
 		logger.info("OUT: result finding group = {}", groupResult);
 		return groupResult;
 	}
