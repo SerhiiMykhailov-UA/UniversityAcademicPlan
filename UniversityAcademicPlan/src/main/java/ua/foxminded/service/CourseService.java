@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mapstruct.Context;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import ua.foxminded.dto.CourseDto;
 import ua.foxminded.entity.Course;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.mapper.CourseMapper;
+import ua.foxminded.mapper.CycleAvoidingMappingContext;
 import ua.foxminded.repository.CourseJPARepository;
 
 @Service
@@ -21,6 +23,7 @@ public class CourseService {
 	private CourseMapper mapper;
 	private CourseJPARepository courseJPARepository;
 	private final Logger logger = LogManager.getLogger();
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 	
 	public CourseService(CourseJPARepository courseJPARepository, CourseMapper mapper) {
 		this.courseJPARepository = courseJPARepository;
@@ -31,7 +34,7 @@ public class CourseService {
 		logger.info("Get course by id = {}", id);
 		Course courseResult = courseJPARepository.findById(id)
 				.orElseThrow(()-> new CourseException("Cann't find by id = " + id));
-		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
+		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT: result get course = {}", courseDto);
 		return courseDto;
 	}
@@ -40,15 +43,17 @@ public class CourseService {
 		logger.info("Get course by name = {}", name);
 		Course courseResult = courseJPARepository.findByName(name)
 				.orElseThrow(()-> new CourseException("Cann't find by name = " + name));
-		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
+		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT: result geting course = {}", courseDto);
 		return courseDto;
 	}
 	
 	public List<CourseDto> getAll() {
 		logger.info("Get all courses");
-		List<CourseDto> courses = courseJPARepository.findAll()
-				.stream().map(mapper::courseToCourseDto).collect(Collectors.toList());
+		List<Course> courseDao = courseJPARepository.findAll();
+//		System.out.println(courseDao);
+		List<CourseDto> courses = courseDao
+				.stream().map(el -> mapper.courseToCourseDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT: result get all courses = {}", courses);
 		return courses;
 	}
@@ -56,9 +61,9 @@ public class CourseService {
 	@Transactional(readOnly = false)
 	public CourseDto add(CourseDto course) {
 		logger.info("Add new group = {}", course);
-		Course courseDao = mapper.courseDtoToCourse(course);
+		Course courseDao = mapper.courseDtoToCourse(course, context);
 		Course courseResult = courseJPARepository.saveAndFlush(courseDao);
-		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
+		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT result group = {}", courseDto);
 		return courseDto;
 	}
@@ -79,7 +84,7 @@ public class CourseService {
 	@Transactional(readOnly = false)
 	public CourseDto update(CourseDto course) throws CourseException {
 		logger.info("Update course = {}", course);
-		Course courseDao = mapper.courseDtoToCourse(course);
+		Course courseDao = mapper.courseDtoToCourse(course, context);
 		Course courseTemp = courseJPARepository.findByName(courseDao.getName())
 				.orElseThrow(()-> new CourseException("Cann't find group by name = " + course.getName()));
 		courseTemp.setGroups(courseDao.getGroups());
@@ -89,7 +94,7 @@ public class CourseService {
 		courseTemp.setStudent(courseDao.getStudent());
 		courseTemp.setTeacher(courseDao.getTeacher());
 		Course courseResult = courseJPARepository.saveAndFlush(courseTemp);
-		CourseDto courseDto = mapper.courseToCourseDto(courseResult);
+		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT result course = {}", courseDto);
 		return courseDto;
 	}

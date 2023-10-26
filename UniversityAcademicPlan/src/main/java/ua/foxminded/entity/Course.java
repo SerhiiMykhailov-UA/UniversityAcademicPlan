@@ -20,10 +20,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import ua.foxminded.entity.Course;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor

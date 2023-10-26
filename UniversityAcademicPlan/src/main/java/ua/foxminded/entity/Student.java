@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.MERGE;
@@ -23,6 +24,7 @@ import javax.persistence.Column;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor

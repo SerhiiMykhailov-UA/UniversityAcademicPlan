@@ -4,16 +4,21 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import ua.foxminded.entity.UserType;
+import ua.foxminded.entity.Users;
 
 @Component
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class UsersDto {
 	private long id;
 	@NonNull

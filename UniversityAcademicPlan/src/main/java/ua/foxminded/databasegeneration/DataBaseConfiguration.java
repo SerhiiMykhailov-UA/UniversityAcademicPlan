@@ -56,7 +56,7 @@ public class DataBaseConfiguration {
 
 		// Fill-up courses Data table
 		for (Course s:coursesListStart) {
-			courseService.add(courseMapper.courseToCourseDto(s));
+//			courseService.add(courseMapper.courseToCourseDto(s));
 			new Course(0, null, null, teachers, null, null, null, null);
 		}
 		// Fill-up group Data table

@@ -15,11 +15,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor

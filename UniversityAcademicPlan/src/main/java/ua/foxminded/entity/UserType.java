@@ -2,7 +2,7 @@ package ua.foxminded.entity;
 
 public enum UserType {
 	
-	USER("user"), TEACHER("teacher");
+	STUDENT("student"), TEACHER("teacher");
 		
 	private String userTipe;
 	
