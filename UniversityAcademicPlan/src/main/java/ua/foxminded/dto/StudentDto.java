@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import ua.foxminded.entity.Groups;
 
-@Component
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class StudentDto extends UsersDto{
 	@NonNull
 	private String lastName;
 		
-	private Groups groups;
-		
+	private GroupsDto groups;
+	@ToString.Exclude	
 	private List<CourseDto> course;
 }

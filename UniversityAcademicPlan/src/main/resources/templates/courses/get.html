@@ -5,7 +5,57 @@
 <title>Get Course by id</title>
 </head>
 <body>
-	<p th:text="${courseDto.getName()}">VALUE</p>
-	<p th:text="${courseDto.getId()}">VALUE</p>
+	<h1>Course:  
+		<a th:text="${courseDto.getName()}">VALUE</a>
+	</h1>
+	
+	<p>ID: 
+		<a th:text="${courseDto.getId()}">VALUE</a>
+	</p>
+	
+	<p>Location: 
+		<a th:text="${courseDto.getLocation.getName}">VALUE</a>
+	</p>
+	
+	<p>Lecture list: </p>
+	<div th:each="lectureDto : ${lectureDtoList}">
+		<a th:text="${lectureDto.getName}"></a>
+	</div>
+	
+	<p>Teacher list:</p>
+	<div th:each="teacherDto : ${teacherDtoList}">
+		<a th:text="${teacherDto.getFirstName}"></a>
+		<a th:text="${teacherDto.getLastName}"></a>
+	</div>
+	
+	<p>Groups list: </p>
+	<div th:each="groupsDto : ${groupsDtoList}">
+		<a>Group ID: </a>
+		<a th:text="${groupsDto.getId}">id</a>
+		<a> Group name: </a>
+		<a th:text="${groupsDto.getName}">name</a>
+	</div>
+
+	<p>Studens list: </p>
+	<div th:each="studentDto : ${studentsDtoList}">
+		<a>Student: </a>			
+		<a th:text="${studentDto.getFirstName}">first name</a> 
+		<a th:text="${studentDto.getLastName}">last name</a>
+		<a> Id: </a>	
+		<a th:text="${studentDto.getId}">id</a> 
+	</div>
+	<p>Schedule:</p>
+	<div th:each="scheduleDto : ${scheduleDtoList}">
+		<a>Day of week: </a>
+		<a th:text="${scheduleDto.getDayOfWeek}">day of week</a>
+		<a> Start time: </a>
+		<a th:text="${scheduleDto.getStartTime}">start time</a>
+		<a> End time: </a>
+		<a th:text="${scheduleDto.getEndTime}"></a>
+	</div>
+	
+	<p>
+		<a href="/courses">Back to previos menue</a>
+	</p>
 </body>
 </html>

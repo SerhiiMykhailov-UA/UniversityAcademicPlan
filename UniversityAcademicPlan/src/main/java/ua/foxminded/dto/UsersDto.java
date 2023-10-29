@@ -1,6 +1,6 @@
 package ua.foxminded.dto;
 
-import org.springframework.stereotype.Component;
+import java.util.Comparator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,16 +10,14 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import ua.foxminded.entity.UserType;
-import ua.foxminded.entity.Users;
 
-@Component
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
-public class UsersDto {
+public class UsersDto{
 	private long id;
 	@NonNull
 	private String nickName;

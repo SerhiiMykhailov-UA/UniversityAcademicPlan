@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Get all users</title>
+</head>
+<body>
+	<div th:each="usersDto : ${usersDtoList}">
+		<a>User:</a>
+		<a th:text="${usersDto.getId}"></a>
+		<a th:text="${usersDto.getNickName}"></a>
+		<a th:text="${usersDto.getUserType}"></a>
+	</div>
+	<p>
+		<a href="/">Back to previos menue</a>
+	</p>
+</body>
+</html>

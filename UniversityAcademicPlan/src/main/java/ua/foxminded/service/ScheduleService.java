@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.entity.Schedule;
 import ua.foxminded.exceptions.ScheduleException;
+import ua.foxminded.mapper.CycleAvoidingMappingContext;
 import ua.foxminded.mapper.ScheduleMapper;
 import ua.foxminded.repository.ScheduleJPARepository;
 
@@ -23,6 +24,7 @@ public class ScheduleService {
 	private ScheduleMapper mapper;
 	private ScheduleJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
 	public ScheduleService(ScheduleJPARepository repository, ScheduleMapper mapper) {
 		this.repository = repository;
@@ -33,7 +35,7 @@ public class ScheduleService {
 		logger.info("Get schedule id = {}", id);
 		Schedule scheduleResult = repository.findById(id)
 				.orElseThrow(() -> new ScheduleException("Cann't find schdedule by id = " + id));
-		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult, context);
 		logger.info("OUT result schedule = {}", scheduleDto);
 		return scheduleDto;
 	}
@@ -41,7 +43,7 @@ public class ScheduleService {
 	public List<ScheduleDto> getAll() {
 		logger.info("Get all schedule");
 		List<ScheduleDto> scheduleList = repository.findAll()
-				.stream().map(mapper::scheduleToScheduleDto).collect(Collectors.toList());
+				.stream().map(el -> mapper.scheduleToScheduleDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT. Schedule list = {}", scheduleList);
 		logger.info("------------------------------------------------");
 		return scheduleList;
@@ -50,9 +52,9 @@ public class ScheduleService {
 	@Transactional(readOnly = false)
 	public ScheduleDto add(ScheduleDto schedule) {
 		logger.info("Add new schedule = {}", schedule);
-		Schedule scheduleDao = mapper.scheduleDtoToSchedule(schedule);
+		Schedule scheduleDao = mapper.scheduleDtoToSchedule(schedule, context);
 		Schedule scheduleResult = repository.saveAndFlush(scheduleDao);
-		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult, context);
 		logger.info("OUT result shedule = {}", scheduleDto);
 		return scheduleDto;
 	}
@@ -73,12 +75,12 @@ public class ScheduleService {
 	@Transactional(readOnly = false)
 	public ScheduleDto update(ScheduleDto schedule) throws ScheduleException {
 		logger.info("Update schedule = {}", schedule);
-		Schedule scheduleDao = mapper.scheduleDtoToSchedule(schedule);
+		Schedule scheduleDao = mapper.scheduleDtoToSchedule(schedule, context);
 		Schedule scheduleTemp = repository.findByStartTimeAndEndTimeAndDayOfWeek(scheduleDao.getStartTime(), scheduleDao.getEndTime(), scheduleDao.getDayOfWeek())
 				.orElseThrow(()-> new ScheduleException("Cann't find schdedule by id = " + scheduleDao.getId()));
 		scheduleTemp.setCourse(scheduleDao.getCourse());
 		Schedule scheduleResult = repository.saveAndFlush(scheduleTemp);
-		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult, context);
 		logger.info("OUT result shedule = {}", scheduleDto);
 		return scheduleDto;
 	}
@@ -94,7 +96,7 @@ public class ScheduleService {
 		logger.info("Get schedule by StartTime = {}, EndTime = {}, DayOfWeek = {}", startTime, endTime, dayOfWeek);
 		Schedule scheduleResult = repository.findByStartTimeAndEndTimeAndDayOfWeek(startTime, endTime, dayOfWeek)
 				.orElseThrow(()-> new ScheduleException("Cann't find schdedule by StartTime = " + startTime + "EndTime = " + endTime + "DayOfWeek = " + dayOfWeek));
-		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult);
+		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult, context);
 		logger.info("OUT: result geting schedule = {}", scheduleDto);
 		return scheduleDto;
 	}

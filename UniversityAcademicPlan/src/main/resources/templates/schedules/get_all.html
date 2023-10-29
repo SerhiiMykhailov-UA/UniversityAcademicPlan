@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Get all schedules</title>
+</head>
+<body>
+	<h1>Schedule:</h1>
+	<div th:each="scheduleDto : ${scheduleDtoList}">
+		<a th:text="${scheduleDto.getDayOfWeek()}"></a>
+		<a> Start time: </a>
+		<a th:text="${scheduleDto.getStartTime()}"></a>
+		<a> End time: </a>
+		<a th:text="${scheduleDto.getEndTime()}"></a>
+		<a> Course: </a>
+		<a th:text="${scheduleDto.getCourse().getName()}"></a>
+	</div>
+	<p>
+		<a href="/">Back to previos menue</a>
+	</p>
+</body>
+</html>

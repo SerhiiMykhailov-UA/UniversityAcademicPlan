@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Get all lectures</title>
+</head>
+<body>
+	<div th:each="lectureDto : ${lectureDtoList}">
+		<a th:href="@{/lectures/{id} (id = ${lectureDto.getId()})}"
+		th:text="${lectureDto.getName()}">lectures</a>
+	</div>
+	
+	<p>
+		<a href="/">Back to previos menue</a>
+	</p>
+</body>
+</html>

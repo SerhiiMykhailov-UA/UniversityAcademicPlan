@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.foxminded.dto.UsersDto;
 import ua.foxminded.entity.Users;
 import ua.foxminded.exceptions.UsersException;
+import ua.foxminded.mapper.CycleAvoidingMappingContext;
 import ua.foxminded.mapper.UsersMapper;
 import ua.foxminded.repository.UsersJPARepository;
 
@@ -21,6 +22,7 @@ public class UsersService {
 	private UsersMapper mapper;
 	private UsersJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
 	public UsersService(UsersJPARepository repository, UsersMapper mapper) {
 		this.repository = repository;
@@ -31,7 +33,7 @@ public class UsersService {
 		logger.info("findById (int id) id = {}", id);
 		Users userResult = repository.findById(id)
 				.orElseThrow(() -> new UsersException("Cann't find User Id: " + id));
-		UsersDto userDto = mapper.usersToUsersDto(userResult);
+		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("Find User result = {}", userResult);
 		logger.info("------------------------------------------------------");
 		return userDto;
@@ -41,7 +43,7 @@ public class UsersService {
 		logger.info("Find by nickname = {}",  nickName);
 		Users userResult = repository.findByNickName(nickName)
 				.orElseThrow(() -> new UsersException("Cann't find User nickName: " + nickName));
-		UsersDto userDto = mapper.usersToUsersDto(userResult);
+		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("Find User result = {}", userResult);
 		logger.info("------------------------------------------------------");
 		return userDto;
@@ -49,7 +51,7 @@ public class UsersService {
 	
 	public List<UsersDto> getAll() {
 		logger.info("Get all Users");
-		List<UsersDto> usersList = repository.findAll().stream().map(mapper::usersToUsersDto).collect(Collectors.toList());
+		List<UsersDto> usersList = repository.findAll().stream().map(el -> mapper.usersToUsersDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT Users list = {}", usersList);
 		logger.info("------------------------------------------------------");
 		return usersList;
@@ -58,9 +60,9 @@ public class UsersService {
 	@Transactional(readOnly = false)
 	public UsersDto add(UsersDto user) {
 		logger.info("Add user. IN User = {}", user);
-		Users userDao = mapper.usersDtoToUsers(user);
+		Users userDao = mapper.usersDtoToUsers(user, context);
 		Users userResult = repository.saveAndFlush(userDao);
-		UsersDto userDto = mapper.usersToUsersDto(userResult);
+		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("OUT result User = {}", userResult);
 		logger.info("------------------------------------------------------");
 		return userDto;
@@ -69,9 +71,9 @@ public class UsersService {
 	@Transactional(readOnly = false)
 	public UsersDto update(UsersDto user) {
 		logger.info("IN User = {}", user);
-		Users userDao = mapper.usersDtoToUsers(user);
+		Users userDao = mapper.usersDtoToUsers(user, context);
 		Users userResult = repository.saveAndFlush(userDao);
-		UsersDto userDto = mapper.usersToUsersDto(userResult);
+		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("OUT User = {}", userResult);
 		logger.info("------------------------------------------------------");
 		return userDto;

@@ -6,8 +6,12 @@
 </head>
 <body>
 	<div th:each="courseDto : ${coursesDtoList}">
-		<a th:href="@{/courses/{id} (id = courseDto.getId())}" th:text="courseDto.getName()">course</a>
+		<a > Course - </a>
+		<a th:href="@{/courses/{id} (id = ${courseDto.getId()})}" 
+		th:text="${courseDto.getName()}">courses</a>
 	</div>
-
+	<p>
+		<a href="/">Back to previos menue</a>
+	</p>
 </body>
 </html>
