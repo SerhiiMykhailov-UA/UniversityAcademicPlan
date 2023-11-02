@@ -1,6 +1,5 @@
 package ua.foxminded.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;

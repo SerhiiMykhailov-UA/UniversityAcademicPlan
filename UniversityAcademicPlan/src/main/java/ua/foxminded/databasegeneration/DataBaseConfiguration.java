@@ -64,14 +64,14 @@ public class DataBaseConfiguration {
 //			groupService.add(groupsMapper.groupsToGroupsDto(new Groups(s)));
 		}
 		// Fill-up student Data table
-		/*
-		 * List<Groups> groupList =
-		 * groupService.getAll().stream().map(groupsMapper::groupsDtoToGroups).collect(
-		 * Collectors.toList()); List<Student> studentListAssignGroup =
-		 * AssignStudentsToGroups.assign(groupList); for(Student
-		 * student:studentListAssignGroup) {
-		 * studentService.add(studentMapper.studentToStudentDto(student)); }
-		 */
+		
+//		  List<Groups> groupList =
+//		  groupService.getAll().stream().map(groupsMapper::groupsDtoToGroups).collect(
+//		  Collectors.toList()); List<Student> studentListAssignGroup =
+//		  AssignStudentsToGroups.assign(groupList); for(Student
+//		  student:studentListAssignGroup) {
+//		  studentService.add(studentMapper.studentToStudentDto(student)); }
+		 
 		
 		// Fill-up teacher Data table
 		for (Teacher teacher:teachers) {

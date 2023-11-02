@@ -1,7 +1,5 @@
 package ua.foxminded.dto;
 
-import java.util.Comparator;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
