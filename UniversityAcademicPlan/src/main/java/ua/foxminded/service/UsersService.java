@@ -94,7 +94,7 @@ public class UsersService {
 		}
 	}
 	
-	public boolean ifExistsByNickName(String nickName) {
+	public boolean isExistsByNickName(String nickName) {
 		logger.info("Check if User exists by nickname = {}", nickName);
 		boolean userResult = repository.existsByNickName(nickName);
 		logger.info("OUT boolean = {}", userResult);

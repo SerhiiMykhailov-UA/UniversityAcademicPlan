@@ -21,6 +21,7 @@ public class UsersDto{
 	private String nickName;
 	@NonNull
 	private String password;
+	@NonNull
 	private UserType userType;
 	
 }

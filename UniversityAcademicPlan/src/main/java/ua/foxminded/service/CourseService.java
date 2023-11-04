@@ -50,7 +50,6 @@ public class CourseService {
 	public List<CourseDto> getAll() {
 		logger.info("Get all courses");
 		List<Course> courseDao = courseJPARepository.findAll();
-//		System.out.println(courseDao);
 		List<CourseDto> courses = courseDao
 				.stream().map(el -> mapper.courseToCourseDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT: result get all courses = {}", courses);
