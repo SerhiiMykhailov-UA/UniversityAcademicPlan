@@ -43,7 +43,9 @@ class StudentServiceTest {
 		when(mapper.studentDtoToStudent(Mockito.any(), Mockito.any())).thenReturn(entity);
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.studentToStudentDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.add(dto);
+		
 		verify(mapper, times(1)).studentDtoToStudent(Mockito.any(), Mockito.any());
 		verify(repository, times(1)).saveAndFlush(Mockito.any());
 		verify(mapper, times(1)).studentToStudentDto(Mockito.any(), Mockito.any());
@@ -53,7 +55,9 @@ class StudentServiceTest {
 	void testGetAll() {
 		when(repository.findAll()).thenReturn(new ArrayList<>(Arrays.asList(entity, entity, entity)));
 		when(mapper.studentToStudentDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.getAll();
+		
 		verify(repository, times(1)).findAll();
 		verify(mapper, times(3)).studentToStudentDto(Mockito.any(), Mockito.any());
 	}
@@ -62,7 +66,9 @@ class StudentServiceTest {
 	void testGet() throws StudentException {
 		when(repository.findById(Mockito.anyLong())).thenReturn( Optional.of(entity));
 		when(mapper.studentToStudentDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.get((long) 1);
+		
 		verify(mapper, times(1)).studentToStudentDto(Mockito.any(), Mockito.any());
 		verify(repository, times(1)).findById((long) 1);
 	}
@@ -70,7 +76,9 @@ class StudentServiceTest {
 	@Test
 	void testDelete() {
 		when(repository.existsById(Mockito.anyLong())).thenReturn(true);
+		
 		service.delete((long)1);
+		
 		verify(repository, times(1)).existsById(Mockito.anyLong());
 		verify(repository, times(1)).deleteById(Mockito.anyLong());
 	}
@@ -78,7 +86,9 @@ class StudentServiceTest {
 	@Test
 	void testUpdate() {
 		when(repository.existsById(Mockito.anyLong())).thenReturn(true);
+		
 		service.delete((long)1);
+		
 		verify(repository, times(1)).existsById(Mockito.anyLong());
 		verify(repository, times(1)).deleteById(Mockito.anyLong());
 	}
@@ -86,7 +96,9 @@ class StudentServiceTest {
 	@Test
 	void testIsExistByFirstNameAndLastName() {
 		when(repository.existsByFirstNameAndLastName(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+		
 		service.isExistByFirstNameAndLastName("fn1", "ln1");
+		
 		verify(repository, times(1)).existsByFirstNameAndLastName(Mockito.anyString(), Mockito.anyString());
 	}
 
@@ -94,7 +106,9 @@ class StudentServiceTest {
 	void testGetByFirstNameAndLastName() throws StudentException {
 		when(repository.findByFirstNameAndLastName(Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.of(entity));
 		when(mapper.studentToStudentDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.getByFirstNameAndLastName("fn1", "ln1");
+		
 		verify(mapper, times(1)).studentToStudentDto(Mockito.any(), Mockito.any());
 		verify(repository, times(1)).findByFirstNameAndLastName(Mockito.anyString(), Mockito.anyString());
 	}

@@ -41,7 +41,9 @@ class GroupsServiceTest {
 	void testGet() throws GroupsException {
 		when(repository.findById(Mockito.anyLong())).thenReturn( Optional.of(entity));
 		when(mapper.groupsToGroupsDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.get((long) 1);
+		
 		verify(mapper, times(1)).groupsToGroupsDto(Mockito.any(), Mockito.any());
 		verify(repository, times(1)).findById((long) 1);
 		
@@ -51,7 +53,9 @@ class GroupsServiceTest {
 	void testGetByName() throws GroupsException {
 		when(repository.findByName(Mockito.anyString())).thenReturn(Optional.of(entity));
 		when(mapper.groupsToGroupsDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.getByName("entity");
+		
 		verify(mapper, times(1)).groupsToGroupsDto(Mockito.any(), Mockito.any());
 		verify(repository, times(1)).findByName(Mockito.anyString());
 	}
@@ -60,7 +64,9 @@ class GroupsServiceTest {
 	void testGetAll() {
 		when(repository.findAll()).thenReturn(new ArrayList<>(Arrays.asList(entity, entity, entity)));
 		when(mapper.groupsToGroupsDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.getAll();
+		
 		verify(repository, times(1)).findAll();
 		verify(mapper, times(3)).groupsToGroupsDto(Mockito.any(), Mockito.any());
 	}
@@ -70,7 +76,9 @@ class GroupsServiceTest {
 		when(mapper.groupsDtoToGroups(Mockito.any(), Mockito.any())).thenReturn(entity);
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.groupsToGroupsDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.add(dto);
+		
 		verify(mapper, times(1)).groupsDtoToGroups(Mockito.any(), Mockito.any());
 		verify(repository, times(1)).saveAndFlush(Mockito.any());
 		verify(mapper, times(1)).groupsToGroupsDto(Mockito.any(), Mockito.any());
@@ -79,7 +87,9 @@ class GroupsServiceTest {
 	@Test
 	void testDelete() {
 		when(repository.existsById(Mockito.anyLong())).thenReturn(true);
+		
 		service.delete((long)1);
+		
 		verify(repository, times(1)).existsById(Mockito.anyLong());
 		verify(repository, times(1)).deleteById(Mockito.anyLong());
 	}
@@ -90,7 +100,9 @@ class GroupsServiceTest {
 		when(repository.findByName(Mockito.anyString())).thenReturn(Optional.of(entity));
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.groupsToGroupsDto(Mockito.any(), Mockito.any())).thenReturn(dto);
+		
 		service.update(dto);
+		
 		verify(mapper, times(1)).groupsDtoToGroups(Mockito.any(), Mockito.any());
 		verify(repository, times(1)).findByName(Mockito.anyString());
 		verify(repository, times(1)).saveAndFlush(Mockito.any());
@@ -100,7 +112,9 @@ class GroupsServiceTest {
 	@Test
 	void testIfExistsByName() {
 		when(repository.existsByName(Mockito.anyString())).thenReturn(true);
+		
 		service.ifExistsByName("c1");
+		
 		verify(repository, times(1)).existsByName(Mockito.anyString());
 	}
 
