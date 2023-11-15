@@ -1,13 +1,14 @@
-INSERT INTO users (nick_name, password, user_type) VALUES ('user1', 'password', 'TEACHER');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user2', 'password', 'TEACHER');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user3', 'password', 'TEACHER');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user4', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user5', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user6', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user7', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user8', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user9', 'password', 'STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user10', 'password', 'STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user1', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user2', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user3', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user4', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user5', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user6', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user7', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user8', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user9', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user10', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('admin', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_ADMIN');
 ----------------------------------------------------------------------------------
 INSERT INTO groups (name) VALUES ('gr1');
 INSERT INTO groups (name) VALUES ('gr2');
@@ -83,7 +84,8 @@ INSERT INTO lecture (name, course_id) VALUES ('c7-l5', 7);
 INSERT INTO lecture (name, course_id) VALUES ('c7-l6', 7);
 INSERT INTO lecture (name, course_id) VALUES ('c7-l7', 7);
 --------------------------------------------------------------------
-
+INSERT INTO admin (first_name, last_name, id) VALUES ('Ury', 'Bodnar', 11);
+------------------------------------------------------------------------
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn1', 'ln1', 4, 1);
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn2', 'ln2', 5, 2);
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn3', 'ln3', 6, 3);

@@ -22,11 +22,12 @@ public class UsersService {
 	private UsersMapper mapper;
 	private UsersJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
-	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
+	private final CycleAvoidingMappingContext context;
 
-	public UsersService(UsersJPARepository repository, UsersMapper mapper) {
+	public UsersService(UsersJPARepository repository, UsersMapper mapper, CycleAvoidingMappingContext context) {
 		this.repository = repository;
 		this.mapper = mapper;
+		this.context = context;
 	}
 
 	public UsersDto get(long id) throws UsersException {

@@ -22,11 +22,12 @@ public class GroupsService {
 	private GroupsMapper mapper; 
 	private GroupsJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
-	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
+	private final CycleAvoidingMappingContext context;
 	
-	public GroupsService(GroupsJPARepository repository, GroupsMapper mapper) {
+	public GroupsService(GroupsJPARepository repository, GroupsMapper mapper, CycleAvoidingMappingContext context) {
 		this.repository = repository;
 		this.mapper = mapper;
+		this.context = context;
 	}
 	
 	public GroupsDto get(long id) throws GroupsException {

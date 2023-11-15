@@ -35,8 +35,8 @@ class UsersServiceTest {
 	Users entity;
 	UsersDto dto;
 	{
-		entity = new Users("nickname", UserType.STUDENT, "password");
-		dto = new UsersDto("nickname", "password", UserType.STUDENT);
+		entity = new Users("nickname", "password");
+		dto = new UsersDto("nickname", "password");
 	}
 
 	@Test

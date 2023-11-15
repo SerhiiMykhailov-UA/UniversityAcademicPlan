@@ -34,7 +34,6 @@ public class Users {
 	@NonNull
 	@Column
 	private String nickName;
-	@NonNull
 	@Column
 	@Enumerated(EnumType.STRING)
 	private UserType userType;

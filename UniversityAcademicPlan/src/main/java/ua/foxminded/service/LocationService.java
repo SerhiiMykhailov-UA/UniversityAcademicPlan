@@ -22,10 +22,12 @@ public class LocationService {
 	private LocationMapper mapper;
 	private LocationJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
-	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
-	public LocationService(LocationJPARepository repository, LocationMapper mapper) {
+	private final CycleAvoidingMappingContext context;
+	
+	public LocationService(LocationJPARepository repository, LocationMapper mapper, CycleAvoidingMappingContext context) {
 		this.repository = repository;
 		this.mapper = mapper;
+		this.context = context;
 	}
 	
 	public LocationDto get(long id) throws LocationException {

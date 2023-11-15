@@ -22,11 +22,12 @@ public class CourseService {
 	private CourseMapper mapper;
 	private CourseJPARepository courseJPARepository;
 	private final Logger logger = LogManager.getLogger();
-	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
+	private final CycleAvoidingMappingContext context;
 	
-	public CourseService(CourseJPARepository courseJPARepository, CourseMapper mapper) {
+	public CourseService(CourseJPARepository courseJPARepository, CourseMapper mapper, CycleAvoidingMappingContext context) {
 		this.courseJPARepository = courseJPARepository;
 		this.mapper = mapper;
+		this.context = context;
 	}
 	
 	public CourseDto get(long id) throws CourseException {

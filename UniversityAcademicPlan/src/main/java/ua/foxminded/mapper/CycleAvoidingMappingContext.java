@@ -12,6 +12,7 @@ import org.mapstruct.BeforeMapping;
 import org.mapstruct.Context;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.TargetType;
+import org.springframework.stereotype.Component;
 
 /**
  * A type to be used as {@link Context} parameter to track cycles in graphs.
@@ -22,6 +23,7 @@ import org.mapstruct.TargetType;
  *
  * @author Andreas Gudian
  */
+@Component
 public class CycleAvoidingMappingContext {
     private Map<Object, Object> knownInstances = new IdentityHashMap<Object, Object>();
 

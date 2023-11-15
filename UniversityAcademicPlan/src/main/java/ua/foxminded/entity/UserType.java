@@ -2,7 +2,7 @@ package ua.foxminded.entity;
 
 public enum UserType {
 	
-	STUDENT("student"), TEACHER("teacher");
+	ROLE_STUDENT("student"), ROLE_TEACHER("teacher"), ROLE_ADMIN("admin"), ROLE_STUFF("stuff");
 		
 	private String userTipe;
 	
@@ -10,7 +10,7 @@ public enum UserType {
 		this.userTipe = userTipe;
 	}
 
-	public String getUserTipe() {
+	public String getUserType() {
 		return userTipe;
 	}
 
