@@ -24,12 +24,11 @@ public class ScheduleService {
 	private ScheduleMapper mapper;
 	private ScheduleJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
-	private final CycleAvoidingMappingContext context;
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
-	public ScheduleService(ScheduleJPARepository repository, ScheduleMapper mapper, CycleAvoidingMappingContext context) {
+	public ScheduleService(ScheduleJPARepository repository, ScheduleMapper mapper) {
 		this.repository = repository;
 		this.mapper = mapper;
-		this.context = context;
 	}
 
 	public ScheduleDto get(long id) throws ScheduleException {

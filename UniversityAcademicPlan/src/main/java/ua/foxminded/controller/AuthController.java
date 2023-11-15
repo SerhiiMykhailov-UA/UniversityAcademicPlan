@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import ua.foxminded.dto.UsersDto;
+import ua.foxminded.entity.UserType;
 import ua.foxminded.service.UsersService;
 import ua.foxminded.util.UsersDtoValidator;
 
@@ -41,7 +42,7 @@ public class AuthController {
 		if (bindingResult.hasErrors())
 			return "/auth/registration";
 		
-		
+		users.setUserType(UserType.ROLE_NEWUSER);
 		service.add(users);
 		return "redirect:/auth/login";
 	}

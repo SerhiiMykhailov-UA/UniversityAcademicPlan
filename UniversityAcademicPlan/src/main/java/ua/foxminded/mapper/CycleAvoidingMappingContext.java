@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
  *
  * @author Andreas Gudian
  */
-@Component
 public class CycleAvoidingMappingContext {
     private Map<Object, Object> knownInstances = new IdentityHashMap<Object, Object>();
 

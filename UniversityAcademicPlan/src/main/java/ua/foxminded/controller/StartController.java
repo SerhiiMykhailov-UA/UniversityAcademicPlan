@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ua.foxminded.dto.UsersDto;
 import ua.foxminded.exceptions.UsersException;
 import ua.foxminded.security.UsersDetails;
-import ua.foxminded.service.StudentService;
-import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
 
 @Controller

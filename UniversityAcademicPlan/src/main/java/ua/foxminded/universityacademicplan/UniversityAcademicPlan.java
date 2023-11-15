@@ -25,7 +25,7 @@ public class UniversityAcademicPlan {
 		student.setNickName("tttt");
 		new Student("swhb", "ehjbe");
 		System.out.println(student);
-		Users users = new Users("wed", "swedf");
+		Users users = new Users("wed", UserType.ROLE_STUDENT, "swedf");
 		users.equals(users);
 		logger.info("srferfsaf");
 	}

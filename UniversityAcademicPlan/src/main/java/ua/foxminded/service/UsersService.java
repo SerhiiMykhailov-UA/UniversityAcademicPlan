@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,15 +20,16 @@ import ua.foxminded.repository.UsersJPARepository;
 @Transactional(readOnly = true)
 public class UsersService {
 
-	private UsersMapper mapper;
-	private UsersJPARepository repository;
+	private final UsersMapper mapper;
+	private final UsersJPARepository repository;
+	private final PasswordEncoder passwordEncoder;
 	private final Logger logger = LogManager.getLogger();
-	private final CycleAvoidingMappingContext context;
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
-	public UsersService(UsersJPARepository repository, UsersMapper mapper, CycleAvoidingMappingContext context) {
+	public UsersService(UsersJPARepository repository, UsersMapper mapper, PasswordEncoder passwordEncoder) {
 		this.repository = repository;
 		this.mapper = mapper;
-		this.context = context;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public UsersDto get(long id) throws UsersException {
@@ -44,6 +46,7 @@ public class UsersService {
 		logger.info("Find by nickname = {}",  nickName);
 		Users userResult = repository.findByNickName(nickName)
 				.orElseThrow(() -> new UsersException("Cann't find User nickName: " + nickName));
+		System.out.println(userResult);
 		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("Find User result = {}", userResult);
 		logger.info("------------------------------------------------------");
@@ -61,6 +64,9 @@ public class UsersService {
 	@Transactional(readOnly = false)
 	public UsersDto add(UsersDto user) {
 		logger.info("Add user. IN User = {}", user);
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));;
+		
 		Users userDao = mapper.usersDtoToUsers(user, context);
 		Users userResult = repository.saveAndFlush(userDao);
 		UsersDto userDto = mapper.usersToUsersDto(userResult, context);

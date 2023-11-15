@@ -24,12 +24,11 @@ public class StudentService {
 	private StudentMapper mapper;
 	private StudentJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
-	private final CycleAvoidingMappingContext context;
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
-	public StudentService(StudentJPARepository repository, StudentMapper mapper, CycleAvoidingMappingContext context) {
+	public StudentService(StudentJPARepository repository, StudentMapper mapper) {
 		this.repository = repository;
 		this.mapper = mapper;
-		this.context = context;
 	}
 	
 	@Transactional(readOnly = false)

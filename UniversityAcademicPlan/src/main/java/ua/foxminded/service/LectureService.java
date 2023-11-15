@@ -22,12 +22,11 @@ public class LectureService {
 	private LectureMapper mapper;
 	private LectureJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
-	private final CycleAvoidingMappingContext context;
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
-	public LectureService(LectureJPARepository repository, LectureMapper mapper, CycleAvoidingMappingContext context) {
+	public LectureService(LectureJPARepository repository, LectureMapper mapper) {
 		this.repository = repository;
 		this.mapper = mapper;
-		this.context = context;
 	}
 	
 	public LectureDto get(long id) throws LectureException {

@@ -15,7 +15,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString
 public class Admin extends Users{
 	
 	@NonNull

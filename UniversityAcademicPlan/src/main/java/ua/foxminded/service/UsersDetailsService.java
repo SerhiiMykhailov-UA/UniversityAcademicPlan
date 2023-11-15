@@ -18,12 +18,11 @@ public class UsersDetailsService implements UserDetailsService {
 
 	private final UsersJPARepository repository;
 	private final UsersMapper mapper;
-	private final CycleAvoidingMappingContext context;
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 	
-	public UsersDetailsService(UsersJPARepository repository, UsersMapper mapper, CycleAvoidingMappingContext context) {
+	public UsersDetailsService(UsersJPARepository repository, UsersMapper mapper) {
 		this.repository = repository;
 		this.mapper = mapper;
-		this.context = context;
 	}
 
 	@Override
