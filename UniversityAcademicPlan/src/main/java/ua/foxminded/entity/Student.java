@@ -46,7 +46,7 @@ public class Student extends Users {
 	private Groups groups;
 	
 	@EqualsAndHashCode.Exclude
-//	@ToString.Exclude
+	@ToString.Exclude
 	@ManyToMany(cascade = {MERGE, PERSIST})
 	@JoinTable(
 			name = "student_course",

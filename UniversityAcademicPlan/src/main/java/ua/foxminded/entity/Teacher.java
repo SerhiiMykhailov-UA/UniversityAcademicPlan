@@ -33,7 +33,7 @@ public class Teacher extends Users {
 	@Column
 	private String lastName;
 	
-	
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private List<Course> courses;

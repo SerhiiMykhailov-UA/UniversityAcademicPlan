@@ -53,12 +53,15 @@ public class Course {
 	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Location location;
 	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	private List<Schedule> schedule;
 	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	private List<Lecture> lecture;
 	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
 	@ManyToMany(mappedBy = "course")
 	private List<Groups> groups;
 
