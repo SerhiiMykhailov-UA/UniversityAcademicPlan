@@ -35,11 +35,13 @@ public class Groups {
 	@Column
 	@NonNull
 	private String name;
-	
+
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "groups")
 	private List<Student> student;
-	
+
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@ManyToMany
 	@JoinTable(name = "groups_course", joinColumns = @JoinColumn(name = "groups_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))

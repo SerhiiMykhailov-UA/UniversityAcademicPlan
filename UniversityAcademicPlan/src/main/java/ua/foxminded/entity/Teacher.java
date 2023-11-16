@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import java.util.List;
 import javax.persistence.ManyToMany;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +21,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@CascadeOnDelete
 public class Teacher extends Users {
 
 	@NonNull
@@ -32,8 +29,9 @@ public class Teacher extends Users {
 	@NonNull
 	@Column
 	private String lastName;
-	
-	
+
+
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private List<Course> courses;

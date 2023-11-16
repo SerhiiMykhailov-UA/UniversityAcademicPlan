@@ -37,6 +37,7 @@ public class Location implements Serializable {
 	@Column
 	@NonNull
 	private String name;
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "location", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<Course> course;

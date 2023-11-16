@@ -32,6 +32,7 @@ public class Lecture implements Serializable {
 	@Column
 	@NonNull
 	private String name;
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@ManyToOne
 	@JoinColumn(name = "course_id", referencedColumnName = "id")
