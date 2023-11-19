@@ -15,11 +15,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -34,6 +37,7 @@ public class Location implements Serializable {
 	@Column
 	@NonNull
 	private String name;
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "location", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<Course> course;

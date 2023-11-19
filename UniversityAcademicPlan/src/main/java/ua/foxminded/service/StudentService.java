@@ -1,6 +1,7 @@
 package ua.foxminded.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,8 +9,11 @@ import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.foxminded.dto.StudentDto;
 import ua.foxminded.entity.Student;
 import ua.foxminded.exceptions.StudentException;
+import ua.foxminded.mapper.CycleAvoidingMappingContext;
+import ua.foxminded.mapper.StudentMapper;
 import ua.foxminded.repository.StudentJPARepository;
 
 @Service
@@ -17,37 +21,44 @@ import ua.foxminded.repository.StudentJPARepository;
 @CascadeOnDelete
 public class StudentService {
 	
+	private StudentMapper mapper;
 	private StudentJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
-	public StudentService(StudentJPARepository repository) {
+	public StudentService(StudentJPARepository repository, StudentMapper mapper) {
 		this.repository = repository;
+		this.mapper = mapper;
 	}
 	
 	@Transactional(readOnly = false)
-	public Student add(Student student) {
+	public StudentDto add(StudentDto student) {
 		logger.info("Add new student = {} in Grout", student);
-		Student studentResult = repository.saveAndFlush(student);
-		logger.info("OUT. Added new student = {}", studentResult);
+		Student studentDao = mapper.studentDtoToStudent(student, context);
+		Student studentResult = repository.saveAndFlush(studentDao);
+		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
+		logger.info("OUT. Added new student = {}", studentDto);
 		logger.info("------------------------------------------------");
-		return studentResult;
+		return studentDto;
 	}
 	
-	public List<Student> getAll() {
+	public List<StudentDto> getAll() {
 		logger.info("Get all students");
-		List<Student> students = repository.findAll();
+		List<StudentDto> students = repository.findAll()
+				.stream().map(el -> mapper.studentToStudentDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT. Students list = {}", students);
 		logger.info("------------------------------------------------");
 		return students;
 	}
 	
-	public Student get(long id) throws StudentException {
+	public StudentDto get(long id) throws StudentException {
 		logger.info("Find student by id = {}", id);
 		Student studentResult = repository.findById(id)
 				.orElseThrow(() -> new StudentException("Cann't find student by id = " + id));
-		logger.info("OUT student = {}", studentResult);
+		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
+		logger.info("OUT student = {}", studentDto);
 		logger.info("------------------------------------------------");
-		return studentResult;
+		return studentDto;
 	}
 	
 	@Transactional(readOnly = false)
@@ -66,16 +77,18 @@ public class StudentService {
 	}
 	
 	@Transactional(readOnly = false)
-	public Student update(Student student) throws StudentException {
+	public StudentDto update(StudentDto student) throws StudentException {
 		logger.info("Update student = {} with courses", student);
-		Student studentTemp = repository.findById(student.getId())
-				.orElseThrow(() -> new StudentException("Cann't find student = " + student));
-		studentTemp.setCourse(student.getCourse());
-		studentTemp.setGroups(student.getGroups());
+		Student studentDao = mapper.studentDtoToStudent(student, context);
+		Student studentTemp = repository.findById(studentDao.getId())
+				.orElseThrow(() -> new StudentException("Cann't find student = " + studentDao));
+		studentTemp.setCourse(studentDao.getCourse());
+		studentTemp.setGroups(studentDao.getGroups());
 		Student studentResult = repository.saveAndFlush(studentTemp);
-		logger.info("OUT. Update student = {}", studentResult);
+		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
+		logger.info("OUT. Update student = {}", studentDto);
 		logger.info("------------------------------------------------");
-		return studentResult;
+		return studentDto;
 	}
 	
 	public boolean isExistByFirstNameAndLastName(String firstName, String lastName) {
@@ -86,12 +99,13 @@ public class StudentService {
 		return studentResult;
 	}
 	
-	public Student getByFirstNameAndLastName(String firstName, String lastName) throws StudentException {
+	public StudentDto getByFirstNameAndLastName(String firstName, String lastName) throws StudentException {
 		logger.info("Is student exist by first name = {} and last name = {}", firstName, lastName);
 		Student studentResult = repository.findByFirstNameAndLastName(firstName, lastName)
 				.orElseThrow(() -> new StudentException("Cann't find student = " + firstName + " " + lastName));
-		logger.info("OUT : student {}", studentResult);
+		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
+		logger.info("OUT : student {}", studentDto);
 		logger.info("------------------------------------------------");
-		return studentResult;
+		return studentDto;
 	}
 }

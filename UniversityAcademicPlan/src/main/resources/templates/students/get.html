@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Student:
+		<a th:text="${studentDto.getFirstName()}">VALUE</a>
+		<a th:text="${studentDto.getLastName()}">VALUE</a>
+	</h1>
+	<p>ID: 
+		<a th:text="${studentDto.getId()}">VALUE</a>
+	</p>
+	<p>In group:
+		<a th:text="${studentDto.getGroups().getName()}">VALUE</a>
+	</p>
+	<p>Corses list:</p>
+	<div th:each="courseDto : ${courseDtoList}">
+		<a th:text="${courseDto.getName()}">VALUE</a>
+	</div>
+	<p>
+		<a href="/students">Back to previos menue</a>
+	</p>
+</body>
+</html>

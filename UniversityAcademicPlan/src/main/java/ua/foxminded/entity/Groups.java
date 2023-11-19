@@ -18,9 +18,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
@@ -33,11 +35,13 @@ public class Groups {
 	@Column
 	@NonNull
 	private String name;
-	
+
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "groups")
 	private List<Student> student;
-	
+
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@ManyToMany
 	@JoinTable(name = "groups_course", joinColumns = @JoinColumn(name = "groups_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))

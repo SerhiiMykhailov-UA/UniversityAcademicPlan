@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:each="teacherDto : ${teacherDtoList}">
+		<a>ID:</a>
+		<a th:href="@{/teachers/{id} (id = ${teacherDto.getId()})}"
+		th:text="${teacherDto.getId()}">VALUE</a>
+		<a> Teacher: </a>
+		<a th:text="${teacherDto.getFirstName()}"></a>
+		<a th:text="${teacherDto.getLastName()}"></a>
+	</div>
+	<p>
+		<a href="/">Back to previos menue</a>
+	</p>
+</body>
+</html>

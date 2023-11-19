@@ -1,20 +1,16 @@
 {
 	"folders": {},
 	"connections": {
-		"postgres-jdbc-18a61785851-113ca814cf2d70e5": {
-			"provider": "postgresql",
-			"driver": "postgres-jdbc",
-			"name": "university",
+		"h2_embedded-18b8c8f7fd0-fb57414430c9682": {
+			"provider": "h2",
+			"driver": "h2_embedded",
+			"name": "test.mv.db",
 			"save-password": true,
 			"configuration": {
-				"host": "localhost",
-				"port": "5432",
-				"database": "university",
-				"url": "jdbc:postgresql://localhost:5432/university",
-				"configurationType": "MANUAL",
-				"home": "postgresql-x64-15",
+				"database": "C:\\data\\test.mv.db",
+				"url": "jdbc:h2:file:~/data/test",
+				"configurationType": "URL",
 				"type": "dev",
-				"provider-properties": {},
 				"auth-model": "native"
 			}
 		}

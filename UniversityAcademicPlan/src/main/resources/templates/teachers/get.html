@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Teacher:
+		<a th:text="${teacherDto.getFirstName()}"></a>
+		<a th:text="${teacherDto.getLastName()}"></a>
+	</h1>
+	<p>ID:
+		<a th:text="${teacherDto.getId()}"></a>
+	</p>
+	<p>Courses list
+		<div th:each="courseDto : ${courseDtoList}">
+			<a th:text="${courseDto.getName()}"></a>
+		</div>
+	</p>
+	<p>
+		<a href="/teachers">Back to previos menue</a>
+	</p>
+</body>
+</html>

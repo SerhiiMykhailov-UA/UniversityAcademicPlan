@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:each="groupsDto : ${groupsDtoList}">
+		<a>Group: </a>
+		<a th:href="@{/groups/{id} (id = ${groupsDto.getId()})}"
+		th:text="${groupsDto.getName()}">groups</a>
+	</div>
+	<p>
+		<a href="/">Back to previos menue</a>
+	</p>
+</body>
+</html>

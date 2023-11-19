@@ -1,56 +1,68 @@
 package ua.foxminded.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.entity.Groups;
 import ua.foxminded.exceptions.GroupsException;
+import ua.foxminded.mapper.CycleAvoidingMappingContext;
+import ua.foxminded.mapper.GroupsMapper;
 import ua.foxminded.repository.GroupsJPARepository;
 
 @Service
 @Transactional(readOnly = true)
 public class GroupsService {
 
-	private final GroupsJPARepository repository;
+	private GroupsMapper mapper; 
+	private GroupsJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 	
-	public GroupsService(GroupsJPARepository repository) {
+	public GroupsService(GroupsJPARepository repository, GroupsMapper mapper) {
 		this.repository = repository;
+		this.mapper = mapper;
 	}
 	
-	public Groups get(long id) throws GroupsException {
+	public GroupsDto get(long id) throws GroupsException {
 		logger.info("Get group by id = {}", id);
 		Groups groupResult = repository.findById(id)
 				.orElseThrow(()-> new GroupsException("Cann't find by id = " + id));
-		logger.info("OUT: result get group = {}", groupResult);
-		return groupResult;
+		GroupsDto groupDto = mapper.groupsToGroupsDto(groupResult, context);
+		logger.info("OUT: result get group = {}", groupDto);
+		return groupDto;
 	}
 	
-	public Groups getByName(String name) throws GroupsException {
+	public GroupsDto getByName(String name) throws GroupsException {
 		logger.info("Get group by name = {}", name);
 		Groups groupResult = repository.findByName(name)
 				.orElseThrow(()-> new GroupsException("Cann't find by name = " + name));
-		logger.info("OUT: result geting group = {}", groupResult);
-		return groupResult;
+		GroupsDto groupDto = mapper.groupsToGroupsDto(groupResult, context);
+		logger.info("OUT: result geting group = {}", groupDto);
+		return groupDto;
 	}
 	
-	public List<Groups> getAll() {
+	public List<GroupsDto> getAll() {
 		logger.info("Get all groups");
-		List<Groups> groups = repository.findAll();
+		List<GroupsDto> groups = repository.findAll()
+				.stream().map(el-> mapper.groupsToGroupsDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT: result get all groups = {}", groups);
 		return groups;
 	}
 	
 	@Transactional(readOnly = false)
-	public Groups add(Groups group) {
+	public GroupsDto add(GroupsDto group) {
 		logger.info("Add new group = {}", group);
-		Groups groupResult = repository.saveAndFlush(group);
-		logger.info("OUT result group = {}", groupResult);
-		return groupResult;
+		Groups groupDao = mapper.groupsDtoToGroups(group, context);
+		Groups groupResult = repository.saveAndFlush(groupDao);
+		GroupsDto groupDto = mapper.groupsToGroupsDto(groupResult, context);
+		logger.info("OUT result group = {}", groupDto);
+		return groupDto;
 	}
 	
 	@Transactional(readOnly = false)
@@ -67,15 +79,17 @@ public class GroupsService {
 	}
 	
 	@Transactional(readOnly = false)
-	public Groups update(Groups group) throws GroupsException {
+	public GroupsDto update(GroupsDto group) throws GroupsException {
 		logger.info("Update group = {}", group);
-		Groups groupTemp = repository.findByName(group.getName())
-				.orElseThrow(()-> new GroupsException("Cann't find group by name = " + group.getName()));
-		groupTemp.setCourse(group.getCourse());
-		groupTemp.setStudent(group.getStudent());
+		Groups groupDao = mapper.groupsDtoToGroups(group, context);
+		Groups groupTemp = repository.findByName(groupDao.getName())
+				.orElseThrow(()-> new GroupsException("Cann't find group by name = " + groupDao.getName()));
+		groupTemp.setCourse(groupDao.getCourse());
+		groupTemp.setStudent(groupDao.getStudent());
 		Groups groupResult = repository.saveAndFlush(groupTemp);
-		logger.info("OUT result group = {}", groupResult);
-		return groupResult;
+		GroupsDto groupDto = mapper.groupsToGroupsDto(groupResult, context);
+		logger.info("OUT result group = {}", groupDto);
+		return groupDto;
 	}
 	
 	public boolean ifExistsByName(String name) {

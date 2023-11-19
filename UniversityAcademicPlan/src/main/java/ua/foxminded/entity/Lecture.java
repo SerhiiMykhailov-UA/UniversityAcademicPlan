@@ -14,9 +14,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class Lecture implements Serializable {
 	@Column
 	@NonNull
 	private String name;
+	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@ManyToOne
 	@JoinColumn(name = "course_id", referencedColumnName = "id")

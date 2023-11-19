@@ -12,16 +12,20 @@ import javax.persistence.InheritanceType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class Users {
 
 	@Id
@@ -33,7 +37,7 @@ public class Users {
 	@NonNull
 	@Column
 	@Enumerated(EnumType.STRING)
-	private UserTipe userTipe;
+	private UserType userType;
 	@NonNull
 	@Column
 	private String password;

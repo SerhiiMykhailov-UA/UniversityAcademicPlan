@@ -8,14 +8,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.MERGE;
@@ -23,26 +22,28 @@ import javax.persistence.Column;
 
 @Entity
 @Data
+@ToString
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
-@CascadeOnDelete
+@EqualsAndHashCode(callSuper = true)
 public class Student extends Users {
 
+	@NonNull
 	@Column
-	private @NonNull String firstName;
+	private String firstName;
+	@NonNull
 	@Column
-	private @NonNull String lastName;
+	private String lastName;
 	
 	@EqualsAndHashCode.Exclude
-	//@ToString.Exclude
+	@ToString.Exclude
 	@ManyToOne(cascade = { PERSIST, MERGE })
 	@JoinColumn(name = "groups_id", referencedColumnName = "id")
 	private Groups groups;
 	
 	@EqualsAndHashCode.Exclude
-//	@ToString.Exclude
+	@ToString.Exclude
 	@ManyToMany(cascade = {MERGE, PERSIST})
 	@JoinTable(
 			name = "student_course",

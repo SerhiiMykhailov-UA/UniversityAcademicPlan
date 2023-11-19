@@ -1,56 +1,68 @@
 package ua.foxminded.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.foxminded.dto.LectureDto;
 import ua.foxminded.entity.Lecture;
 import ua.foxminded.exceptions.LectureException;
+import ua.foxminded.mapper.CycleAvoidingMappingContext;
+import ua.foxminded.mapper.LectureMapper;
 import ua.foxminded.repository.LectureJPARepository;
 
 @Service
 @Transactional(readOnly = true)
 public class LectureService {
 
-	private final LectureJPARepository repository;
+	private LectureMapper mapper;
+	private LectureJPARepository repository;
 	private final Logger logger = LogManager.getLogger();
+	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
-	public LectureService(LectureJPARepository repository) {
+	public LectureService(LectureJPARepository repository, LectureMapper mapper) {
 		this.repository = repository;
+		this.mapper = mapper;
 	}
 	
-	public Lecture get(long id) throws LectureException {
+	public LectureDto get(long id) throws LectureException {
 		logger.info("Get by id = {}", id);
 		Lecture lectureResult = repository.findById(id)
 				.orElseThrow(()-> new LectureException("Cann't find lecture by id = " + id));
-		logger.info("OUT: get result Lecture = {}", lectureResult);
-		return lectureResult;
+		LectureDto lectureDto = mapper.lectureToLectureDto(lectureResult, context);
+		logger.info("OUT: get result Lecture = {}", lectureDto);
+		return lectureDto;
 	}
 	
-	public Lecture getByName(String name) throws LectureException {
+	public LectureDto getByName(String name) throws LectureException {
 		logger.info("Get by name = {}", name);
 		Lecture lectureResult = repository.findByName(name)
 				.orElseThrow(()-> new LectureException("Cann't find lecture by name = " + name));
-		logger.info("OUT: get result Lecture = {}", lectureResult);
-		return lectureResult;
+		LectureDto lectureDto = mapper.lectureToLectureDto(lectureResult, context);
+		logger.info("OUT: get result Lecture = {}", lectureDto);
+		return lectureDto;
 	}
 	
-	public List<Lecture> getAll() {
+	public List<LectureDto> getAll() {
 		logger.info("Get all");
-		List<Lecture> lectures = repository.findAll();
+		List<LectureDto> lectures = repository.findAll()
+				.stream().map(el-> mapper.lectureToLectureDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT: result get all lectures = {}", lectures);
 		return lectures;
 	}
 	
 	@Transactional(readOnly = false)
-	public Lecture add(Lecture lecture) {
+	public LectureDto add(LectureDto lecture) {
 		logger.info("Add new lecture = {}", lecture);
-		Lecture locationResult = repository.saveAndFlush(lecture);
-		logger.info("OUT result lecture = {}", locationResult);
-		return locationResult;
+		Lecture lectureDao = mapper.lectureDtoToLecture(lecture, context);
+		Lecture lectureResult = repository.saveAndFlush(lectureDao);
+		LectureDto lectureDto = mapper.lectureToLectureDto(lectureResult, context);
+		logger.info("OUT result lecture = {}", lectureDto);
+		return lectureDto;
 	}
 	
 	@Transactional(readOnly = false)
@@ -67,14 +79,16 @@ public class LectureService {
 	}
 	
 	@Transactional(readOnly = false)
-	public Lecture update(Lecture lecture) throws LectureException {
+	public LectureDto update(LectureDto lecture) throws LectureException {
 		logger.info("Update lecture = {}", lecture);
-		Lecture lectureTemp = repository.findByName(lecture.getName())
-				.orElseThrow(()-> new LectureException("Cann't find lecture by name = " + lecture.getName()));
-		lectureTemp.setCourse(lecture.getCourse());
+		Lecture lectureDao = mapper.lectureDtoToLecture(lecture, context);
+		Lecture lectureTemp = repository.findByName(lectureDao.getName())
+				.orElseThrow(()-> new LectureException("Cann't find lecture by name = " + lectureDao.getName()));
+		lectureTemp.setCourse(lectureDao.getCourse());
 		Lecture lectureResult = repository.saveAndFlush(lectureTemp);
-		logger.info("OUT result lecture = {}", lectureResult);
-		return lectureResult;
+		LectureDto lectureDto = mapper.lectureToLectureDto(lectureResult, context);
+		logger.info("OUT result lecture = {}", lectureDto);
+		return lectureDto;
 	}
 	
 	public boolean ifExistsByName(String name) {

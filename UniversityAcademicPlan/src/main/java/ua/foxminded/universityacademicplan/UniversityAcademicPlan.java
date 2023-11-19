@@ -11,21 +11,21 @@ import org.springframework.stereotype.Component;
 import ua.foxminded.entity.Course;
 import ua.foxminded.entity.Groups;
 import ua.foxminded.entity.Student;
-import ua.foxminded.entity.UserTipe;
+import ua.foxminded.entity.UserType;
 import ua.foxminded.entity.Users;
 
 @Profile("!test")
 @Component
 public class UniversityAcademicPlan {
-	private final Logger logger = LogManager.getLogger();
-	public void universityAcademicPlan() {
+	private static final Logger logger = LogManager.getLogger();
+	public static void universityAcademicPlan() {
 		Groups g = new Groups();
 		List<Course> f = new ArrayList<>();
 		Student student = new Student("rftg", "aed", g, f);
 		student.setNickName("tttt");
 		new Student("swhb", "ehjbe");
 		System.out.println(student);
-		Users users = new Users("wed", UserTipe.USER, "swedf");
+		Users users = new Users("wed", UserType.ROLE_STUDENT, "swedf");
 		users.equals(users);
 		logger.info("srferfsaf");
 	}
