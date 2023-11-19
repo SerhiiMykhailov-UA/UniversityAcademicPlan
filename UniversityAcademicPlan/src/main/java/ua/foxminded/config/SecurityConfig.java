@@ -25,13 +25,13 @@ public class SecurityConfig {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(requests -> requests
-        			.antMatchers("/admin").hasRole("ADMIN")
-                	.antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
-                	.anyRequest().hasAnyRole("STUDENT", "TEACHER", "ADMIN"))
+        			.antMatchers("showuserpage/admin","/adminpanel/").hasRole("ADMIN")
+                	.antMatchers("/auth/login", "/error").permitAll()
+                	.anyRequest().hasAnyRole("STUDENT", "TEACHER", "ADMIN", "NEWUSER"))
                 .formLogin(login -> login
                 		.loginPage("/auth/login")
                 		.loginProcessingUrl("/process_login")
-                		.defaultSuccessUrl("/showUserInfo", true)
+                		.defaultSuccessUrl("/showUserPage", true)
                 		.failureUrl("/auth/login?error"))
                 .logout(logout -> logout
                 		.logoutUrl("/logout")

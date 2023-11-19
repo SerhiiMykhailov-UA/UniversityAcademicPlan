@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Admin page</title>
+	<style>
+		.admin_page div {}
+
+		.admin_info {
+			float: inline-start;
+			width: 33.3333%;
+			height: 200px;
+		}
+
+		.users_list {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+			float: inline-start;
+
+		}
+	</style>
+</head>
+
+<body>
+	<div class="admin_page">
+		<form th:action="@{/logout}" th:method="POST">
+			<div class="admin_info">
+				<h1> Hello! :
+					<a th:text="${usersDetails.getUsername()}">VALUE</a>
+				</h1>
+				<h2>User type :
+					<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
+				</h2>
+				<p>
+					<a href="/adminpanel/registration">Register new user</a>
+				</p>
+				<input type="submit" value="Logout" />
+			</div>
+		</form>
+		<div class="users_list">
+			<h3>User list</h3>
+			<div th:each="usersDto : ${usersDtoList}">
+				<p>
+					<a>User:</a>
+					<a th:href="@{/adminpanel/{id} (id = ${usersDto.getId()})}" th:text="${usersDto.getId()}">VALUE</a>
+					<a th:text="${usersDto.getNickName}"></a>
+					<a th:text="${usersDto.getUserType}"></a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

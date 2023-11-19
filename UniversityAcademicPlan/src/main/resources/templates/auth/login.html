@@ -5,23 +5,19 @@
 <title>Login page</title>
 </head>
 <body>
-	<form name="f" method="post" action="/process_login">
-		
+	<form name="f" method="post" action="/process_login">		
         <!--		tune CSRF toker to avoid atak beetween sites-->
 		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 		
 		<label for="username"> Enter user name: </label>
-		<input type="text" name="username" id="username"/>
+		<input type="text" name="username" id="username" placeholder="user name"/>
 		<br/>
 		<label for="password"> Enter the password: </label>
-		<input type="password" name="password" id="password"/>
+		<input type="password" name="password" id="password" placeholder="password"/>
 		<br/>
 		<input type="submit" value="login"/>
 		<div th:if="${param.error}" style="color: red">Wrong name or password</div>
 	</form>
-	<p>
-		<a href="/auth/registration">Regirter new user</a>
-	</p>
 
 </body>
 </html>

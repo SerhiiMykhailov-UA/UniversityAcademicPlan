@@ -46,7 +46,6 @@ public class UsersService {
 		logger.info("Find by nickname = {}",  nickName);
 		Users userResult = repository.findByNickName(nickName)
 				.orElseThrow(() -> new UsersException("Cann't find User nickName: " + nickName));
-		System.out.println(userResult);
 		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("Find User result = {}", userResult);
 		logger.info("------------------------------------------------------");
@@ -76,10 +75,13 @@ public class UsersService {
 	}
 
 	@Transactional(readOnly = false)
-	public UsersDto update(UsersDto user) {
+	public UsersDto update(UsersDto user) throws UsersException {
 		logger.info("IN User = {}", user);
-		Users userDao = mapper.usersDtoToUsers(user, context);
-		Users userResult = repository.saveAndFlush(userDao);
+		//Users usersDao = mapper.usersDtoToUsers(user, context);
+		Users usersDaoTemp = repository.findById(user.getId()).orElseThrow(()-> new UsersException("User isn't exists"));
+		usersDaoTemp.setNickName(user.getNickName());
+		usersDaoTemp.setUserType(user.getUserType());
+		Users userResult = repository.saveAndFlush(usersDaoTemp);
 		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("OUT User = {}", userResult);
 		logger.info("------------------------------------------------------");
