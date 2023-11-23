@@ -70,7 +70,6 @@ public class AdminController {
 	
 	@PostMapping("/delet")
 	public String deletUser(@ModelAttribute("usersDto") UsersDto usersDto) {
-		System.out.println(usersDto);
 		service.delete(usersDto.getId());
 		return "redirect:/showUserPage";
 	}

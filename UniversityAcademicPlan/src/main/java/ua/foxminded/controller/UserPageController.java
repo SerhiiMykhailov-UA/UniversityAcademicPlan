@@ -19,12 +19,12 @@ import ua.foxminded.service.UsersService;
 public class UserPageController {
 
 	private final UsersService usersService;
-		
+	
 	public UserPageController(UsersService usersService) {
 		this.usersService = usersService;
 	}
 
-	@GetMapping()
+	@GetMapping("/")
 	public String start() {
 		return "index";
 	}
@@ -40,7 +40,6 @@ public class UserPageController {
 			usersDto = usersService.getByNickName(details.getUsername());
 			model.addAttribute("usersDto", usersDto);
 			linkPage = linkPage + usersDto.getUserType().getUserType();
-			System.out.println(linkPage);
 		} catch (UsersException e) {
 			e.printStackTrace();
 		}
