@@ -33,6 +33,7 @@ class CourseServiceTest {
 	
 	Course entity;
 	CourseDto dto;
+	
 	{
 		entity = new Course("c1");
 		dto = new CourseDto("c1");

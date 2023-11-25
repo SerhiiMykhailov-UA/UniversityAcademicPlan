@@ -18,5 +18,4 @@ public class AuthController {
 	public String logingPage(@ModelAttribute("users") UsersDto users) throws MalformedURLException {
 		return "auth/login";
 	}
-
 }

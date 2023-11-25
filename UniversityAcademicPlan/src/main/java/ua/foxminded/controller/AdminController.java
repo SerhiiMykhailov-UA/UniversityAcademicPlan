@@ -52,7 +52,6 @@ public class AdminController {
 			usersDto = service.get(id);
 			model.addAttribute("usersDto", usersDto);
 		} catch (UsersException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "adminpanel/users";
