@@ -38,7 +38,6 @@ public class Groups {
 
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
 	@OneToMany(mappedBy = "groups")
 	private List<Student> student;
 
