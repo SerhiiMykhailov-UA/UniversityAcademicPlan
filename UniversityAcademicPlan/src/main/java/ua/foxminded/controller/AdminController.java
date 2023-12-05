@@ -10,9 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+import ua.foxminded.dto.AdminDto;
+import ua.foxminded.dto.StudentDto;
+import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.dto.UsersDto;
 import ua.foxminded.entity.UserType;
+import ua.foxminded.exceptions.StudentException;
+import ua.foxminded.exceptions.TeacherException;
 import ua.foxminded.exceptions.UsersException;
+import ua.foxminded.service.AdminService;
+import ua.foxminded.service.StudentService;
+import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
 import ua.foxminded.util.UsersDtoValidator;
 
@@ -21,11 +29,17 @@ import ua.foxminded.util.UsersDtoValidator;
 public class AdminController {
 
 	private final UsersDtoValidator usersDtoValidator;
-	private final UsersService service;
+	private final UsersService usersService;
+	private final AdminService adminService;
+	private final StudentService studentService;
+	private final TeacherService teacherService;
 	
-	public AdminController(UsersDtoValidator usersDtoValidator, UsersService service) {
+	public AdminController(UsersDtoValidator usersDtoValidator, UsersService usersService, TeacherService teacherService, StudentService studentService, AdminService adminService) {
 		this.usersDtoValidator = usersDtoValidator;
-		this.service = service;
+		this.usersService = usersService;
+		this.adminService = adminService;
+		this.studentService = studentService;
+		this.teacherService = teacherService;
 	}
 	
 	@GetMapping("/registration")
@@ -34,14 +48,38 @@ public class AdminController {
 	}
 	
 	@PostMapping("/registration")
-	public String performRegistration(@ModelAttribute("users") @Valid UsersDto users, BindingResult bindingResult) {
-		usersDtoValidator.validate(users, bindingResult);
+	public String performRegistration(@ModelAttribute("users") @Valid UsersDto usersDto, BindingResult bindingResult) {
+		usersDtoValidator.validate(usersDto, bindingResult);
 		
 		if (bindingResult.hasErrors())
 			return "adminpanel/registration";
-		
-		users.setUserType(UserType.ROLE_NEWUSER);
-		service.add(users);
+		switch (usersDto.getUserType().getUserType()) {
+		case "admin":
+			AdminDto adminDto = new AdminDto("----", "----");
+			adminDto.setId(usersDto.getId());
+			adminDto.setNickName(usersDto.getNickName());
+			adminDto.setPassword(usersDto.getPassword());
+			adminDto.setUserType(usersDto.getUserType());
+			adminService.add(adminDto);
+			break;
+		case "student":
+			StudentDto studentDto = new StudentDto("----", "----");
+			studentDto.setId(usersDto.getId());
+			studentDto.setNickName(usersDto.getNickName());
+			studentDto.setPassword(usersDto.getPassword());
+			studentDto.setUserType(usersDto.getUserType());
+			studentService.add(studentDto);
+			break;
+		case "teacher":
+			TeacherDto teacherDto = new TeacherDto("----", "----");
+			teacherDto.setId(usersDto.getId());
+			teacherDto.setNickName(usersDto.getNickName());
+			teacherDto.setPassword(usersDto.getPassword());
+			teacherDto.setUserType(usersDto.getUserType());
+			teacherService.add(teacherDto);
+			break;
+		}
+//		service.add(users);
 		return "redirect:/showUserPage";
 	}
 	
@@ -49,7 +87,7 @@ public class AdminController {
 	public String updateUsers(@PathVariable("id") long id, Model model) {
 		UsersDto usersDto;
 		try {
-			usersDto = service.get(id);
+			usersDto = usersService.get(id);
 			model.addAttribute("usersDto", usersDto);
 		} catch (UsersException e) {
 			e.printStackTrace();
@@ -60,7 +98,7 @@ public class AdminController {
 	@PostMapping("/{id}")
 	public String updateUsers(@PathVariable("id") long id, @ModelAttribute("usersDto") UsersDto usersDto) {
 		try {
-			service.update(usersDto);
+			usersService.update(usersDto);
 		} catch (UsersException e) {
 			e.getMessage();
 		}
@@ -69,7 +107,7 @@ public class AdminController {
 	
 	@PostMapping("/delet")
 	public String deletUser(@ModelAttribute("usersDto") UsersDto usersDto) {
-		service.delete(usersDto.getId());
+		usersService.delete(usersDto.getId());
 		return "redirect:/showUserPage";
 	}
 }

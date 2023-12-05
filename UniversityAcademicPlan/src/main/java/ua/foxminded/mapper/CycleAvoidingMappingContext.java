@@ -12,7 +12,6 @@ import org.mapstruct.BeforeMapping;
 import org.mapstruct.Context;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.TargetType;
-import org.springframework.stereotype.Component;
 
 /**
  * A type to be used as {@link Context} parameter to track cycles in graphs.

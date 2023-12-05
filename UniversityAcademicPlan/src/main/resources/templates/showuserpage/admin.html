@@ -5,11 +5,9 @@
 	<meta charset="UTF-8">
 	<title>Admin page</title>
 	<style>
-		.admin_page div {}
-
 		.admin_info {
 			float: inline-start;
-			width: 33.3333%;
+			width: 15%;
 			height: 200px;
 		}
 
@@ -20,11 +18,17 @@
 			float: inline-start;
 
 		}
+		
+		.user_info {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+		}
 	</style>
 </head>
 
 <body>
-	<div class="admin_page">
+	<div>
 		<form th:action="@{/logout}" th:method="POST">
 			<div class="admin_info">
 				<h1> Hello! :
@@ -33,6 +37,12 @@
 				<h2>User type :
 					<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 				</h2>
+				<p> First name: 
+					<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
+				</p>
+				<p> Last name: 
+					<a th:text="${usersInfo.getLastName()}"> VALUE</a>
+				</p>
 				<p>
 					<a href="/adminpanel/registration">Register new user</a>
 				</p>
@@ -41,14 +51,17 @@
 		</form>
 		<div class="users_list">
 			<h3>User list</h3>
-			<div th:each="usersDto : ${usersDtoList}">
-				<p>
-					<a>User:</a>
+			<p>
+			<div class="user_info" th:each="usersDto : ${usersDtoList}">				
+					<a>ID: </a>
 					<a th:href="@{/adminpanel/{id} (id = ${usersDto.getId()})}" th:text="${usersDto.getId()}">VALUE</a>
-					<a th:text="${usersDto.getNickName}"></a>
-					<a th:text="${usersDto.getUserType}"></a>
-				</p>
+					<a>   User name: </a>
+					<a th:text="${usersDto.getNickName()}"></a>
+					<a>   User Type: </a>
+					<a th:text="${usersDto.getUserType().getUserType()}"></a>
+				
 			</div>
+			</p>
 		</div>
 	</div>
 

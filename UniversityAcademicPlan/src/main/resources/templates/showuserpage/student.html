@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Student page</title>
+	<meta charset="UTF-8">
+	<title>Student page</title>
 </head>
+
 <body>
 	<h1> User:
 		<a th:text="${usersDetails.getUsername()}">VALUE</a>
-	</h1> 
-	<h2>User type: 
+	</h1>
+	<h2>User type:
 		<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 	</h2>
+	<p> First name:
+		<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
+	</p>
+	<p> Last name:
+		<a th:text="${usersInfo.getLastName()}"> VALUE</a>
+	</p>
 	<form th:action="@{/logout}" th:method="POST">
-		<input type="submit" value="Logout"/>
+		<input type="submit" value="Logout" />
 	</form>
 </body>
+
 </html>
