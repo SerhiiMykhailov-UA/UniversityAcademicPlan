@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.entity.Course;
 import ua.foxminded.exceptions.CourseException;
+import ua.foxminded.exceptions.LocationException;
 import ua.foxminded.mapper.CourseMapper;
 import ua.foxminded.repository.CourseJPARepository;
 
@@ -74,7 +75,7 @@ class CourseServiceTest {
 	}
 
 	@Test
-	void testAdd() {
+	void testAdd() throws LocationException {
 		when(mapper.courseDtoToCourse(Mockito.any(), Mockito.any())).thenReturn(entity);
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.courseToCourseDto(Mockito.any(), Mockito.any())).thenReturn(dto);
@@ -97,7 +98,7 @@ class CourseServiceTest {
 	}
 
 	@Test
-	void testUpdate() throws CourseException {
+	void testUpdate() throws CourseException, LocationException {
 		when(mapper.courseDtoToCourse(Mockito.any(), Mockito.any())).thenReturn(entity);		
 		when(repository.findByName(Mockito.anyString())).thenReturn(Optional.of(entity));
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);

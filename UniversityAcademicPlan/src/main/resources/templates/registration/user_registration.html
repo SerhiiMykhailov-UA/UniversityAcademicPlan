@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Registration new User</title>
+</head>
+
+<body>
+	<h1> Register new user</h1>
+	<form name="update_users" th:method="POST" th:action="@{/adminpanel/user/registration}" th:object="${users}">
+		<lable for="nickName"> Enter new user name: </lable>
+		<input type="text" th:field="*{nickName}" id="nickName" />
+		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}"> Username
+			error</div>
+		<br />
+		<lable for="password"> Enter the password: </lable>
+		<input type="password" th:field="*{password}" id="password" />
+		<div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Password error</div>
+		<br />
+		<label>User type:
+			<select name="userType" required="required" id="userType">
+				<option type="text">ROLE_STUDENT</option>
+				<option type="text">ROLE_ADMIN</option>
+				<option type="text">ROLE_STUFF</option>
+				<option type="text">ROLE_TEACHER</option>
+			</select>
+		</label>
+		<br />
+		<input type="submit" value="Sing up!" />
+	</form>
+	<p>
+		<a href="/showUserPage"> Back to main page</a>
+	</p>
+
+</body>
+
+</html>

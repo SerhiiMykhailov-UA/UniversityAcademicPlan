@@ -24,14 +24,14 @@ public class Course {
 	@ManyToMany(mappedBy = "course")
 	private List<Student> student;
 	@EqualsAndHashCode.Exclude
-	@ManyToMany
+	@ManyToMany()
 	@JoinTable(
 			name = "course_teacher",
 			joinColumns = @JoinColumn(name = "course_id"),
 			inverseJoinColumns = @JoinColumn(name = "teacher_id"))
 	private List<Teacher> teacher;
 	@EqualsAndHashCode.Exclude
-	@ManyToOne
+	@ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Location location;
 	@EqualsAndHashCode.Exclude

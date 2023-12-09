@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Registration new Course</title>
+</head>
+
+<body>
+	<h1> Register new Course</h1>
+	<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('course')}"
+		 th:errors="*{course}"> Add course error. Contact the administrator</div>
+	<form name="register_course" th:method="POST" th:action="@{/adminpanel/course/registration}" th:object="${course}">
+		<lable for="name"> Enter new Course name: </lable>
+		<input type="text" th:field="*{name}" id="name" />
+		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('name')}"
+		 th:errors="*{name}"> Course name error</div>
+		<br />
+		<lable for="location"> Select location:
+			<select name="location" required="required" id="location">
+				<option th:each="locationDto : ${locationDtoList}">
+					<a th:text="${locationDto.getName()}">location</a>
+				</option>
+			</select>
+		</lable>
+		<br />
+		<input type="submit" value="Sing up!" />
+	</form>
+	<p>
+		<a href="/showUserPage"> Back to main page</a>
+	</p>
+
+</body>
+
+</html>

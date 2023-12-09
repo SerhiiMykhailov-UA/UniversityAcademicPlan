@@ -1,6 +1,5 @@
 package ua.foxminded.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.List;
@@ -32,7 +31,7 @@ public class Teacher extends Users {
 	
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@ManyToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToMany(mappedBy = "teacher")
 	private List<Course> courses;
 	
 }

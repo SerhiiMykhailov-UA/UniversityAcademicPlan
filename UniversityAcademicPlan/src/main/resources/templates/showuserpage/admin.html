@@ -15,11 +15,25 @@
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
+			width: 20%;
 			float: inline-start;
 
 		}
-		
+
 		.user_info {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+		}
+
+		.course_list {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+			float: inline-start;
+		}
+
+		.course_info {
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
@@ -37,30 +51,46 @@
 				<h2>User type :
 					<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 				</h2>
-				<p> First name: 
+				<p> First name:
 					<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
 				</p>
-				<p> Last name: 
+				<p> Last name:
 					<a th:text="${usersInfo.getLastName()}"> VALUE</a>
 				</p>
-				<p>
-					<a href="/adminpanel/registration">Register new user</a>
-				</p>
+
 				<input type="submit" value="Logout" />
 			</div>
 		</form>
 		<div class="users_list">
 			<h3>User list</h3>
 			<p>
-			<div class="user_info" th:each="usersDto : ${usersDtoList}">				
-					<a>ID: </a>
-					<a th:href="@{/adminpanel/{id} (id = ${usersDto.getId()})}" th:text="${usersDto.getId()}">VALUE</a>
-					<a>   User name: </a>
-					<a th:text="${usersDto.getNickName()}"></a>
-					<a>   User Type: </a>
-					<a th:text="${usersDto.getUserType().getUserType()}"></a>
-				
+			<div class="user_info" th:each="usersDto : ${usersDtoList}">
+				<a>ID: </a>
+				<a th:href="@{/adminpanel/user/{id} (id = ${usersDto.getId()})}" th:text="${usersDto.getId()}">VALUE</a>
+				<a> | User name: </a>
+				<a th:text="${usersDto.getNickName()}"></a>
+				<a> | User Type: </a>
+				<a th:text="${usersDto.getUserType().getUserType()}"></a>
 			</div>
+			</p>
+			<p>
+				<a href="/adminpanel/user/registration">Register new user</a>
+			</p>
+		</div>
+		<div class="course_list">
+			<h3>Course list</h3>
+			<p>
+			<div class="course_info" th:each="courseDto : ${courseDtoList}">
+				<a>ID: </a>
+				<a th:href="@{/adminpanel/course/{id} (id = ${courseDto.getId()})}" th:text="${courseDto.getId()}">VALUE</a>
+				<a> | Course name: </a>
+				<a th:text="${courseDto.getName()}"></a>
+				<a> | Location: </a>
+				<a th:text="${courseDto.getLocation().getName()}"></a>
+			</div>
+			</p>
+			<p>
+				<a href="/adminpanel/course/registration">Add new course</a>
 			</p>
 		</div>
 	</div>

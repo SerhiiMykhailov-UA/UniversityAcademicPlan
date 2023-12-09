@@ -3,12 +3,12 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Registration new User</title>
+	<title>Registration new Course</title>
 </head>
 
 <body>
-	<h1> Register new user</h1>
-	<form name="update_users" th:method="POST" th:action="@{/adminpanel/registration}" th:object="${users}">
+	<h1> Register new Course</h1>
+	<form name="update_users" th:method="POST" th:action="@{/adminpanel/course/registration}" th:object="${course}">
 		<lable for="nickName"> Enter new user name: </lable>
 		<input type="text" th:field="*{nickName}" id="nickName" />
 		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}"> Username

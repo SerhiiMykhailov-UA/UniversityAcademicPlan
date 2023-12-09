@@ -5,34 +5,26 @@
 	<meta charset="UTF-8">
 	<title>User</title>
 </head>
-
 <body>
 	<h1>ID:
 		<a th:text="${usersDto.getId()}">VALUE</a>
+		<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 	</h1>
-	<form th:action="@{/adminpanel/{id} (id = ${usersDto.getId()}) }" th:method="POST" th:object="${usersDto}">
+	<form th:action="@{/adminpanel/user/{id} (id = ${usersDto.getId()}) }" th:method="POST" th:object="${usersDto}">
 		<leble> User name:
-			<input tupe="text" th:value="${usersDto.getNickName()}" th:field="*{nickName}" />
+			<input type="text" th:value="${usersDto.getNickName()}" th:field="*{nickName}" />
+			<input type="hidden" th:value="${usersDto.getUserType()}" th:field="*{userType}" />
 		</leble>
-		<label>User type:
-			<select name="userType" required="required" id="userType">
-				<option th:text="${usersDto.getUserType()}" type="text"></option>
-				<option type="text">ROLE_ADMIN</option>
-				<option type="text">ROLE_STUDENT</option>
-				<option type="text">ROLE_STUFF</option>
-				<option type="text">ROLE_TEACHER</option>
-			</select>
-		</label>
 		<input type="submit" value="Update" />
 	</form>
 
-	<form th:action="@{/adminpanel/delet}" th:method="post" th:object="${usersDto}">
+	<form th:action="@{/adminpanel/user/delet}" th:method="post" th:object="${usersDto}">
 		<input type="hidden" th:value="${usersDto.getId()}" th:field="*{id}"/>
 		<input type="submit" value="Delet" />
 	</form>
+	
 	<p>
 		<a href="/showUserPage">Back to ADMIN page</a>
 	</p>
 </body>
-
 </html>

@@ -10,23 +10,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.entity.Course;
+import ua.foxminded.entity.Location;
 import ua.foxminded.exceptions.CourseException;
+import ua.foxminded.exceptions.LocationException;
 import ua.foxminded.mapper.CourseMapper;
 import ua.foxminded.mapper.CycleAvoidingMappingContext;
 import ua.foxminded.repository.CourseJPARepository;
+import ua.foxminded.repository.LocationJPARepository;
 
 @Service
 @Transactional(readOnly = true)
 public class CourseService {
 
-	private CourseMapper mapper;
-	private CourseJPARepository courseJPARepository;
+	private final CourseMapper mapper;
+	private final CourseJPARepository courseJPARepository;
+	private final LocationJPARepository locationJPARepository;
 	private final Logger logger = LogManager.getLogger();
 	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 	
-	public CourseService(CourseJPARepository courseJPARepository, CourseMapper mapper) {
+	public CourseService(CourseJPARepository courseJPARepository, CourseMapper mapper,
+			LocationJPARepository locationJPARepository, LocationService locationService) {
 		this.courseJPARepository = courseJPARepository;
 		this.mapper = mapper;
+		this.locationJPARepository = locationJPARepository;
 	}
 	
 	public CourseDto get(long id) throws CourseException {
@@ -57,40 +63,48 @@ public class CourseService {
 	}
 	
 	@Transactional(readOnly = false)
-	public CourseDto add(CourseDto course) {
-		logger.info("Add new group = {}", course);
+	public CourseDto add(CourseDto course) throws LocationException {
+		logger.info("Add new course = {}", course);
 		Course courseDao = mapper.courseDtoToCourse(course, context);
+		Location location = locationJPARepository.findByName(courseDao.getLocation().getName())
+				.orElseThrow(()-> new LocationException("Location isn't exist"));
+		courseDao.setLocation(location);
 		Course courseResult = courseJPARepository.saveAndFlush(courseDao);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
-		logger.info("OUT result group = {}", courseDto);
+		logger.info("OUT result course = {}", courseDto);
 		return courseDto;
 	}
 	
 	@Transactional(readOnly = false)
 	public boolean delete(long id) {
-		logger.info("Delete location by id = {}", id);
+		logger.info("Delete Course by id = {}", id);
 		if (courseJPARepository.existsById(id)) {
 			courseJPARepository.deleteById(id);
 			logger.info("Deleting result = {}", true);
 			return true;
 		} else {
-			logger.info("Deleting result = {}", false);
+			logger.info("Deleting result course = {}", false);
 			return false;
 		}
 	}
 	
 	@Transactional(readOnly = false)
-	public CourseDto update(CourseDto course) throws CourseException {
+	public CourseDto update(CourseDto course) throws CourseException, LocationException {
 		logger.info("Update course = {}", course);
+		Location location = locationJPARepository.findByName(course.getLocation().getName())
+				.orElseThrow(()->new LocationException("Location isn't exist"));
 		Course courseDao = mapper.courseDtoToCourse(course, context);
-		Course courseTemp = courseJPARepository.findByName(courseDao.getName())
+		Course courseTemp = courseJPARepository.findById(courseDao.getId())
 				.orElseThrow(()-> new CourseException("Cann't find group by name = " + course.getName()));
-		courseTemp.setGroups(courseDao.getGroups());
+		if (!courseTemp.getName().equals(courseDao.getName())) 
+			courseTemp.setName(courseDao.getName());
+		if (!courseTemp.getGroups().equals(courseDao.getGroups()))
+			courseTemp.setGroups(courseDao.getGroups());
 		courseTemp.setLecture(courseDao.getLecture());
-		courseTemp.setLocation(courseDao.getLocation());
-		courseTemp.setSchedule(courseDao.getSchedule());
-		courseTemp.setStudent(courseDao.getStudent());
-		courseTemp.setTeacher(courseDao.getTeacher());
+		if (!courseTemp.getLocation().getName().equals(courseDao.getLocation().getName()))
+			courseTemp.setLocation(location);
+		if (!courseTemp.getSchedule().equals(courseDao.getSchedule()))
+			courseTemp.setSchedule(courseDao.getSchedule());
 		Course courseResult = courseJPARepository.saveAndFlush(courseTemp);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT result course = {}", courseDto);
@@ -98,9 +112,9 @@ public class CourseService {
 	}
 	
 	public boolean ifExistsByName(String name) {
-		logger.info("Find group by name = {}", name);
+		logger.info("Find course by name = {}", name);
 		boolean groupResult = courseJPARepository.existsByName(name);
-		logger.info("OUT: result finding group = {}", groupResult);
+		logger.info("OUT: result finding course = {}", groupResult);
 		return groupResult;
 	}
 }

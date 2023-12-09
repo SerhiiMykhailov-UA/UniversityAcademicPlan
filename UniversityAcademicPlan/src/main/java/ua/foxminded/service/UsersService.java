@@ -90,10 +90,10 @@ public class UsersService {
 	
 	@Transactional(readOnly = false)
 	public boolean delete(long id) {
-		logger.info("IN Id = {}", id);
+		logger.info("delete IN Id = {}", id);
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
-			logger.info("OUT user was successfully delete");
+			logger.info("OUT user id = {} was successfully delete", id);
 			logger.info("------------------------------------------------------");
 			return true;
 		} else {

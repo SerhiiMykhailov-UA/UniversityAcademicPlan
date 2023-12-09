@@ -43,7 +43,7 @@ public class Groups {
 
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@ManyToMany
+	@ManyToMany()
 	@JoinTable(name = "groups_course", joinColumns = @JoinColumn(name = "groups_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> course;
 
