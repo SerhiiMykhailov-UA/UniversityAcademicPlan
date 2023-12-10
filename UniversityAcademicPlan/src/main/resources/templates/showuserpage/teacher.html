@@ -4,24 +4,71 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Teacher page</title>
+	<style>
+		.teacher_info {
+			float: inline-start;
+			width: 15%;
+			height: 200px;
+		}
+
+		.course_list {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+			float: inline-start;
+		}
+
+		.course_info {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+		}
+	</style>
 </head>
 
 <body>
-	<h1> User:
-		<a th:text="${usersDetails.getUsername()}">VALUE</a>
-	</h1>
-	<h2>User type:
-		<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
-	</h2>
-	<p> First name:
-		<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
-	</p>
-	<p> Last name:
-		<a th:text="${usersInfo.getLastName()}"> VALUE</a>
-	</p>
-	<form th:action="@{/logout}" th:method="POST">
-		<input type="submit" value="Logout" />
-	</form>
+	<div class="teacher_info">
+
+		<h1> User:
+			<a th:text="${usersDetails.getUsername()}">VALUE</a>
+		</h1>
+		<form th:action="@{/logout}" th:method="POST">
+			<input type="submit" value="Logout" />
+		</form>
+		<h2>User type:
+			<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
+		</h2>
+		<p> First name:
+			<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
+		</p>
+		<p> Last name:
+			<a th:text="${usersInfo.getLastName()}"> VALUE</a>
+		</p>
+
+	</div>
+	<div>
+		<h3>Courses taught</h3>
+		<table class="course_list">
+			<thead>
+				<tr>
+					<th class="course_info"> ID </th>
+					<th class="course_info"> Name </th>
+					<th class="course_info"> Location </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="courseDto : ${courseTeacherList}">
+
+					<td class="course_info">
+						<a th:href="@{/teacherpage/course/{id} (id = ${courseDto.getId()})}"
+							th:text="${courseDto.getId()}"></a>
+					</td>
+					<td class="course_info" th:text="${courseDto.getName()}"></td>
+					<td class="course_info" th:text="${courseDto.getLocation().getName()}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 
 </html>

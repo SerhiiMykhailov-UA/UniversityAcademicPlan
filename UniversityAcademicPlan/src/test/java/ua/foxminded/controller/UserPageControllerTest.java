@@ -16,14 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import ua.foxminded.dto.UsersDto;
 import ua.foxminded.entity.UserType;
-import ua.foxminded.security.UsersDetails;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.StudentService;

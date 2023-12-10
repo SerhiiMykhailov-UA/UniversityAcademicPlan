@@ -86,6 +86,8 @@ public class UserPageController {
 			case "teacher":
 				TeacherDto teacherDto = teacherService.get(usersDto.getId());
 				model.addAttribute("usersInfo", teacherDto);
+				List<CourseDto> courseTeacherList = teacherDto.getCourses();
+				model.addAttribute("courseTeacherList", courseTeacherList);
 				break;
 			}
 		} catch (UsersException | TeacherException | AdminException | StudentException e) {

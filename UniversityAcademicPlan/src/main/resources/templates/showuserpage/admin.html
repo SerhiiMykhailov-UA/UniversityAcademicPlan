@@ -48,6 +48,7 @@
 				<h1> Hello! :
 					<a th:text="${usersDetails.getUsername()}">VALUE</a>
 				</h1>
+				<input type="submit" value="Logout" />
 				<h2>User type :
 					<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 				</h2>
@@ -57,8 +58,6 @@
 				<p> Last name:
 					<a th:text="${usersInfo.getLastName()}"> VALUE</a>
 				</p>
-
-				<input type="submit" value="Logout" />
 			</div>
 		</form>
 		<div class="users_list">
@@ -82,7 +81,8 @@
 			<p>
 			<div class="course_info" th:each="courseDto : ${courseDtoList}">
 				<a>ID: </a>
-				<a th:href="@{/adminpanel/course/{id} (id = ${courseDto.getId()})}" th:text="${courseDto.getId()}">VALUE</a>
+				<a th:href="@{/adminpanel/course/{id} (id = ${courseDto.getId()})}"
+					th:text="${courseDto.getId()}">VALUE</a>
 				<a> | Course name: </a>
 				<a th:text="${courseDto.getName()}"></a>
 				<a> | Location: </a>
