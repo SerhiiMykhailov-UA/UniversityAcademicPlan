@@ -17,7 +17,12 @@
 			padding: 1px;
 			width: 20%;
 			float: inline-start;
-
+		}
+		
+		.logout {
+			float: inline-end;
+			width: 5%;
+			height: 20px;
 		}
 
 		.user_info {
@@ -43,12 +48,14 @@
 
 <body>
 	<div>
-		<form th:action="@{/logout}" th:method="POST">
+		<form class="logout" th:action="@{/logout}" th:method="POST">
+			<input type="submit" value="Logout" />
+		</form>
 			<div class="admin_info">
 				<h1> Hello! :
 					<a th:text="${usersDetails.getUsername()}">VALUE</a>
 				</h1>
-				<input type="submit" value="Logout" />
+
 				<h2>User type :
 					<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 				</h2>
@@ -58,14 +65,17 @@
 				<p> Last name:
 					<a th:text="${usersInfo.getLastName()}"> VALUE</a>
 				</p>
+				<p>
+					<a th:href="@{/admin/updateprofile (id=${usersInfo.getId()})}"> Update profile</a>
+				</p>
 			</div>
-		</form>
+
 		<div class="users_list">
 			<h3>User list</h3>
 			<p>
 			<div class="user_info" th:each="usersDto : ${usersDtoList}">
 				<a>ID: </a>
-				<a th:href="@{/adminpanel/user/{id} (id = ${usersDto.getId()})}" th:text="${usersDto.getId()}">VALUE</a>
+				<a th:href="@{/admin/user/{id} (id = ${usersDto.getId()})}" th:text="${usersDto.getId()}">VALUE</a>
 				<a> | User name: </a>
 				<a th:text="${usersDto.getNickName()}"></a>
 				<a> | User Type: </a>
@@ -73,7 +83,7 @@
 			</div>
 			</p>
 			<p>
-				<a href="/adminpanel/user/registration">Register new user</a>
+				<a href="/admin/user/registration">Register new user</a>
 			</p>
 		</div>
 		<div class="course_list">
@@ -81,7 +91,7 @@
 			<p>
 			<div class="course_info" th:each="courseDto : ${courseDtoList}">
 				<a>ID: </a>
-				<a th:href="@{/adminpanel/course/{id} (id = ${courseDto.getId()})}"
+				<a th:href="@{/admin/course/{id} (id = ${courseDto.getId()})}"
 					th:text="${courseDto.getId()}">VALUE</a>
 				<a> | Course name: </a>
 				<a th:text="${courseDto.getName()}"></a>
@@ -90,7 +100,7 @@
 			</div>
 			</p>
 			<p>
-				<a href="/adminpanel/course/registration">Add new course</a>
+				<a href="/admin/course/registration">Add new course</a>
 			</p>
 		</div>
 	</div>

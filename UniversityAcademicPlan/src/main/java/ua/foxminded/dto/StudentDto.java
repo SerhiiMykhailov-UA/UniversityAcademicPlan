@@ -23,6 +23,7 @@ public class StudentDto extends UsersDto{
 	private String lastName;
 		
 	private GroupsDto groups;
-	@ToString.Exclude	
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<CourseDto> course;
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Update user profile</title>
+</head>
+
+<body>
+	<form th:action="@{/{userType}/updateprofile (userType=${userInfo.getUserType().getUserType()})}" th:method="post" th:object="${userInfo}">
+		<lable name="first_name">Enter first name</lable>
+		<input name="first_name" type="text" th:value="${userInfo.getFirstName}" th:field="*{firstName}">
+		<br>
+		<lable name="last_name">Enter first name</lable>
+		<input name="last_name" type="text" th:value="${userInfo.getLastName}" th:field="*{lastName}">
+		<input type="hidden" th:value="${userInfo.getId}" th:field="*{id}">
+		<br>
+		<input type="submit" value="Update">
+	</form>
+	<p>
+		<a href="/showUserPage">Back to user page</a>
+	</p>
+</body>
+
+</html>

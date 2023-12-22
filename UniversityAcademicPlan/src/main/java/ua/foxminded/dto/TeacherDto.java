@@ -25,5 +25,6 @@ public class TeacherDto extends UsersDto{
 	@NonNull
 	private String lastName;
 	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<CourseDto> courses;
 }

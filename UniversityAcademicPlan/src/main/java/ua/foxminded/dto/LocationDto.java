@@ -22,6 +22,7 @@ public class LocationDto {
 	@NonNull
 	private String name;
 	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<CourseDto> course;
 
 }

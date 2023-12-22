@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import ua.foxminded.dto.AdminDto;
@@ -18,8 +19,10 @@ import ua.foxminded.dto.LocationDto;
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.dto.UsersDto;
+import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.LocationException;
+import ua.foxminded.exceptions.StudentException;
 import ua.foxminded.exceptions.UsersException;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
@@ -31,7 +34,7 @@ import ua.foxminded.util.CourseDtoValidator;
 import ua.foxminded.util.UsersDtoValidator;
 
 @Controller
-@RequestMapping("/adminpanel")
+@RequestMapping("/admin")
 public class AdminController {
 
 	private final UsersDtoValidator usersDtoValidator;
@@ -155,7 +158,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/course/registration")
-	public String courseRegistrationPage(@ModelAttribute("course") CourseDto course, Model model) {
+	public String courseRegistrationPage(Model model) {
 		List<LocationDto> locationDtoList = locationService.getAll();
 		model.addAttribute("locationDtoList", locationDtoList);
 		return "registration/course_registration";
@@ -172,8 +175,32 @@ public class AdminController {
 		try {
 			courseService.add(course);
 		} catch (LocationException e) {
-			bindingResult.rejectValue("course", "", "Add course error. Contact the Administrator");
+			bindingResult.rejectValue("courseError", "", "Add course error. Contact the Administrator");
 			return "registration/course_registration";
+		}
+		return "redirect:/showUserPage";
+	}
+	
+	@GetMapping("/updateprofile")
+	public String updateProfilePage(@RequestParam("id") long id, Model model) {
+		try {
+			AdminDto adminDto = adminService.get(id);
+			model.addAttribute("userInfo", adminDto);
+		} catch (AdminException e) {
+			e.printStackTrace();
+		}
+		return "update_profile";
+	}
+	
+	@PostMapping("/updateprofile")
+	public String updateProfile(@ModelAttribute("userInfo") AdminDto admintDto) {
+		try {
+			AdminDto adminResult = adminService.get(admintDto.getId());
+			adminResult.setFirstName(admintDto.getFirstName());
+			adminResult.setLastName(admintDto.getLastName());
+			adminService.update(adminResult);
+		} catch (AdminException e) {
+			e.printStackTrace();
 		}
 		return "redirect:/showUserPage";
 	}

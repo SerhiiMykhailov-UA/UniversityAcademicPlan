@@ -16,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import ua.foxminded.dto.UsersDto;
@@ -43,19 +46,19 @@ class UserPageControllerTest {
 	@MockBean
 	private TeacherService teacherService;
 	
-	@WithMockUser(value="admin")
 	@Test
+	@WithMockUser(value="admin")
 	void testStart() throws Exception {
 		mvc.perform(get("/").contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
 		.andExpect(view().name("index"));
 	}
 
-	@WithMockUser(username = "admin")
 	@Test
+	@WithMockUser(username = "admin", authorities = {"ADMIN"})
+//	@WithUserDetails("user")
 	void testShowUserInfo() throws Exception {
 		UsersDto dto = new UsersDto("admin", "password", UserType.ROLE_ADMIN);
-		
 		List<UsersDto> dtoList = new ArrayList<>(Arrays.asList(new UsersDto("nickname", "password", UserType.ROLE_ADMIN), new UsersDto("nickname2", "password", UserType.ROLE_STUDENT)));
 
 		when(usersService.getByNickName(Mockito.anyString())).thenReturn(dto);

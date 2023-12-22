@@ -4,24 +4,146 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Student page</title>
+	<style>
+		.student_info {
+			float: inline-start;
+			width: 20%;
+			height: 200px;
+		}
+
+		.courseGroup_block {
+			float: inline-start;
+			width: 15%;
+		}
+
+		.logout {
+			float: inline-end;
+			width: 5%;
+			height: 20px;
+		}
+
+		.courseStudent_block {
+			float: inline-start;
+			width: 15%;
+		}
+
+		.course_list {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+			width: 15%;
+			float: inline-start;
+		}
+
+		.course_info {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+		}
+	</style>
 </head>
 
 <body>
-	<h1> User:
-		<a th:text="${usersDetails.getUsername()}">VALUE</a>
-	</h1>
-	<h2>User type:
-		<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
-	</h2>
-	<p> First name:
-		<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
-	</p>
-	<p> Last name:
-		<a th:text="${usersInfo.getLastName()}"> VALUE</a>
-	</p>
-	<form th:action="@{/logout}" th:method="POST">
+	<form class="logout" th:action="@{/logout}" th:method="POST">
 		<input type="submit" value="Logout" />
 	</form>
+	<div class="student_info">
+		<h1> User:
+			<a th:text="${usersDetails.getUsername()}">VALUE</a>
+		</h1>
+		<h2>User type:
+			<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
+		</h2>
+		<h4> First name:
+			<a th:text="${studentDto.getFirstName()}"> VALUE</a>
+		</h4>
+		<h4> Last name:
+			<a th:text="${studentDto.getLastName()}"> VALUE</a>
+		</h4>
+		<p>
+			<a th:href="@{/student/updateprofile (id=${studentDto.getId()})}"> Update profile</a>
+		</p>
+
+		<div th:if="${courseStudentList.size() < 2}">
+			<form th:method="POST" th:action="@{/student/addAditionalCourse}" th:object="${studentDto}">
+				<h2>Choose additional corses</h2>
+				<input type="hidden" th:value="${studentDto.getId()}" th:field="*{id}" />
+				<input type="hidden" th:value="${studentDto.getFirstName()}" th:field="*{firstName}" />
+				<input type="hidden" th:value="${studentDto.getLastName()}" th:field="*{lastName}" />
+				<div style="color: red" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></div>
+				<lable for="course"> Select additional course:
+					<select name="course" required="required" id="course">
+						<option></option>
+						<option th:each="courseDto : ${courseDtoAdditional}">
+							<a th:text="${courseDto.getName()}">course</a>
+						</option>
+					</select>
+				</lable>
+
+				<br />
+				<input type="submit" value="Add course" />
+			</form>
+		</div>
+	</div>
+	<div class="courseGroup_block">
+		<h2>Main courses:</h2>
+		<table class="course_list">
+			<thead>
+				<tr>
+					<th class="course_info"> ID </th>
+					<th class="course_info"> Name </th>
+					<th class="course_info"> Location </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="courseDto : ${courseGroupList}">
+					<td class="course_info">
+						<a th:href="@{/student/course/{id} (id = ${courseDto.getId()})}"
+							th:text="${courseDto.getId()}"></a>
+					</td>
+					<td class="course_info" th:text="${courseDto.getName()}"></td>
+					<td class="course_info" th:text="${courseDto.getLocation().getName()}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="courseStudent_block" th:if="${courseStudentList.isEmpty()} == false">
+		<h2>Additional courses:</h2>
+		<form th:action="@{/student/course/delet}" th:method="post" th:object="${studentDto}">
+			<input type="hidden" th:value="${studentDto.getId()}" th:field="*{id}" />
+			<input type="hidden" th:value="${studentDto.getFirstName()}" th:field="*{firstName}" />
+			<input type="hidden" th:value="${studentDto.getLastName()}" th:field="*{lastName}" />
+			<div>
+				<table class="course_list">
+					<thead>
+						<tr>
+							<th class="course_info"> ID </th>
+							<th class="course_info"> Name </th>
+							<th class="course_info"> Location </th>
+							<th class="course_info"> Select </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="courseDto : ${courseStudentList}">
+							<td class="course_info">
+								<a th:href="@{/student/course/{id} (id = ${courseDto.getId()})}"
+									th:text="${courseDto.getId()}"></a>
+							</td>
+							<td class="course_info" th:text="${courseDto.getName()}"></td>
+							<td class="course_info" th:text="${courseDto.getLocation().getName()}"></td>
+							<td class="course_info">
+								<input name="course_delet" required="required" type="radio"
+									th:value="${courseDto.getName()}" th:field="*{course}" />
+							</td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+			<br><br><br><br><br>
+			<input type="submit" value="Delet" />
+		</form>
+	</div>
 </body>
 
 </html>

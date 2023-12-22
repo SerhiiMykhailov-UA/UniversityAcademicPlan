@@ -10,7 +10,7 @@
 		<a th:text="${usersDto.getId()}">VALUE</a>
 		<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 	</h1>
-	<form th:action="@{/adminpanel/user/{id} (id = ${usersDto.getId()}) }" th:method="POST" th:object="${usersDto}">
+	<form th:action="@{/admin/user/{id} (id = ${usersDto.getId()}) }" th:method="POST" th:object="${usersDto}">
 		<leble> User name:
 			<input type="text" th:value="${usersDto.getNickName()}" th:field="*{nickName}" />
 			<input type="hidden" th:value="${usersDto.getUserType()}" th:field="*{userType}" />
@@ -18,7 +18,7 @@
 		<input type="submit" value="Update" />
 	</form>
 
-	<form th:action="@{/adminpanel/user/delet}" th:method="post" th:object="${usersDto}">
+	<form th:action="@{/admin/user/delet}" th:method="post" th:object="${usersDto}">
 		<input type="hidden" th:value="${usersDto.getId()}" th:field="*{id}"/>
 		<input type="submit" value="Delet" />
 	</form>

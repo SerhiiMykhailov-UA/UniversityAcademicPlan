@@ -22,7 +22,10 @@ public class GroupsDto {
 	@NonNull
 	private String name;
 	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<StudentDto> student;
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<CourseDto> course;
 
 }

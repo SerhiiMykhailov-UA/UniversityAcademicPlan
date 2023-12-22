@@ -7,7 +7,7 @@
 <body>
 	<div th:each="studentDto : ${studentDtoList}">
 		<a>ID: </a>
-		<a th:href="@{/students/{id} (id = ${studentDto.getId()})}"	
+		<a th:href="@{/student/{id} (id = ${studentDto.getId()})}"	
 		th:text="${studentDto.getId()}">VALUE</a>
 		<a> Studeht: </a>
 		<a th:text="${studentDto.getFirstName()}">VALUE</a>

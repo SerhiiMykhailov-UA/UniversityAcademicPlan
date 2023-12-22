@@ -1,15 +1,17 @@
 package ua.foxminded.controller;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.comparator.Comparators;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import ua.foxminded.dto.AdminDto;
@@ -54,34 +56,50 @@ public class UserPageController {
 	@GetMapping("/showUserPage")
 	public String showUserInfo(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Object principal = authentication.getPrincipal();
 		UsersDetails details;
-		if (authentication.getPrincipal() instanceof UsersDetails) {
-		details = (UsersDetails) authentication.getPrincipal();
-		} else if (authentication.getPrincipal() instanceof User) {
-		details = new UsersDetails((UsersDto) authentication.getPrincipal());
+		if (principal instanceof UsersDetails) {
+			details = (UsersDetails) authentication.getPrincipal();
+		} else if (principal instanceof UsersDto) {
+			details = new UsersDetails((UsersDto) authentication.getPrincipal());
 		} else {
-		throw new InvalidParameterException();
+			throw new InvalidParameterException();
 		}
 		model.addAttribute("usersDetails", details);
 		String linkPage = "showuserpage/";
 		try {
 			UsersDto usersDto = usersService.getByNickName(details.getUsername());
 			model.addAttribute("usersDto", usersDto);
+			List<CourseDto> courseDtoList = courseService.getAll().stream()
+					.sorted(Comparator.comparingLong(CourseDto::getId)).collect(Collectors.toList());
+			model.addAttribute("courseDtoList", courseDtoList);
 			linkPage = linkPage + usersDto.getUserType().getUserType();
 			switch (usersDto.getUserType().getUserType()) {
 			case "admin":
 				AdminDto adminDto = adminService.get(usersDto.getId());
 				model.addAttribute("usersInfo", adminDto);
 				List<UsersDto> usersDtoList = usersService.getAll().stream()
-						.sorted(Comparator.comparingLong(UsersDto::getId)).collect(Collectors.toList());
+						.sorted(Comparator.comparingLong(UsersDto::getId))
+						.collect(Collectors.toList());
 				model.addAttribute("usersDtoList", usersDtoList);
-				List<CourseDto> courseDtoList = courseService.getAll().stream()
-						.sorted(Comparator.comparingLong(CourseDto::getId)).collect(Collectors.toList());
-				model.addAttribute("courseDtoList", courseDtoList);
 				break;
 			case "student":
 				StudentDto studentDto = studentService.get(usersDto.getId());
-				model.addAttribute("usersInfo", studentDto);
+				List<CourseDto> courseDtoGroup = studentDto.getGroups().getCourse().stream()
+						.sorted(Comparator.comparingLong(CourseDto::getId))
+						.collect(Collectors.toList());
+				List<CourseDto> courseStudentList = studentDto.getCourse().stream()
+						.sorted(Comparator.comparingLong(CourseDto::getId))
+						.collect(Collectors.toList());
+				List<CourseDto> courseDtoAdditional = new ArrayList<>();
+				for (CourseDto course:courseDtoList) {
+					if (!courseDtoGroup.contains(course) & !courseStudentList.contains(course))
+						courseDtoAdditional.add(course);
+				}
+				model.addAttribute("studentDto", studentDto);
+				model.addAttribute("courseGroupList", courseDtoGroup);
+				model.addAttribute("courseStudentList", courseStudentList);
+				model.addAttribute("courseDtoAdditional", courseDtoAdditional);
 				break;
 			case "teacher":
 				TeacherDto teacherDto = teacherService.get(usersDto.getId());

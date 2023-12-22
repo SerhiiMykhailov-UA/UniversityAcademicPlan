@@ -21,15 +21,17 @@ public class CourseDto {
 	private long id;
 	@NonNull
 	private String name;
-//	@ToString.Exclude
 	private List<StudentDto> student;
 	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<TeacherDto> teacher;
 	private LocationDto location;
 	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<ScheduleDto> schedule;
 	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private List<LectureDto> lecture;
-	@ToString.Exclude
+
 	private List<GroupsDto> groups;
 }

@@ -8,11 +8,11 @@
 
 <body>
 	<h1> Register new Course</h1>
-	<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('course')}"
-		 th:errors="*{course}"> Add course error. Contact the administrator</div>
-	<form name="register_course" th:method="POST" th:action="@{/adminpanel/course/registration}" th:object="${course}">
-		<lable for="name"> Enter new Course name: </lable>
-		<input type="text" th:field="*{name}" id="name" />
+<!--	<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('courseError')}"
+		 th:errors="*{course}"> Add course error. Contact the administrator</div>-->
+	<form name="register_course" th:method="POST" th:action="@{/admin/course/registration}" th:object="${course}">
+		<lable for="name"> Enter new Course name:</lable>
+		<input type="text" value="" th:field="*{name}" id="name" required="required" />
 		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('name')}"
 		 th:errors="*{name}"> Course name error</div>
 		<br />
@@ -29,7 +29,5 @@
 	<p>
 		<a href="/showUserPage"> Back to main page</a>
 	</p>
-
 </body>
-
 </html>
