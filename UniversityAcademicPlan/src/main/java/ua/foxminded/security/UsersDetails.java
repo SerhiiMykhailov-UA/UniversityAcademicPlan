@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import ua.foxminded.dto.UsersDto;
@@ -18,6 +19,12 @@ public class UsersDetails implements UserDetails {
 
 	public UsersDetails(UsersDto usersDto) {
 		this.usersDto = usersDto;
+	}
+	
+	public UsersDetails(User user) {
+		this.usersDto = new UsersDto();
+		this.usersDto.setNickName(user.getUsername());
+		this.usersDto.setPassword(user.getPassword());
 	}
 
 	@Override

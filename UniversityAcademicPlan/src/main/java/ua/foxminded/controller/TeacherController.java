@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.LectureDto;
@@ -18,7 +21,7 @@ import ua.foxminded.service.CourseService;
 import ua.foxminded.service.TeacherService;
 
 @Controller
-@RequestMapping("/teacherpage")
+@RequestMapping("/teacher")
 public class TeacherController {
 
 	private final TeacherService teacherService;
@@ -56,5 +59,29 @@ public class TeacherController {
 			e.printStackTrace();
 		}
 		return "teacher/course";
+	}
+	
+	@GetMapping("/updateprofile")
+	public String updateProfilePage(@RequestParam("id") long id, Model model) {
+		try {
+			TeacherDto teacherDto = teacherService.get(id);
+			model.addAttribute("userInfo", teacherDto);
+		} catch (TeacherException e) {
+			e.printStackTrace();
+		}
+		return "update_profile";
+	}
+	
+	@PostMapping("/updateprofile")
+	public String updateProfile(@ModelAttribute("userInfo") TeacherDto teacherDto) {
+		try {
+			TeacherDto teacherResult = teacherService.get(teacherDto.getId());
+			teacherResult.setFirstName(teacherDto.getFirstName());
+			teacherResult.setLastName(teacherDto.getLastName());
+			teacherService.update(teacherResult);
+		} catch (TeacherException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/showUserPage";
 	}
 }

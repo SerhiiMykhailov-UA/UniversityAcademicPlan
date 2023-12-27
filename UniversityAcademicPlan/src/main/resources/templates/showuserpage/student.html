@@ -44,10 +44,11 @@
 </head>
 
 <body>
-	<form class="logout" th:action="@{/logout}" th:method="POST">
-		<input type="submit" value="Logout" />
-	</form>
+
 	<div class="student_info">
+		<form th:action="@{/logout}" th:method="POST">
+			<input type="submit" value="Logout" />
+		</form>
 		<h1> User:
 			<a th:text="${usersDetails.getUsername()}">VALUE</a>
 		</h1>
@@ -64,28 +65,32 @@
 			<a th:href="@{/student/updateprofile (id=${studentDto.getId()})}"> Update profile</a>
 		</p>
 
-		<div th:if="${courseStudentList.size() < 2}">
-			<form th:method="POST" th:action="@{/student/addAditionalCourse}" th:object="${studentDto}">
-				<h2>Choose additional corses</h2>
-				<input type="hidden" th:value="${studentDto.getId()}" th:field="*{id}" />
-				<input type="hidden" th:value="${studentDto.getFirstName()}" th:field="*{firstName}" />
-				<input type="hidden" th:value="${studentDto.getLastName()}" th:field="*{lastName}" />
-				<div style="color: red" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></div>
-				<lable for="course"> Select additional course:
-					<select name="course" required="required" id="course">
-						<option></option>
-						<option th:each="courseDto : ${courseDtoAdditional}">
-							<a th:text="${courseDto.getName()}">course</a>
-						</option>
-					</select>
-				</lable>
-
-				<br />
-				<input type="submit" value="Add course" />
-			</form>
+		<div th:if="${courseDtoAdditional.size()} gt 0">
+			<div th:if="${courseStudentList.size()} lt 2">
+				<form th:method="POST" th:action="@{/student/addAditionalCourse}" th:object="${studentDto}">
+					<h2>Choose additional corses</h2>
+					<input type="hidden" th:value="${studentDto.getId()}" th:field="*{id}" />
+					<input type="hidden" th:value="${studentDto.getFirstName()}" th:field="*{firstName}" />
+					<input type="hidden" th:value="${studentDto.getLastName()}" th:field="*{lastName}" />
+					<div style="color: red" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></div>
+					<lable for="course"> Select additional course:
+						<select name="course" required="required" id="course">
+							<option></option>
+							<option th:each="courseDto : ${courseDtoAdditional}">
+								<a th:text="${courseDto.getName()}">course</a>
+							</option>
+						</select>
+					</lable>
+					<br />
+					<input type="submit" value="Add course" />
+				</form>
+			</div>
+		</div>
+		<div style="color: red" th:if="${courseDtoAdditional.size()} == 0">
+			<h2>Sorry. You haven't added in to group. Contact administrator</h2>
 		</div>
 	</div>
-	<div class="courseGroup_block">
+	<div class="courseGroup_block" th:if="${studentDto.getGroups() != null}">
 		<h2>Main courses:</h2>
 		<table class="course_list">
 			<thead>

@@ -22,7 +22,6 @@ import ua.foxminded.dto.UsersDto;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.LocationException;
-import ua.foxminded.exceptions.StudentException;
 import ua.foxminded.exceptions.UsersException;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
@@ -158,7 +157,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/course/registration")
-	public String courseRegistrationPage(Model model) {
+	public String courseRegistrationPage(@ModelAttribute("course") CourseDto courseDto, Model model) {
 		List<LocationDto> locationDtoList = locationService.getAll();
 		model.addAttribute("locationDtoList", locationDtoList);
 		return "registration/course_registration";

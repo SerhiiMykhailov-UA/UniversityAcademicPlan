@@ -28,13 +28,12 @@
 
 <body>
 	<div class="teacher_info">
-
-		<h1> User:
-			<a th:text="${usersDetails.getUsername()}">VALUE</a>
-		</h1>
 		<form th:action="@{/logout}" th:method="POST">
 			<input type="submit" value="Logout" />
 		</form>
+		<h1> User:
+			<a th:text="${usersDetails.getUsername()}">VALUE</a>
+		</h1>
 		<h2>User type:
 			<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 		</h2>
@@ -44,7 +43,9 @@
 		<p> Last name:
 			<a th:text="${usersInfo.getLastName()}"> VALUE</a>
 		</p>
-
+		<p>
+			<a th:href="@{/teacher/updateprofile (id=${usersInfo.getId()})}"> Update profile</a>
+		</p>
 	</div>
 	<div>
 		<h3>Courses taught</h3>
@@ -54,17 +55,24 @@
 					<th class="course_info"> ID </th>
 					<th class="course_info"> Name </th>
 					<th class="course_info"> Location </th>
+					<th class="course_info"> Groups list</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="courseDto : ${courseTeacherList}">
 
 					<td class="course_info">
-						<a th:href="@{/teacherpage/course/{id} (id = ${courseDto.getId()})}"
+						<a th:href="@{/teacher/course/{id} (id = ${courseDto.getId()})}"
 							th:text="${courseDto.getId()}"></a>
 					</td>
 					<td class="course_info" th:text="${courseDto.getName()}"></td>
 					<td class="course_info" th:text="${courseDto.getLocation().getName()}"></td>
+					<td class="course_info">
+						<a th:each="groupDto : ${courseDto.getGroups()}">
+							<snap th:text="${groupDto.getName()}"></snap>
+							<snap>; </snap>
+						</a>
+					</td>
 				</tr>
 			</tbody>
 		</table>

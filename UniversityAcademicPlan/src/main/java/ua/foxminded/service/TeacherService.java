@@ -81,6 +81,8 @@ public class TeacherService {
 		Teacher teacherTemp = repository.findById(teacherDao.getId())
 				.orElseThrow(() -> new TeacherException("Cann't find teacher = " + teacher));
 		teacherTemp.setCourses(teacherDao.getCourses());
+		teacherTemp.setFirstName(teacherDao.getFirstName());
+		teacherTemp.setLastName(teacherDao.getLastName());
 		Teacher teacherResult = repository.saveAndFlush(teacherTemp);
 		TeacherDto teacherDto = mapper.teacherToTeacherDto(teacherResult, context);
 		logger.info("OUT. Update teacher = {}", teacherDto);

@@ -1,6 +1,5 @@
 package ua.foxminded.controller;
 
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.testSecurityContext;
@@ -8,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -17,18 +15,25 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.validation.BindingResult;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.UsersDto;
 import ua.foxminded.entity.UserType;
+import ua.foxminded.service.AdminService;
+import ua.foxminded.service.CourseService;
+import ua.foxminded.service.LocationService;
+import ua.foxminded.service.StudentService;
+import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
+import ua.foxminded.util.CourseDtoValidator;
 import ua.foxminded.util.UsersDtoValidator;
 
 @WebMvcTest(AdminController.class)
@@ -41,6 +46,19 @@ class AdminControllerTest {
 	private UsersService service;
 	@MockBean
 	private UsersDtoValidator usersDtoValidator;
+	@MockBean
+	private CourseDtoValidator courseDtoValidator;
+	@MockBean
+	private AdminService adminService;
+	@MockBean
+	private StudentService studentService;
+	@MockBean
+	private TeacherService teacherService;
+	@MockBean
+	private CourseService courseService;
+	@MockBean
+	private LocationService locationService;
+	
 	
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -49,18 +67,24 @@ class AdminControllerTest {
 
 	@Test
 	@WithMockUser(value="admin")
-	void testRegistrationPage() throws Exception {
-		mvc.perform(get("/adminpanel/registration"))
+	void testUserRegistrationPage_Get() throws Exception {
+		mvc.perform(get("/admin/user/registration"))
 			.andExpect(status().isOk())
-			.andExpect(view().name("adminpanel/registration"));
+			.andExpect(view().name("registration/user_registration"));
 	}
 
 	@Test
-	@WithMockUser(value="admin")
-	void testPerformRegistration_shouldCreateNewUser() throws Exception {
-		UsersDto dto = new UsersDto("nickname", "password", UserType.ROLE_NEWUSER);
-
-		MockHttpServletRequestBuilder request = post("/adminpanel/registration").with(csrf())
+	@WithMockUser(value="admin", roles = "admin")
+	void testPerformUserRegistration_Post() throws Exception {
+		UsersDto dto = new UsersDto(1, "nickname", "password", UserType.ROLE_ADMIN);
+		when(bindingResult.hasErrors()).thenReturn(false);
+		AdminDto adminDto = new AdminDto("----", "----");
+		adminDto.setId(dto.getId());
+		adminDto.setNickName(dto.getNickName());
+		adminDto.setPassword(dto.getPassword());
+		adminDto.setUserType(dto.getUserType());
+		when(adminService.add(Mockito.any())).thenReturn(adminDto);
+		MockHttpServletRequestBuilder request = post("/admin/user/registration").with(csrf())
 				.content(objectMapper.writeValueAsString(dto));
 		mvc.perform(request.secure(true).with(testSecurityContext()))
 			.andExpect(status().is(302))
@@ -74,7 +98,7 @@ class AdminControllerTest {
 		UsersDto usersDto = new UsersDto(1,"nickname", "password", UserType.ROLE_NEWUSER);
 
 		when(service.get(Mockito.anyLong())).thenReturn(usersDto);
-		mvc.perform(MockMvcRequestBuilders.get("/adminpanel/{id}", 1))
+		mvc.perform(MockMvcRequestBuilders.get("/admin/user/{id}", 1))
 			.andExpect(status().is(200))
 			.andExpect(view().name("adminpanel/users"))
 			.andExpect(model().attribute("usersDto", usersDto));
@@ -83,8 +107,8 @@ class AdminControllerTest {
 	@Test
 	@WithMockUser("admin")
 	void testUpdateUsers_shouldUpdateUserInDatabase() throws Exception {
-		UsersDto dto = new UsersDto("nickname", "password", UserType.ROLE_NEWUSER);
-		MockHttpServletRequestBuilder request = post("/adminpanel/{id}", 1).with(csrf())
+		UsersDto dto = new UsersDto("nickname", "password", UserType.ROLE_ADMIN);
+		MockHttpServletRequestBuilder request = post("/admin/user/{id}", 1).with(csrf())
 				.content(objectMapper.writeValueAsString(dto));
 		mvc.perform(request.secure(true).with(testSecurityContext()))
 			.andExpect(status().is(302))
@@ -94,9 +118,9 @@ class AdminControllerTest {
 	@Test
 	@WithMockUser("admin")
 	void testDeletUser() throws Exception {
-		UsersDto usersDto = new UsersDto(1,"nickname", "password", UserType.ROLE_NEWUSER);
+		UsersDto usersDto = new UsersDto(1,"nickname", "password", UserType.ROLE_ADMIN);
 		when(service.delete(Mockito.anyLong())).thenReturn(true);
-		MockHttpServletRequestBuilder request = post("/adminpanel/delet").with(csrf())
+		MockHttpServletRequestBuilder request = post("/admin/user/delet").with(csrf())
 				.content(objectMapper.writeValueAsString(usersDto));
 		mvc.perform(request.secure(true).with(testSecurityContext()))
 			.andExpect(status().is(302))

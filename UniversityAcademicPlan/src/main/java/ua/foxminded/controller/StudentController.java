@@ -77,6 +77,7 @@ public class StudentController {
 	@PostMapping("/course/delet")
 	public String deletAdditionalCourse(@ModelAttribute("studentDto") StudentDto studentDto, Errors errors) {
 		System.out.println(12345);
+		System.out.println(studentDto);
 			System.out.println(studentDto.getCourse());
 		try {
 			StudentDto studentResult = studentService.get(studentDto.getId());

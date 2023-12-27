@@ -18,7 +18,7 @@
 			width: 20%;
 			float: inline-start;
 		}
-		
+
 		.logout {
 			float: inline-end;
 			width: 5%;
@@ -48,27 +48,28 @@
 
 <body>
 	<div>
-		<form class="logout" th:action="@{/logout}" th:method="POST">
-			<input type="submit" value="Logout" />
-		</form>
-			<div class="admin_info">
-				<h1> Hello! :
-					<a th:text="${usersDetails.getUsername()}">VALUE</a>
-				</h1>
 
-				<h2>User type :
-					<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
-				</h2>
-				<p> First name:
-					<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
-				</p>
-				<p> Last name:
-					<a th:text="${usersInfo.getLastName()}"> VALUE</a>
-				</p>
-				<p>
-					<a th:href="@{/admin/updateprofile (id=${usersInfo.getId()})}"> Update profile</a>
-				</p>
-			</div>
+		<div class="admin_info">
+			<form th:action="@{/logout}" th:method="POST">
+				<input type="submit" value="Logout" />
+			</form>
+			<h1> Hello! :
+				<a th:text="${usersDetails.getUsername()}">VALUE</a>
+			</h1>
+
+			<h2>User type :
+				<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
+			</h2>
+			<p> First name:
+				<a th:text="${usersInfo.getFirstName()}"> VALUE</a>
+			</p>
+			<p> Last name:
+				<a th:text="${usersInfo.getLastName()}"> VALUE</a>
+			</p>
+			<p>
+				<a th:href="@{/admin/updateprofile (id=${usersInfo.getId()})}"> Update profile</a>
+			</p>
+		</div>
 
 		<div class="users_list">
 			<h3>User list</h3>
@@ -91,8 +92,7 @@
 			<p>
 			<div class="course_info" th:each="courseDto : ${courseDtoList}">
 				<a>ID: </a>
-				<a th:href="@{/admin/course/{id} (id = ${courseDto.getId()})}"
-					th:text="${courseDto.getId()}">VALUE</a>
+				<a th:href="@{/admin/course/{id} (id = ${courseDto.getId()})}" th:text="${courseDto.getId()}">VALUE</a>
 				<a> | Course name: </a>
 				<a th:text="${courseDto.getName()}"></a>
 				<a> | Location: </a>
