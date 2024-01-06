@@ -2,6 +2,7 @@ package ua.foxminded.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.testSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -62,8 +63,8 @@ class AdminControllerTest {
 	
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	@MockBean
-	private BindingResult bindingResult;
+//	@MockBean
+//	private BindingResult bindingResult;
 
 	@Test
 	@WithMockUser(value="admin")
@@ -74,22 +75,21 @@ class AdminControllerTest {
 	}
 
 	@Test
-	@WithMockUser(value="admin", roles = "admin")
+	@WithMockUser(value="admin")
 	void testPerformUserRegistration_Post() throws Exception {
-		UsersDto dto = new UsersDto(1, "nickname", "password", UserType.ROLE_ADMIN);
-		when(bindingResult.hasErrors()).thenReturn(false);
+		UsersDto usersdto = new UsersDto("nickname", "password", UserType.ROLE_ADMIN);
 		AdminDto adminDto = new AdminDto("----", "----");
-		adminDto.setId(dto.getId());
-		adminDto.setNickName(dto.getNickName());
-		adminDto.setPassword(dto.getPassword());
-		adminDto.setUserType(dto.getUserType());
+		adminDto.setId(usersdto.getId());
+		adminDto.setNickName(usersdto.getNickName());
+		adminDto.setPassword(usersdto.getPassword());
+		adminDto.setUserType(usersdto.getUserType());
 		when(adminService.add(Mockito.any())).thenReturn(adminDto);
 		MockHttpServletRequestBuilder request = post("/admin/user/registration").with(csrf())
-				.content(objectMapper.writeValueAsString(dto));
+				.content(objectMapper.writeValueAsString(usersdto));
 		mvc.perform(request.secure(true).with(testSecurityContext()))
 			.andExpect(status().is(302))
 			.andExpect(redirectedUrl("/showUserPage"))
-			.andExpect(view().name("redirect:/showUserPage"));
+			.andExpect(view().name("showUserPage/admin"));
 	}
 
 	@Test
