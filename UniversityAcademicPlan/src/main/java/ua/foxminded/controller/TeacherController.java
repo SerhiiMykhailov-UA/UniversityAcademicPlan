@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.LectureDto;
 import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.dto.TeacherDto;
+import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.TeacherException;
 import ua.foxminded.service.CourseService;
@@ -78,6 +80,29 @@ public class TeacherController {
 			TeacherDto teacherResult = teacherService.get(teacherDto.getId());
 			teacherResult.setFirstName(teacherDto.getFirstName());
 			teacherResult.setLastName(teacherDto.getLastName());
+			teacherService.update(teacherResult);
+		} catch (TeacherException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/showUserPage";
+	}
+	
+	@GetMapping("/updatePassword")
+	public String updatePasswordGet(@RequestParam("id") long id, Model model) {
+		try {
+			TeacherDto teacherDto = teacherService.get(id);
+			model.addAttribute("userInfo", teacherDto);
+		} catch (TeacherException e) {
+			e.printStackTrace();
+		}
+		return "update_password";
+	}
+	
+	@PostMapping("/updatePassword")
+	public String updatePasswordPost(@ModelAttribute("userInfo") TeacherDto teacherDto) {
+		try {
+			TeacherDto teacherResult = teacherService.get(teacherDto.getId());
+			teacherResult.setPassword(teacherDto.getPassword());
 			teacherService.update(teacherResult);
 		} catch (TeacherException e) {
 			e.printStackTrace();

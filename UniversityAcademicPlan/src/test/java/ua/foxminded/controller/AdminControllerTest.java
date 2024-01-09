@@ -85,11 +85,11 @@ class AdminControllerTest {
 		adminDto.setUserType(usersdto.getUserType());
 		when(adminService.add(Mockito.any())).thenReturn(adminDto);
 		MockHttpServletRequestBuilder request = post("/admin/user/registration").with(csrf())
-				.content(objectMapper.writeValueAsString(usersdto));
+				.flashAttr("users", usersdto);
 		mvc.perform(request.secure(true).with(testSecurityContext()))
 			.andExpect(status().is(302))
 			.andExpect(redirectedUrl("/showUserPage"))
-			.andExpect(view().name("showUserPage/admin"));
+			.andExpect(view().name("redirect:/showUserPage"));
 	}
 
 	@Test

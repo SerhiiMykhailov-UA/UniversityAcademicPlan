@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,20 +22,23 @@ import ua.foxminded.repository.AdminJPARepository;
 @CascadeOnDelete
 public class AdminService {
 	
-	private AdminMapper mapper;
-	private AdminJPARepository repository;
+	private final AdminMapper mapper;
+	private final AdminJPARepository repository;
+	private PasswordEncoder passwordEncoder;
 	private final Logger logger = LogManager.getLogger();
 	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 	
-	public AdminService(AdminMapper mapper, AdminJPARepository repository) {
+	public AdminService(AdminMapper mapper, AdminJPARepository repository, PasswordEncoder passwordEncoder) {
 		this.mapper = mapper;
 		this.repository = repository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Transactional(readOnly = false)
 	public AdminDto add(AdminDto adminDto) {
 		logger.info("Add new Admin = {}", adminDto);
 		Admin adminDao = mapper.adminDtoToAdmin(adminDto, context);
+		adminDao.setPassword(passwordEncoder.encode(adminDto.getPassword()));
 		Admin adminResult = repository.saveAndFlush(adminDao);
 		AdminDto adminDtoResult = mapper.adminToAdminDto(adminResult, context);
 		logger.info("OUT. Added new Admin = {}", adminDtoResult);
@@ -84,8 +88,12 @@ public class AdminService {
 		Admin adminDao = mapper.adminDtoToAdmin(adminDto, context);
 		Admin adminTemp = repository.findById(adminDao.getId())
 				.orElseThrow(()-> new AdminException("Cann't find Admin = " + adminDto));
-		adminTemp.setFirstName(adminDao.getFirstName());
-		adminTemp.setLastName(adminDao.getLastName());
+		if (!adminTemp.getFirstName().equals(adminDao.getFirstName()))
+			adminTemp.setFirstName(adminDao.getFirstName());
+		if (!adminTemp.getLastName().equals(adminDao.getLastName()))
+			adminTemp.setLastName(adminDao.getLastName());
+		if (!adminTemp.getPassword().equals(adminDao.getPassword()))
+			adminTemp.setPassword(passwordEncoder.encode(adminDao.getPassword()));
 		Admin adminResult = repository.saveAndFlush(adminTemp);
 		AdminDto adminDtoResult = mapper.adminToAdminDto(adminResult, context);
 		logger.info("OUT. Update admin = {}", adminDtoResult);
@@ -113,9 +121,9 @@ public class AdminService {
 		logger.info("Get admin by first name = {} and last name = {}", firstName, lastName);
 		Admin adminDao = repository.findByFirstNameAndLastName(firstName, lastName)
 				.orElseThrow(()->new AdminException("Admin first name = " + firstName + " last name = " + lastName));
-		AdminDto admiDtoResult = mapper.adminToAdminDto(adminDao, context);
-		logger.info("OUT : admin {}", admiDtoResult);
+		AdminDto adminDtoResult = mapper.adminToAdminDto(adminDao, context);
+		logger.info("OUT : admin {}", adminDtoResult);
 		logger.info("------------------------------------------------");
-		return admiDtoResult;
+		return adminDtoResult;
 	}
 }

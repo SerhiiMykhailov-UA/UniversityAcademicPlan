@@ -20,15 +20,18 @@ import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.dto.UsersDto;
+import ua.foxminded.dto.StuffDto;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.GroupsException;
 import ua.foxminded.exceptions.StudentException;
+import ua.foxminded.exceptions.StuffException;
 import ua.foxminded.exceptions.TeacherException;
 import ua.foxminded.exceptions.UsersException;
 import ua.foxminded.security.UsersDetails;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.StudentService;
+import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
 
@@ -39,14 +42,16 @@ public class UserPageController {
 	private final AdminService adminService;
 	private final StudentService studentService;
 	private final TeacherService teacherService;
+	private final StuffService stuffService;
 	private final CourseService courseService;
 
 	public UserPageController(UsersService usersService, StudentService studentService, TeacherService teacherService,
-			AdminService adminService, CourseService courseService) {
+			AdminService adminService, CourseService courseService, StuffService stuffService) {
 		this.usersService = usersService;
 		this.adminService = adminService;
 		this.studentService = studentService;
 		this.teacherService = teacherService;
+		this.stuffService = stuffService;
 		this.courseService = courseService;
 	}
 
@@ -100,10 +105,7 @@ public class UserPageController {
 						if (!courseDtoGroup.contains(course) & !courseStudentList.contains(course))
 							courseDtoAdditional.add(course);
 					}
-				}else {
-					
 				}
-
 					model.addAttribute("courseGroupList", courseDtoGroup);
 					model.addAttribute("courseStudentList", courseStudentList);
 					model.addAttribute("courseDtoAdditional", courseDtoAdditional);
@@ -114,8 +116,12 @@ public class UserPageController {
 				List<CourseDto> courseTeacherList = teacherDto.getCourses();
 				model.addAttribute("courseTeacherList", courseTeacherList);
 				break;
+			case "stuff":
+				StuffDto stuffDto = stuffService.get(usersDto.getId());
+				model.addAttribute("usersInfo", stuffDto);
+				break;
 			}
-		} catch (UsersException | TeacherException | AdminException | StudentException | GroupsException e) {
+		} catch (UsersException | TeacherException | AdminException | StudentException | GroupsException | StuffException e) {
 			e.printStackTrace();
 		}
 		return linkPage;

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,18 +22,21 @@ public class TeacherService {
 
 	private TeacherMapper mapper;
 	private TeacherJPARepository repository;
+	private PasswordEncoder passwordEncoder;
 	private final Logger logger = LogManager.getLogger();
 	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
-	public TeacherService(TeacherJPARepository repository, TeacherMapper mapper) {
+	public TeacherService(TeacherJPARepository repository, TeacherMapper mapper, PasswordEncoder passwordEncoder) {
 		this.repository = repository;
 		this.mapper = mapper;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Transactional(readOnly = false)
 	public TeacherDto add(TeacherDto teacher) {
 		logger.info("Add new teacher = {} with courses taught", teacher);
 		Teacher teacherDao = mapper.teacherDtoToTeacher(teacher, context);
+		teacherDao.setPassword(passwordEncoder.encode(teacher.getPassword()));
 		Teacher teacherResult = repository.saveAndFlush(teacherDao);
 		TeacherDto teacherDto = mapper.teacherToTeacherDto(teacherResult, context);
 		logger.info("OUT. Added new teacher = {}", teacherDto);
@@ -80,9 +84,14 @@ public class TeacherService {
 		Teacher teacherDao = mapper.teacherDtoToTeacher(teacher, context);
 		Teacher teacherTemp = repository.findById(teacherDao.getId())
 				.orElseThrow(() -> new TeacherException("Cann't find teacher = " + teacher));
-		teacherTemp.setCourses(teacherDao.getCourses());
-		teacherTemp.setFirstName(teacherDao.getFirstName());
-		teacherTemp.setLastName(teacherDao.getLastName());
+		if (!teacherTemp.getCourses().equals(teacherDao.getCourses()))
+			teacherTemp.setCourses(teacherDao.getCourses());
+		if (!teacherTemp.getFirstName().equals(teacherDao.getFirstName()))
+			teacherTemp.setFirstName(teacherDao.getFirstName());
+		if (!teacherTemp.getLastName().equals(teacherDao.getLastName()))
+			teacherTemp.setLastName(teacherDao.getLastName());
+		if (!teacherTemp.getPassword().equals(teacherDao.getPassword()))
+			teacherTemp.setPassword(passwordEncoder.encode(teacherDao.getPassword()));
 		Teacher teacherResult = repository.saveAndFlush(teacherTemp);
 		TeacherDto teacherDto = mapper.teacherToTeacherDto(teacherResult, context);
 		logger.info("OUT. Update teacher = {}", teacherDto);

@@ -24,7 +24,7 @@ public class StudentService {
 	
 	private final StudentMapper mapper;
 	private final StudentJPARepository repository;
-	private final PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 	private final Logger logger = LogManager.getLogger();
 	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
@@ -38,9 +38,7 @@ public class StudentService {
 	public StudentDto add(StudentDto student) {
 		logger.info("Add new student = {} in Group", student);
 		Student studentDao = mapper.studentDtoToStudent(student, context);
-		
-		studentDao.setPassword(passwordEncoder.encode(studentDao.getPassword()));
-		
+		studentDao.setPassword(passwordEncoder.encode(student.getPassword()));
 		Student studentResult = repository.saveAndFlush(studentDao);
 		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
 		logger.info("OUT. Added new student = {}", studentDto);
@@ -90,10 +88,16 @@ public class StudentService {
 		Student studentDao = mapper.studentDtoToStudent(student, context);
 		Student studentTemp = repository.findById(studentDao.getId())
 				.orElseThrow(() -> new StudentException("Cann't find student = " + studentDao));
-		studentTemp.setFirstName(studentDao.getFirstName());
-		studentTemp.setLastName(studentDao.getLastName());
-		studentTemp.setCourse(studentDao.getCourse());
-		studentTemp.setGroups(studentDao.getGroups());
+		if (!studentTemp.getFirstName().equals(studentDao.getFirstName()))
+			studentTemp.setFirstName(studentDao.getFirstName());
+		if (!studentTemp.getLastName().equals(studentDao.getLastName()))
+			studentTemp.setLastName(studentDao.getLastName());
+		if (!studentTemp.getCourse().equals(studentDao.getCourse()))
+			studentTemp.setCourse(studentDao.getCourse());
+		if (!studentTemp.getGroups().equals(studentDao.getGroups()))
+			studentTemp.setGroups(studentDao.getGroups());
+		if (!studentTemp.getPassword().equals(studentDao.getPassword()))
+			studentTemp.setPassword(passwordEncoder.encode(studentDao.getPassword()));
 		Student studentResult = repository.saveAndFlush(studentTemp);
 		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
 		logger.info("OUT. Update student = {}", studentDto);

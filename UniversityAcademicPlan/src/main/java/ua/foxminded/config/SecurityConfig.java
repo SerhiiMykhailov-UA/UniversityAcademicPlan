@@ -25,19 +25,20 @@ public class SecurityConfig {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(requests -> requests
-        			.antMatchers("showuserpage/admin", "/admin/", "index").hasRole("ADMIN")
-        			.antMatchers("/showuserpage/teacher", "/teacher/", "index").hasRole("TEACHER")
-        			.antMatchers("/showuserpage/student", "/student/", "index").hasRole("STUDENT")
-                	.antMatchers("/auth/login", "/error").permitAll()
-                	.anyRequest().hasAnyRole("STUDENT", "TEACHER", "ADMIN", "NEWUSER"))
-                .formLogin(login -> login
-                		.loginPage("/auth/login")
-                		.loginProcessingUrl("/process_login")
-                		.defaultSuccessUrl("/showUserPage", true)
-                		.failureUrl("/auth/login?error"))
-                .logout(logout -> logout
-                		.logoutUrl("/logout")
-                		.logoutSuccessUrl("/auth/login"));
+        		.antMatchers("/showuserpage", "/admin/course/{id}", "/admin/course/registration", "/admin/course/delet", "/admin/user/{id}", "admin/user/delet", "/admin/user/registration").hasRole("ADMIN")
+        		.antMatchers("/showuserpage").hasRole("TEACHER")
+        		.antMatchers("/showuserpage").hasRole("STUDENT")
+        		.antMatchers("/showuserpage", "/stuff/course/{id}", "/stuff/course/registration", "/stuff/course/delet").hasRole("STUFF")
+                .antMatchers("/auth/login", "/error").permitAll()
+                .anyRequest().hasAnyRole("STUDENT", "TEACHER", "ADMIN", "STUFF"))
+             .formLogin(login -> login
+            	.loginPage("/auth/login")
+                .loginProcessingUrl("/process_login")
+                .defaultSuccessUrl("/showUserPage", true)
+                .failureUrl("/auth/login?error"))
+             .logout(logout -> logout
+            		 .logoutUrl("/logout")
+            		 .logoutSuccessUrl("/auth/login"));
 		return http.build();
 	}
 	

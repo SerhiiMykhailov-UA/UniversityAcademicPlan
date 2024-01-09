@@ -2,6 +2,7 @@ package ua.foxminded.controller;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
+import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LectureDto;
@@ -29,10 +31,12 @@ public class StudentController {
 
 	private final StudentService studentService;
 	private final CourseService courseService;
+	private final PasswordEncoder passwordEncoder;
 
-	public StudentController(StudentService studentService, CourseService courseService) {
+	public StudentController(StudentService studentService, CourseService courseService, PasswordEncoder passwordEncoder) {
 		this.studentService = studentService;
 		this.courseService = courseService;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@GetMapping()
@@ -130,6 +134,29 @@ public class StudentController {
 			StudentDto studentResult = studentService.get(studentDto.getId());
 			studentResult.setFirstName(studentDto.getFirstName());
 			studentResult.setLastName(studentDto.getLastName());
+			studentService.update(studentResult);
+		} catch (StudentException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/showUserPage";
+	}
+	
+	@GetMapping("/updatePassword")
+	public String updatePasswordGet(@RequestParam("id") long id, Model model) {
+		try {
+			StudentDto studentDto = studentService.get(id);
+			model.addAttribute("userInfo", studentDto);
+		} catch (StudentException e) {
+			e.printStackTrace();
+		}
+		return "update_password";
+	}
+	
+	@PostMapping("/updatePassword")
+	public String updatePasswordPost(@ModelAttribute("userInfo") StudentDto studentDto) {
+		try {
+			StudentDto studentResult = studentService.get(studentDto.getId());
+			studentResult.setPassword(studentDto.getPassword());
 			studentService.update(studentResult);
 		} catch (StudentException e) {
 			e.printStackTrace();

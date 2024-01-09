@@ -15,12 +15,15 @@
 			<input type="text" th:value="${usersDto.getNickName()}" th:field="*{nickName}" />
 			<input type="hidden" th:value="${usersDto.getUserType()}" th:field="*{userType}" />
 		</leble>
-		<input type="submit" value="Update" />
+		<lable> Password: 
+			<input type="password" th:value="${usersDto.getPassword}" th:field="*{password}" required="required">
+		</lable>
+		<input type="submit" value="Update User" />
 	</form>
 
 	<form th:action="@{/admin/user/delet}" th:method="post" th:object="${usersDto}">
 		<input type="hidden" th:value="${usersDto.getId()}" th:field="*{id}"/>
-		<input type="submit" value="Delet" />
+		<input type="submit" value="Delet User" />
 	</form>
 	
 	<p>

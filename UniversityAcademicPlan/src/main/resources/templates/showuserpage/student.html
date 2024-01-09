@@ -64,6 +64,10 @@
 		<p>
 			<a th:href="@{/student/updateprofile (id=${studentDto.getId()})}"> Update profile</a>
 		</p>
+		<br>
+		<p>
+			<a th:href="@{/student/updatePassword (id=${studentDto.getId()})}"> Update Password</a>
+		</p>
 
 		<div th:if="${courseDtoAdditional.size()} gt 0">
 			<div th:if="${courseStudentList.size()} lt 2">

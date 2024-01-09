@@ -12,18 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.validation.Valid;
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.LocationDto;
-import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.StuffDto;
-import ua.foxminded.dto.TeacherDto;
-import ua.foxminded.dto.UsersDto;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.LocationException;
-import ua.foxminded.exceptions.UsersException;
+import ua.foxminded.exceptions.StuffException;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.LocationService;
@@ -35,9 +31,9 @@ import ua.foxminded.util.CourseDtoValidator;
 import ua.foxminded.util.UsersDtoValidator;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
-
+@RequestMapping("/stuff")
+public class StuffController {
+	
 	private final UsersDtoValidator usersDtoValidator;
 	private final CourseDtoValidator courseDtoValidator;
 	private final UsersService usersService;
@@ -48,8 +44,10 @@ public class AdminController {
 	private final CourseService courseService;
 	private final LocationService locationService;
 	
-	public AdminController(UsersDtoValidator usersDtoValidator, UsersService usersService, TeacherService teacherService,
-			StudentService studentService, AdminService adminService, CourseService courseService, LocationService locationService, CourseDtoValidator courseDtoValidator, StuffService stuffService) {
+	public StuffController(UsersDtoValidator usersDtoValidator, CourseDtoValidator courseDtoValidator,
+			UsersService usersService, AdminService adminService, StudentService studentService,
+			TeacherService teacherService, StuffService stuffService, CourseService courseService,
+			LocationService locationService) {
 		this.usersDtoValidator = usersDtoValidator;
 		this.courseDtoValidator = courseDtoValidator;
 		this.usersService = usersService;
@@ -60,84 +58,7 @@ public class AdminController {
 		this.courseService = courseService;
 		this.locationService = locationService;
 	}
-	
-	@GetMapping("/user/registration")
-	public String userRegistrationPage(@ModelAttribute("users") UsersDto users) {
-		return "registration/user_registration";
-	}
-	
-	@PostMapping("/user/registration")
-	public String performUserRegistration(@ModelAttribute("users") @Valid UsersDto usersDto, BindingResult bindingResult) {
-		usersDtoValidator.validate(usersDto, bindingResult);
-		
-		if (bindingResult.hasErrors())
-			return "registration/user_registration";
-		
-		switch (usersDto.getUserType().getUserType()) {
-		case "admin":
-			AdminDto adminDto = new AdminDto("----", "----");
-			adminDto.setId(usersDto.getId());
-			adminDto.setNickName(usersDto.getNickName());
-			adminDto.setPassword(usersDto.getPassword());
-			adminDto.setUserType(usersDto.getUserType());
-			adminService.add(adminDto);
-			break;
-		case "student":
-			StudentDto studentDto = new StudentDto("----", "----");
-			studentDto.setId(usersDto.getId());
-			studentDto.setNickName(usersDto.getNickName());
-			studentDto.setPassword(usersDto.getPassword());
-			studentDto.setUserType(usersDto.getUserType());
-			studentService.add(studentDto);
-			break;
-		case "teacher":
-			TeacherDto teacherDto = new TeacherDto("----", "----");
-			teacherDto.setId(usersDto.getId());
-			teacherDto.setNickName(usersDto.getNickName());
-			teacherDto.setPassword(usersDto.getPassword());
-			teacherDto.setUserType(usersDto.getUserType());
-			teacherService.add(teacherDto);
-			break;
-		case "stuff":
-			StuffDto stuffDto = new StuffDto("----", "----");
-			stuffDto.setId(usersDto.getId());
-			stuffDto.setNickName(usersDto.getNickName());
-			stuffDto.setPassword(usersDto.getPassword());
-			stuffDto.setUserType(usersDto.getUserType());
-			stuffService.add(stuffDto);
-			break;
-		}
-		return "redirect:/showUserPage";
-	}
-	
-	@GetMapping("/user/{id}")
-	public String updateUsers(@PathVariable("id") long id, Model model) {
-		UsersDto usersDto;
-		try {
-			usersDto = usersService.get(id);
-			model.addAttribute("usersDto", usersDto);
-		} catch (UsersException e) {
-			e.printStackTrace();
-		}
-		return "adminpanel/users";
-	}
-	
-	@PostMapping("/user/{id}")
-	public String updateUsers(@PathVariable("id") long id, @ModelAttribute("usersDto") UsersDto usersDto) {
-		try {
-			usersService.update(usersDto);
-		} catch (UsersException e) {
-			e.getMessage();
-		}
-		return "redirect:/showUserPage";
-	}
-	
-	@PostMapping("/user/delet")
-	public String deletUser(@ModelAttribute("usersDto") UsersDto usersDto) {
-		usersService.delete(usersDto.getId());
-		return "redirect:/showUserPage";
-	}
-	
+
 	@GetMapping("/course/{id}")
 	public String updateCourse(@PathVariable("id") long id, Model model) {
 		CourseDto courseDto;
@@ -195,22 +116,22 @@ public class AdminController {
 	@GetMapping("/updateprofile")
 	public String updateProfilePage(@RequestParam("id") long id, Model model) {
 		try {
-			AdminDto adminDto = adminService.get(id);
-			model.addAttribute("userInfo", adminDto);
-		} catch (AdminException e) {
+			StuffDto stuffDto = stuffService.get(id);
+			model.addAttribute("userInfo", stuffDto);
+		} catch (StuffException e) {
 			e.printStackTrace();
 		}
 		return "update_profile";
 	}
 	
 	@PostMapping("/updateprofile")
-	public String updateProfile(@ModelAttribute("userInfo") AdminDto adminDto) {
+	public String updateProfile(@ModelAttribute("userInfo") StuffDto stuffDto) {
 		try {
-			AdminDto adminResult = adminService.get(adminDto.getId());
-			adminResult.setFirstName(adminDto.getFirstName());
-			adminResult.setLastName(adminDto.getLastName());
-			adminService.update(adminResult);
-		} catch (AdminException e) {
+			StuffDto stuffResult = stuffService.get(stuffDto.getId());
+			stuffResult.setFirstName(stuffDto.getFirstName());
+			stuffResult.setLastName(stuffDto.getLastName());
+			stuffService.update(stuffResult);
+		} catch (StuffException e) {
 			e.printStackTrace();
 		}
 		return "redirect:/showUserPage";
@@ -219,21 +140,21 @@ public class AdminController {
 	@GetMapping("/updatePassword")
 	public String updatePasswordGet(@RequestParam("id") long id, Model model) {
 		try {
-			AdminDto adminDto = adminService.get(id);
-			model.addAttribute("userInfo", adminDto);
-		} catch (AdminException e) {
+			StuffDto stuffDto = stuffService.get(id);
+			model.addAttribute("userInfo", stuffDto);
+		} catch (StuffException e) {
 			e.printStackTrace();
 		}
 		return "update_password";
 	}
 	
 	@PostMapping("/updatePassword")
-	public String updatePasswordPost(@ModelAttribute("userInfo") AdminDto adminDto) {
+	public String updatePasswordPost(@ModelAttribute("userInfo") StuffDto stuffDto) {
 		try {
-			AdminDto adminResult = adminService.get(adminDto.getId());
-			adminResult.setPassword(adminDto.getPassword());
-			adminService.update(adminResult);
-		} catch (AdminException e) {
+			StuffDto stuffResult = stuffService.get(stuffDto.getId());
+			stuffResult.setPassword(stuffDto.getPassword());
+			stuffService.update(stuffResult);
+		} catch (StuffException e) {
 			e.printStackTrace();
 		}
 		return "redirect:/showUserPage";

@@ -22,7 +22,7 @@ public class UsersService {
 
 	private final UsersMapper mapper;
 	private final UsersJPARepository repository;
-	private final PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 	private final Logger logger = LogManager.getLogger();
 	private CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
@@ -77,10 +77,14 @@ public class UsersService {
 	@Transactional(readOnly = false)
 	public UsersDto update(UsersDto user) throws UsersException {
 		logger.info("IN User = {}", user);
-		//Users usersDao = mapper.usersDtoToUsers(user, context);
+		Users usersDao = mapper.usersDtoToUsers(user, context);
 		Users usersDaoTemp = repository.findById(user.getId()).orElseThrow(()-> new UsersException("User isn't exists"));
-		usersDaoTemp.setNickName(user.getNickName());
-		usersDaoTemp.setUserType(user.getUserType());
+		if (!usersDaoTemp.getNickName().equals(usersDao.getNickName()))
+			usersDaoTemp.setNickName(usersDao.getNickName());
+		if (!usersDaoTemp.getUserType().equals(usersDao.getUserType()))
+			usersDaoTemp.setUserType(usersDao.getUserType());
+		if (!usersDaoTemp.getPassword().equals(usersDao.getPassword()))
+			usersDaoTemp.setPassword(passwordEncoder.encode(usersDao.getPassword()));
 		Users userResult = repository.saveAndFlush(usersDaoTemp);
 		UsersDto userDto = mapper.usersToUsersDto(userResult, context);
 		logger.info("OUT User = {}", userResult);
