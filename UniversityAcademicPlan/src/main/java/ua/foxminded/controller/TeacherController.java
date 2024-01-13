@@ -16,6 +16,7 @@ import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.LectureDto;
 import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.dto.TeacherDto;
+import ua.foxminded.entity.UserType;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.TeacherException;
@@ -28,6 +29,8 @@ public class TeacherController {
 
 	private final TeacherService teacherService;
 	private final CourseService courseService;
+	
+	private String userType = UserType.ROLE_TEACHER.getUserType();
 
 	public TeacherController(TeacherService teacherService, CourseService courseService) {
 		this.teacherService = teacherService;
@@ -53,14 +56,17 @@ public class TeacherController {
 		try {
 			CourseDto courseDto = courseService.get(id);
 			List<LectureDto> lectureDtoList = courseDto.getLecture();
+			List<TeacherDto> teacherDtoList = courseDto.getTeacher();
 			List<ScheduleDto> scheduleDtoList = courseDto.getSchedule();
-			model.addAttribute("lectureDtoList", lectureDtoList);
 			model.addAttribute("courseDto", courseDto);
+			model.addAttribute("teacherDtoList", teacherDtoList);
+			model.addAttribute("lectureDtoList", lectureDtoList);
 			model.addAttribute("scheduleDtoList", scheduleDtoList);
+			model.addAttribute("userType", userType);
 		} catch (CourseException e) {
 			e.printStackTrace();
 		}
-		return "teacher/course";
+		return "course";
 	}
 	
 	@GetMapping("/updateprofile")

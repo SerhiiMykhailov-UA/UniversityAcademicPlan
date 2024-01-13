@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Course info</title>
+	<style>
+		.course_block {
+			float: inline-start;
+			width: 20%;
+		}
+
+		.course_update_block {
+			float: inline-start;
+			width: 45%;
+		}
+
+		.course_teacher_group_block {
+			float: inline-start;
+			width: 20%;
+			height: 150px;
+		}
+
+		.schedule_block {
+			float: inline-start;
+			width: 20%;
+		}
+
+		.table_list {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+			float: inline-start;
+		}
+
+		.table_info {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!--	Page for Admin and Stuff-->
+	<div th:if="${userType == 'admin' OR userType == 'stuff'}">
+		<div class="course_update_block">
+			<h1>Course ID:
+				<a th:text="${courseDto.getId()}">VALUE</a>
+			</h1>
+			<form th:action="@{/{userType}/course/{id} (userType = ${userType}, id = ${courseDto.getId()}) }"
+				th:method="POST" th:object="${courseDto}">
+				<lable> Course name:
+					<input type="text" th:value="${courseDto.getName()}" th:field="*{name}" />
+				</lable>
+				<label> Location:
+					<select name="location" required="required" id="location">
+						<option th:text="${courseDto.getLocation().getName()}" type="text"></option>
+						<option th:each="locationDto : ${locationDtoList}">
+							<a th:text="${locationDto.getName()}">location</a>
+						</option>
+					</select>
+				</label>
+				<input type="submit" value="Update" />
+			</form>
+
+			<form th:action="@{/{userType}/course/delet (userType = ${userType})}" th:method="post"
+				th:object="${courseDto}">
+				<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}" />
+				<input type="submit" value="Delet" />
+			</form>
+
+			<p>
+				<a href="/showUserPage">Back to previos page</a>
+			</p>
+
+			<div th:if="${userType == 'stuff'}">
+				<div name="teacher">
+					<form th:method="post" th:action="@{/stuff/addTeacherToCourse}" th:object="${courseDto}">
+						<h2>Add teacher to course</h2>
+						<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
+						<lable for="teacher"> Select teacher:
+							<select name="teacher" id="teacher">
+								<option></option>
+								<option th:each="teacherDto : ${teacherLeftList}">
+									<a th:text="${teacherDto.getFirstName()}"></a>
+									<a th:text="${teacherDto.getLastName()}"></a>
+								</option>
+							</select>
+						</lable>
+						<input type="submit" value="Add Teacher">
+					</form>
+				</div>
+				<div name="groups">
+					<form th:method="post" th:action="@{/stuff/addGroupToCourse}" th:object="${courseDto}">
+						<h2>Add group to course</h2>
+						<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
+						<lable for="groups"> Select group
+							<select name="groups" id="groups">
+								<option></option>
+								<option th:each="groupsDto : ${groupsLeftList}">
+									<a th:text="${groupsDto.getName()}"></a>
+								</option>
+							</select>
+						</lable>
+						<input type="submit" value="Add Group">
+					</form>
+				</div>
+				<div name="schedule">
+					<form>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="course_teacher_group_block" th:if="${userType == 'stuff'}">
+			<h2> Teacher list: </h2>
+			<form th:action="@{/stuff/deletTeacherFromCourse}" th:method="post" th:object="${courseDto}">
+				<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
+				<div>
+					<table class="table_list">
+						<thead>
+							<tr>
+								<th class="table_info"> ID </th>
+								<th class="table_info"> First name </th>
+								<th class="table_info"> Last name </th>
+								<th class="table_info"> Select </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="teacherDto : ${teacherDtoList}">
+								<td class="table_info" th:text="${teacherDto.getId()}"></td>
+								<td class="table_info" th:text="${teacherDto.getFirstName()}"></td>
+								<td class="table_info" th:text="${teacherDto.getLastName()}"></td>
+								<td class="table_info">
+									<input name="teacher_delet" required="required" type="radio"
+										th:value="${teacherDto.getId()}" th:field="*{teacher}">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br><br><br><br><br>
+				<input type="submit" value="Delet" />
+			</form>
+			<br>
+			<h2> Group list</h2>
+			<form th:action="@{/stuff/deletGroupFromCourse}" th:method="post" th:object="${courseDto}">
+				<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
+				<div>
+					<table class="table_list">
+						<thead>
+							<tr>
+								<th class="table_info"> ID </th>
+								<th class="table_info"> Name </th>
+								<th class="table_info"> Select </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="groupsDto : ${groupsDtoList}">
+								<td class="table_info" th:text="${groupsDto.getId()}"></td>
+								<td class="table_info" th:text="${groupsDto.getName()}"></td>
+								<td class="table_info">
+									<input name="groups_delet" required="required" type="radio"
+										th:value="${groupsDto.getId()}" th:field="*{groups}">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br><br><br><br><br>
+				<input type="submit" value="Delet" />
+			</form>
+		</div>
+	</div>
+	<!--	Page for Students and Teachers-->
+	<div th:if="${userType != 'admin' AND userType != 'stuff'}">
+		<div class="course_block">
+			<h1>Course ID:
+				<a th:text="${courseDto.getId()}">VALUE</a>
+			</h1>
+			<h2>Location:
+				<a th:text="${courseDto.getLocation.getName}">VALUE</a>
+			</h2>
+			<p>
+				<a href="/showUserPage">Back to previos page</a>
+			</p>
+		</div>
+		<div class="schedule_block">
+			<h2>Schedule:</h2>
+
+			<table class="table_list">
+				<thead>
+					<tr>
+						<th class="table_info"> Day of week </th>
+						<th class="table_info"> Start time</th>
+						<th class="table_info"> End time</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="scheduleDto : ${scheduleDtoList}">
+						<td class="table_info" th:text="${scheduleDto.getDayOfWeek}">
+						<td class="table_info" th:text="${scheduleDto.getStartTime}">
+						<td class="table_info" th:text="${scheduleDto.getEndTime}">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="course_block">
+			<h2>Lecture list: </h2>
+			<div th:each="lectureDto : ${lectureDtoList}">
+				<a><span th:text="${lectureDtoList.indexOf(lectureDto)}+1"></span>. </a>
+				<a th:text="${lectureDto.getName}"></a>
+			</div>
+		</div>
+		<div class="course_block">
+			<h2>Teacher list:</h2>
+			<p th:each="teacherDto : ${teacherDtoList}">
+				<a th:text="${teacherDto.getFirstName}"></a>
+				<a th:text="${teacherDto.getLastName}"></a>
+			</p>
+		</div>
+	</div>
+</body>
+
+</html>

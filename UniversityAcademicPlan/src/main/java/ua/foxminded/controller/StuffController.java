@@ -1,6 +1,7 @@
 package ua.foxminded.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,14 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
+import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LocationDto;
 import ua.foxminded.dto.StuffDto;
+import ua.foxminded.dto.TeacherDto;
+import ua.foxminded.entity.UserType;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.LocationException;
 import ua.foxminded.exceptions.StuffException;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
+import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.LocationService;
 import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
@@ -34,28 +39,22 @@ import ua.foxminded.util.UsersDtoValidator;
 @RequestMapping("/stuff")
 public class StuffController {
 	
-	private final UsersDtoValidator usersDtoValidator;
 	private final CourseDtoValidator courseDtoValidator;
-	private final UsersService usersService;
-	private final AdminService adminService;
-	private final StudentService studentService;
-	private final TeacherService teacherService;
 	private final StuffService stuffService;
 	private final CourseService courseService;
+	private final TeacherService teacherService;
+	private final GroupsService groupsService;
 	private final LocationService locationService;
+	private String userType = UserType.ROLE_STUFF.getUserType();
 	
-	public StuffController(UsersDtoValidator usersDtoValidator, CourseDtoValidator courseDtoValidator,
-			UsersService usersService, AdminService adminService, StudentService studentService,
-			TeacherService teacherService, StuffService stuffService, CourseService courseService,
-			LocationService locationService) {
-		this.usersDtoValidator = usersDtoValidator;
+	public StuffController(CourseDtoValidator courseDtoValidator,
+			StuffService stuffService, CourseService courseService,
+			LocationService locationService, TeacherService teacherService, GroupsService groupsService) {
 		this.courseDtoValidator = courseDtoValidator;
-		this.usersService = usersService;
-		this.adminService = adminService;
-		this.studentService = studentService;
-		this.teacherService = teacherService;
 		this.stuffService = stuffService;
 		this.courseService = courseService;
+		this.teacherService = teacherService;
+		this.groupsService = groupsService;
 		this.locationService = locationService;
 	}
 
@@ -65,12 +64,27 @@ public class StuffController {
 		try {
 			courseDto = courseService.get(id);
 			List<LocationDto> locationDtoList = locationService.getAll();
+			List<TeacherDto> teacherDtoList = courseDto.getTeacher();
+			List<TeacherDto> teacherLeftList = teacherService.getAll()
+					.stream()
+					.filter(el->!teacherDtoList.contains(el))
+					.collect(Collectors.toList());
+			List<GroupsDto> groupsDtoList = courseDto.getGroups();
+			List<GroupsDto> groupsLeftList = groupsService.getAll()
+					.stream()
+					.filter(el->!groupsDtoList.contains(el))
+					.collect(Collectors.toList());
 			model.addAttribute("courseDto", courseDto);
 			model.addAttribute("locationDtoList", locationDtoList);
+			model.addAttribute("teacherDtoList", teacherDtoList);
+			model.addAttribute("teacherLeftList", teacherLeftList);
+			model.addAttribute("groupsDtoList", groupsDtoList);
+			model.addAttribute("groupsLeftList", groupsLeftList);
+			model.addAttribute("userType", userType);
 		} catch (CourseException e) {
 			e.printStackTrace();
 		}
-		return "adminpanel/course";
+		return "course";
 	}
 	
 	@PostMapping("/course/{id}")

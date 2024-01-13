@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
+import ua.foxminded.entity.UserType;
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.GroupsDto;
@@ -31,12 +32,12 @@ public class StudentController {
 
 	private final StudentService studentService;
 	private final CourseService courseService;
-	private final PasswordEncoder passwordEncoder;
+	
+	private String userType = UserType.ROLE_STUDENT.getUserType();
 
-	public StudentController(StudentService studentService, CourseService courseService, PasswordEncoder passwordEncoder) {
+	public StudentController(StudentService studentService, CourseService courseService) {
 		this.studentService = studentService;
 		this.courseService = courseService;
-		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@GetMapping()
@@ -108,11 +109,12 @@ public class StudentController {
 			model.addAttribute("teacherDtoList", teacherDtoList);
 			model.addAttribute("lectureDtoList", lectureDtoList);
 			model.addAttribute("scheduleDtoList", scheduleDtoList);
+			model.addAttribute("userType", userType);
 		} catch (CourseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "/students/getCourse";
+		return "course";
 	}
 	
 

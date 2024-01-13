@@ -105,6 +105,8 @@ public class CourseService {
 			courseTemp.setLocation(location);
 		if (!courseTemp.getSchedule().equals(courseDao.getSchedule()))
 			courseTemp.setSchedule(courseDao.getSchedule());
+		if (!courseTemp.getTeacher().equals(courseDao.getTeacher()))
+			courseTemp.setTeacher(courseDao.getTeacher());
 		Course courseResult = courseJPARepository.saveAndFlush(courseTemp);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT result course = {}", courseDto);

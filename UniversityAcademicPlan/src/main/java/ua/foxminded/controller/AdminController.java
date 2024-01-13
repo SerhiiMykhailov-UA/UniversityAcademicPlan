@@ -20,6 +20,7 @@ import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.StuffDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.dto.UsersDto;
+import ua.foxminded.entity.UserType;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.LocationException;
@@ -47,6 +48,8 @@ public class AdminController {
 	private final StuffService stuffService;
 	private final CourseService courseService;
 	private final LocationService locationService;
+	
+	private String userType = UserType.ROLE_ADMIN.getUserType();
 	
 	public AdminController(UsersDtoValidator usersDtoValidator, UsersService usersService, TeacherService teacherService,
 			StudentService studentService, AdminService adminService, CourseService courseService, LocationService locationService, CourseDtoValidator courseDtoValidator, StuffService stuffService) {
@@ -119,7 +122,7 @@ public class AdminController {
 		} catch (UsersException e) {
 			e.printStackTrace();
 		}
-		return "adminpanel/users";
+		return "users";
 	}
 	
 	@PostMapping("/user/{id}")
@@ -146,10 +149,11 @@ public class AdminController {
 			List<LocationDto> locationDtoList = locationService.getAll();
 			model.addAttribute("courseDto", courseDto);
 			model.addAttribute("locationDtoList", locationDtoList);
+			model.addAttribute("userType", userType);
 		} catch (CourseException e) {
 			e.printStackTrace();
 		}
-		return "adminpanel/course";
+		return "course";
 	}
 	
 	@PostMapping("/course/{id}")
