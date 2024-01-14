@@ -108,8 +108,26 @@
 					</form>
 				</div>
 				<div name="schedule">
-					<form>
-						
+					<form th:action="@{/stuff/addSchedule}" th:method="post" th:object="${courseDto}">
+						<h2>Add schedule</h2>
+						<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
+						<lable for="schedule"> Select day of week
+							<select name="schedule" id="schedule">
+								<option></option>
+								<option value="1">MONDAY</option>
+								<option value="2">TUESDAY</option>
+								<option value="3">WEDNESDAY</option>
+								<option value="4">THURSDAY</option>
+								<option value="5">FRIDAY</option>
+							</select>
+						</lable>
+						<lable>Start time
+							<input type="time" >
+						</lable>
+						<lable>End time
+							<input type="time" >
+						</lable>
+						<input type="submit" value="Add schedule">
 					</form>
 				</div>
 			</div>
