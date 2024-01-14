@@ -17,6 +17,7 @@ import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LocationDto;
+import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.dto.StuffDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.entity.UserType;
@@ -28,6 +29,7 @@ import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.LocationService;
+import ua.foxminded.service.ScheduleService;
 import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
@@ -45,17 +47,21 @@ public class StuffController {
 	private final TeacherService teacherService;
 	private final GroupsService groupsService;
 	private final LocationService locationService;
+	private final ScheduleService scheduleService;
+	
 	private String userType = UserType.ROLE_STUFF.getUserType();
 	
 	public StuffController(CourseDtoValidator courseDtoValidator,
 			StuffService stuffService, CourseService courseService,
-			LocationService locationService, TeacherService teacherService, GroupsService groupsService) {
+			LocationService locationService, TeacherService teacherService,
+			GroupsService groupsService, ScheduleService scheduleService) {
 		this.courseDtoValidator = courseDtoValidator;
 		this.stuffService = stuffService;
 		this.courseService = courseService;
 		this.teacherService = teacherService;
 		this.groupsService = groupsService;
 		this.locationService = locationService;
+		this.scheduleService = scheduleService;
 	}
 
 	@GetMapping("/course/{id}")
@@ -74,12 +80,19 @@ public class StuffController {
 					.stream()
 					.filter(el->!groupsDtoList.contains(el))
 					.collect(Collectors.toList());
+			List<ScheduleDto> scheduleDtoList = courseDto.getSchedule();
+			List<ScheduleDto> scheduleLeftList = scheduleService.getAll()
+					.stream()
+					.filter(el->!scheduleDtoList.contains(el))
+					.collect(Collectors.toList());
 			model.addAttribute("courseDto", courseDto);
 			model.addAttribute("locationDtoList", locationDtoList);
 			model.addAttribute("teacherDtoList", teacherDtoList);
 			model.addAttribute("teacherLeftList", teacherLeftList);
 			model.addAttribute("groupsDtoList", groupsDtoList);
 			model.addAttribute("groupsLeftList", groupsLeftList);
+			model.addAttribute("scheduleDtoList", scheduleDtoList);
+			model.addAttribute("scheduleLeftList", scheduleLeftList);
 			model.addAttribute("userType", userType);
 		} catch (CourseException e) {
 			e.printStackTrace();
@@ -101,6 +114,12 @@ public class StuffController {
 	public String deletCourse(@ModelAttribute("courseDto") CourseDto courseDto) {
 		courseService.delete(courseDto.getId());
 		return "redirect:/showUserPage";
+	}
+	
+	@PostMapping("/addTeacherToCourse")
+	public String addTeacherToCourse(@ModelAttribute("courseDto") CourseDto courseDto) {
+		System.out.println(courseDto);
+		return "redirect:/course/" + courseDto.getId();
 	}
 	
 	@GetMapping("/course/registration")

@@ -81,11 +81,11 @@
 						<h2>Add teacher to course</h2>
 						<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
 						<lable for="teacher"> Select teacher:
-							<select name="teacher" id="teacher">
+							<select name="teacher" id="firstName" required="required">
 								<option></option>
 								<option th:each="teacherDto : ${teacherLeftList}">
-									<a th:text="${teacherDto.getFirstName()}"></a>
-									<a th:text="${teacherDto.getLastName()}"></a>
+									<a th:text="${teacherDto.getFirstName() + ' ' + teacherDto.getLastName()}"></a>
+									
 								</option>
 							</select>
 						</lable>
@@ -111,21 +111,14 @@
 					<form th:action="@{/stuff/addSchedule}" th:method="post" th:object="${courseDto}">
 						<h2>Add schedule</h2>
 						<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
-						<lable for="schedule"> Select day of week
+						<lable for="schedule"> Select schedule
 							<select name="schedule" id="schedule">
 								<option></option>
-								<option value="1">MONDAY</option>
-								<option value="2">TUESDAY</option>
-								<option value="3">WEDNESDAY</option>
-								<option value="4">THURSDAY</option>
-								<option value="5">FRIDAY</option>
+								<option th:each="scheduleDto : ${scheduleLeftList}">
+									<a
+										th:text="${scheduleDto.getId() + ' ' + scheduleDto.getDayOfWeek() + ' ' + scheduleDto.getStartTime() + ' ' + scheduleDto.getEndTime()}"></a>
+								</option>
 							</select>
-						</lable>
-						<lable>Start time
-							<input type="time" >
-						</lable>
-						<lable>End time
-							<input type="time" >
 						</lable>
 						<input type="submit" value="Add schedule">
 					</form>
@@ -190,6 +183,37 @@
 				<br><br><br><br><br>
 				<input type="submit" value="Delet" />
 			</form>
+			<br>
+			<h2> Schedule list</h2>
+			<form th:action="@{/stuff/deletScheduleFromCourse}" th:method="post" th:object="${courseDto}">
+				<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
+				<div>
+					<table class="table_list">
+						<thead>
+							<tr>
+								<th class="table_info"> Day of week </th>
+								<th class="table_info"> Start time</th>
+								<th class="table_info"> End time</th>
+								<th class="table_info"> Select</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="scheduleDto : ${scheduleDtoList}">
+								<td class="table_info" th:text="${scheduleDto.getDayOfWeek}"></td>
+								<td class="table_info" th:text="${scheduleDto.getStartTime}"></td>
+								<td class="table_info" th:text="${scheduleDto.getEndTime}"></td>
+								<td class="table_info">
+									<input name="schedule_delet" required="required" type="radio"
+										th:value="${scheduleDto.getId()}" th:field="*{schedule}">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<br><br><br><br><br>
+					<input type="submit" value="Delet" />
+				</div>
+
+			</form>
 		</div>
 	</div>
 	<!--	Page for Students and Teachers-->
@@ -207,7 +231,6 @@
 		</div>
 		<div class="schedule_block">
 			<h2>Schedule:</h2>
-
 			<table class="table_list">
 				<thead>
 					<tr>
