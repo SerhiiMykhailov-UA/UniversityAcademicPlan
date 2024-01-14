@@ -2,6 +2,7 @@ package ua.foxminded.dto;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,8 @@ public class ScheduleDto {
 	private LocalTime endTime;
 	@NonNull
 	private DayOfWeek dayOfWeek;
-	private CourseDto course;
+	
+	private List<CourseDto> course;
 	
 
 }

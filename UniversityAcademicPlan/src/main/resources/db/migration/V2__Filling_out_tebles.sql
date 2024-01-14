@@ -1,15 +1,15 @@
-INSERT INTO users (nick_name, password, user_type) VALUES ('user1', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_TEACHER');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user2', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_TEACHER');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user3', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_TEACHER');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user4', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user5', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user6', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user7', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user8', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user9', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('user10', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUDENT');
-INSERT INTO users (nick_name, password, user_type) VALUES ('admin', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_ADMIN');
-INSERT INTO users (nick_name, password, user_type) VALUES ('stuff', '$2a$10$raiZ3L8Iaib0k49NeUZ8M.naUgcoJG2Sc62/Dt17pxwqwHoPiAzgq', 'ROLE_STUFF');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user1', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user2', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user3', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user4', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user5', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user6', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user7', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user8', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user9', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user10', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('admin', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_ADMIN');
+INSERT INTO users (nick_name, password, user_type) VALUES ('stuff', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUFF');
 ----------------------------------------------------------------------------------
 INSERT INTO groups (name) VALUES ('gr1');
 INSERT INTO groups (name) VALUES ('gr2');

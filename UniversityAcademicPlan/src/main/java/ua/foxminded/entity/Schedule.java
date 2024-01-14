@@ -6,6 +6,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
@@ -44,13 +47,16 @@ public class Schedule implements Serializable {
 	@NonNull
 	@Column
 	private LocalTime endTime;
+	
 	@NonNull
 	@Column
 	@Enumerated(STRING)
 	private DayOfWeek dayOfWeek;
+	
 	@EqualsAndHashCode.Exclude
-	@ManyToOne
-	@JoinColumn(name = "course_id", referencedColumnName = "id")
-	private Course course;
+	@ToString.Exclude
+	@ManyToMany
+	@JoinTable(name = "schedule_course", joinColumns = @JoinColumn(name = "schedule_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private List<Course> course;
 	
 }

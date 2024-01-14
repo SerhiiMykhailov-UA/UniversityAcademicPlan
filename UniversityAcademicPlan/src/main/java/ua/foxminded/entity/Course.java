@@ -36,7 +36,7 @@ public class Course {
 	private Location location;
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "course", cascade = CascadeType.PERSIST)
 	private List<Schedule> schedule;
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude

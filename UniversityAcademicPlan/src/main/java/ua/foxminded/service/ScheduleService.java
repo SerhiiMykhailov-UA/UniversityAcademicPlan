@@ -78,7 +78,8 @@ public class ScheduleService {
 		Schedule scheduleDao = mapper.scheduleDtoToSchedule(schedule, context);
 		Schedule scheduleTemp = repository.findByStartTimeAndEndTimeAndDayOfWeek(scheduleDao.getStartTime(), scheduleDao.getEndTime(), scheduleDao.getDayOfWeek())
 				.orElseThrow(()-> new ScheduleException("Cann't find schdedule by id = " + scheduleDao.getId()));
-		scheduleTemp.setCourse(scheduleDao.getCourse());
+		if (!scheduleTemp.getCourse().equals(scheduleDao.getCourse()))
+			scheduleTemp.setCourse(scheduleDao.getCourse());
 		Schedule scheduleResult = repository.saveAndFlush(scheduleTemp);
 		ScheduleDto scheduleDto = mapper.scheduleToScheduleDto(scheduleResult, context);
 		logger.info("OUT result shedule = {}", scheduleDto);
