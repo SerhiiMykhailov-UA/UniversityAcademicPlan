@@ -1,11 +1,14 @@
 package ua.foxminded.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,7 @@ import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.entity.UserType;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
+import ua.foxminded.exceptions.GroupsException;
 import ua.foxminded.exceptions.LocationException;
 import ua.foxminded.exceptions.StuffException;
 import ua.foxminded.service.AdminService;
@@ -93,7 +97,12 @@ public class StuffController {
 			model.addAttribute("groupsLeftList", groupsLeftList);
 			model.addAttribute("scheduleDtoList", scheduleDtoList);
 			model.addAttribute("scheduleLeftList", scheduleLeftList);
+//			model.addAttribute("teacherDto", scheduleLeftList);
 			model.addAttribute("userType", userType);
+			System.out.println(teacherLeftList.get(0).getName());
+			System.out.println(teacherLeftList.get(0).getId());
+			System.out.println(teacherLeftList.get(0).getUserType());
+			System.out.println(teacherLeftList.get(0).getPassword());
 		} catch (CourseException e) {
 			e.printStackTrace();
 		}
@@ -118,8 +127,46 @@ public class StuffController {
 	
 	@PostMapping("/addTeacherToCourse")
 	public String addTeacherToCourse(@ModelAttribute("courseDto") CourseDto courseDto) {
+		System.out.println(1111111);
 		System.out.println(courseDto);
-		return "redirect:/course/" + courseDto.getId();
+		System.out.println(courseDto.getId());
+		System.out.println(courseDto.getTeacher());
+		return "redirect:/stuff/course/" + 1;
+	}
+	
+	@PostMapping("/addGroupToCourse")
+	public String addGroupsToCourse(@ModelAttribute("courseDto") CourseDto courseDto, Errors errors) {
+		try {
+			GroupsDto groupsDto = groupsService.getByName(courseDto.getGroups().get(0).getName());
+			CourseDto courseDtoResult = courseService.get(courseDto.getId());
+			List<CourseDto> courseDtoList = groupsDto.getCourse();
+			courseDtoList.add(courseDtoResult);
+			groupsDto.setCourse(courseDtoList);
+			groupsService.update(groupsDto);
+		} catch (CourseException | GroupsException  e) {
+			e.printStackTrace();
+			errors.rejectValue("courseDto", "", e.getMessage() + " Contact administrator");
+			return "redirect:/stuff/course/" + courseDto.getId();
+		}
+		
+		return "redirect:/stuff/course/" + courseDto.getId();
+	}
+	
+	@PostMapping("/deletGroupFromCourse")
+	public String deleteGroupFromCourse(@ModelAttribute("courseDto") CourseDto courseDto, Errors errors) {
+		try {
+			GroupsDto groupsDto = groupsService.getByName(courseDto.getGroups().get(0).getName());
+			CourseDto courseDtoTemp = courseService.get(courseDto.getId());
+			List<CourseDto> courseDtoList = groupsDto.getCourse();
+			courseDtoList.remove(courseDtoTemp);
+			groupsDto.setCourse(courseDtoList);
+			groupsService.update(groupsDto);
+		} catch (GroupsException | CourseException e) {
+			e.printStackTrace();
+			errors.rejectValue("courseDto", "", e.getMessage() + " Contact administrator");
+			return "redirect:/stuff/course/" + courseDto.getId();
+		}
+		return "redirect:/stuff/course/" + courseDto.getId();
 	}
 	
 	@GetMapping("/course/registration")

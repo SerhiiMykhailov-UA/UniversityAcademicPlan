@@ -72,7 +72,7 @@ public class AdminController {
 	@PostMapping("/user/registration")
 	public String performUserRegistration(@ModelAttribute("users") @Valid UsersDto usersDto, BindingResult bindingResult) {
 		usersDtoValidator.validate(usersDto, bindingResult);
-		
+		System.out.println(usersDto);
 		if (bindingResult.hasErrors())
 			return "registration/user_registration";
 		
@@ -80,7 +80,7 @@ public class AdminController {
 		case "admin":
 			AdminDto adminDto = new AdminDto("----", "----");
 			adminDto.setId(usersDto.getId());
-			adminDto.setNickName(usersDto.getNickName());
+			adminDto.setName(usersDto.getName());
 			adminDto.setPassword(usersDto.getPassword());
 			adminDto.setUserType(usersDto.getUserType());
 			adminService.add(adminDto);
@@ -88,7 +88,7 @@ public class AdminController {
 		case "student":
 			StudentDto studentDto = new StudentDto("----", "----");
 			studentDto.setId(usersDto.getId());
-			studentDto.setNickName(usersDto.getNickName());
+			studentDto.setName(usersDto.getName());
 			studentDto.setPassword(usersDto.getPassword());
 			studentDto.setUserType(usersDto.getUserType());
 			studentService.add(studentDto);
@@ -96,7 +96,7 @@ public class AdminController {
 		case "teacher":
 			TeacherDto teacherDto = new TeacherDto("----", "----");
 			teacherDto.setId(usersDto.getId());
-			teacherDto.setNickName(usersDto.getNickName());
+			teacherDto.setName(usersDto.getName());
 			teacherDto.setPassword(usersDto.getPassword());
 			teacherDto.setUserType(usersDto.getUserType());
 			teacherService.add(teacherDto);
@@ -104,7 +104,7 @@ public class AdminController {
 		case "stuff":
 			StuffDto stuffDto = new StuffDto("----", "----");
 			stuffDto.setId(usersDto.getId());
-			stuffDto.setNickName(usersDto.getNickName());
+			stuffDto.setName(usersDto.getName());
 			stuffDto.setPassword(usersDto.getPassword());
 			stuffDto.setUserType(usersDto.getUserType());
 			stuffService.add(stuffDto);

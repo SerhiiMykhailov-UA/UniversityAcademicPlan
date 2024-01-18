@@ -80,7 +80,7 @@ class AdminControllerTest {
 		UsersDto usersdto = new UsersDto("nickname", "password", UserType.ROLE_ADMIN);
 		AdminDto adminDto = new AdminDto("----", "----");
 		adminDto.setId(usersdto.getId());
-		adminDto.setNickName(usersdto.getNickName());
+		adminDto.setName(usersdto.getName());
 		adminDto.setPassword(usersdto.getPassword());
 		adminDto.setUserType(usersdto.getUserType());
 		when(adminService.add(Mockito.any())).thenReturn(adminDto);

@@ -81,11 +81,10 @@
 						<h2>Add teacher to course</h2>
 						<input type="hidden" th:value="${courseDto.getId()}" th:field="*{id}">
 						<lable for="teacher"> Select teacher:
-							<select name="teacher" id="firstName" required="required">
+							<select name="teacher" id="teacher" required="required">
 								<option></option>
 								<option th:each="teacherDto : ${teacherLeftList}">
-									<a th:text="${teacherDto.getFirstName() + ' ' + teacherDto.getLastName()}"></a>
-									
+									<a th:text="${teacherDto.getName()}"></a>
 								</option>
 							</select>
 						</lable>
@@ -174,7 +173,7 @@
 								<td class="table_info" th:text="${groupsDto.getName()}"></td>
 								<td class="table_info">
 									<input name="groups_delet" required="required" type="radio"
-										th:value="${groupsDto.getId()}" th:field="*{groups}">
+										th:value="${groupsDto.getName()}" th:field="*{groups}">
 								</td>
 							</tr>
 						</tbody>

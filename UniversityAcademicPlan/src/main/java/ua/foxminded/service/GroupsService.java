@@ -84,6 +84,7 @@ public class GroupsService {
 		Groups groupDao = mapper.groupsDtoToGroups(group, context);
 		Groups groupTemp = repository.findByName(groupDao.getName())
 				.orElseThrow(()-> new GroupsException("Cann't find group by name = " + groupDao.getName()));
+		groupTemp.setName(groupDao.getName());
 		groupTemp.setCourse(groupDao.getCourse());
 		groupTemp.setStudent(groupDao.getStudent());
 		Groups groupResult = repository.saveAndFlush(groupTemp);

@@ -21,7 +21,7 @@ public class Course {
 	@NonNull
 	private String name;
 	@EqualsAndHashCode.Exclude
-	@ManyToMany(mappedBy = "course")
+	@ManyToMany(mappedBy = "course", cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Student> student;
 	@EqualsAndHashCode.Exclude
 	@ManyToMany()
@@ -31,12 +31,12 @@ public class Course {
 			inverseJoinColumns = @JoinColumn(name = "teacher_id"))
 	private List<Teacher> teacher;
 	@EqualsAndHashCode.Exclude
-	@ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne (cascade = {CascadeType.ALL})
 	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Location location;
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(mappedBy = "course", cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	private List<Schedule> schedule;
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
@@ -44,7 +44,7 @@ public class Course {
 	private List<Lecture> lecture;
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(mappedBy = "course")
+	@ManyToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Groups> groups;
 
 }

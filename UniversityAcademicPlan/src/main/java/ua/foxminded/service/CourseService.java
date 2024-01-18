@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.entity.Course;
+import ua.foxminded.entity.Groups;
 import ua.foxminded.entity.Location;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.LocationException;
@@ -41,6 +42,7 @@ public class CourseService {
 				.orElseThrow(()-> new CourseException("Cann't find by id = " + id));
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT: result get course = {}", courseDto);
+		logger.info("----------------------------------------------------------------------------");
 		return courseDto;
 	}
 	
@@ -50,6 +52,7 @@ public class CourseService {
 				.orElseThrow(()-> new CourseException("Cann't find by name = " + name));
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT: result geting course = {}", courseDto);
+		logger.info("----------------------------------------------------------------------------");
 		return courseDto;
 	}
 	
@@ -59,6 +62,7 @@ public class CourseService {
 		List<CourseDto> courses = courseDao
 				.stream().map(el -> mapper.courseToCourseDto(el, context)).collect(Collectors.toList());
 		logger.info("OUT: result get all courses = {}", courses);
+		logger.info("----------------------------------------------------------------------------");
 		return courses;
 	}
 	
@@ -72,6 +76,7 @@ public class CourseService {
 		Course courseResult = courseJPARepository.saveAndFlush(courseDao);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT result course = {}", courseDto);
+		logger.info("----------------------------------------------------------------------------");
 		return courseDto;
 	}
 	
@@ -81,9 +86,11 @@ public class CourseService {
 		if (courseJPARepository.existsById(id)) {
 			courseJPARepository.deleteById(id);
 			logger.info("Deleting result = {}", true);
+			logger.info("----------------------------------------------------------------------------");
 			return true;
 		} else {
 			logger.info("Deleting result course = {}", false);
+			logger.info("----------------------------------------------------------------------------");
 			return false;
 		}
 	}
@@ -96,9 +103,10 @@ public class CourseService {
 		Course courseDao = mapper.courseDtoToCourse(course, context);
 		Course courseTemp = courseJPARepository.findById(courseDao.getId())
 				.orElseThrow(()-> new CourseException("Cann't find group by name = " + course.getName()));
+		List<Groups> groupsTempList = courseTemp.getGroups();
 		if (!courseTemp.getName().equals(courseDao.getName())) 
 			courseTemp.setName(courseDao.getName());
-		if (!courseTemp.getGroups().equals(courseDao.getGroups()))
+		if (!groupsTempList.equals(courseDao.getGroups()))
 			courseTemp.setGroups(courseDao.getGroups());
 		courseTemp.setLecture(courseDao.getLecture());
 		if (!courseTemp.getLocation().getName().equals(courseDao.getLocation().getName()))
@@ -110,6 +118,7 @@ public class CourseService {
 		Course courseResult = courseJPARepository.saveAndFlush(courseTemp);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
 		logger.info("OUT result course = {}", courseDto);
+		logger.info("----------------------------------------------------------------------------");
 		return courseDto;
 	}
 	
@@ -117,6 +126,7 @@ public class CourseService {
 		logger.info("Find course by name = {}", name);
 		boolean groupResult = courseJPARepository.existsByName(name);
 		logger.info("OUT: result finding course = {}", groupResult);
+		logger.info("----------------------------------------------------------------------------");
 		return groupResult;
 	}
 }

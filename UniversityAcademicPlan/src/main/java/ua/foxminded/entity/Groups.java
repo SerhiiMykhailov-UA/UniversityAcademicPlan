@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,8 +44,10 @@ public class Groups {
 
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@ManyToMany()
-	@JoinTable(name = "groups_course", joinColumns = @JoinColumn(name = "groups_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "groups_course",
+				joinColumns = @JoinColumn(name = "groups_id"),
+				inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> course;
 
 }

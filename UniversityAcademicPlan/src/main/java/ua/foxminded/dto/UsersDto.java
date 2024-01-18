@@ -18,7 +18,7 @@ import ua.foxminded.entity.UserType;
 public class UsersDto{
 	private long id;
 	@NonNull
-	private String nickName;
+	private String name;
 	@NonNull
 	private String password;
 	@NonNull
