@@ -26,8 +26,7 @@ public class CourseDto {
 	@EqualsAndHashCode.Exclude
 	private List<TeacherDto> teacher;
 	private LocationDto location;
-	@ToString.Exclude
-	@EqualsAndHashCode.Exclude
+
 	private List<ScheduleDto> schedule;
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude

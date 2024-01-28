@@ -79,11 +79,11 @@ public class UsersService {
 		logger.info("IN User = {}", user);
 		Users usersDao = mapper.usersDtoToUsers(user, context);
 		Users usersDaoTemp = repository.findById(user.getId()).orElseThrow(()-> new UsersException("User isn't exists"));
-		if (!usersDaoTemp.getNickName().equals(usersDao.getNickName()))
+		if (user.getNickName() != null && !usersDaoTemp.getNickName().equals(usersDao.getNickName()))
 			usersDaoTemp.setNickName(usersDao.getNickName());
-		if (!usersDaoTemp.getUserType().equals(usersDao.getUserType()))
+		if (user.getUserType() != null && !usersDaoTemp.getUserType().equals(usersDao.getUserType()))
 			usersDaoTemp.setUserType(usersDao.getUserType());
-		if (!usersDaoTemp.getPassword().equals(usersDao.getPassword()))
+		if (user.getPassword() != null && !usersDaoTemp.getPassword().equals(usersDao.getPassword()))
 			usersDaoTemp.setPassword(passwordEncoder.encode(usersDao.getPassword()));
 		Users userResult = repository.saveAndFlush(usersDaoTemp);
 		UsersDto userDto = mapper.usersToUsersDto(userResult, context);

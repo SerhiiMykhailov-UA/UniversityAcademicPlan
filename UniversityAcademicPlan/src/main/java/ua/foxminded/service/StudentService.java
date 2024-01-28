@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import ua.foxminded.repository.StudentJPARepository;
 
 @Service
 @Transactional(readOnly = true)
-@CascadeOnDelete
 public class StudentService {
 	
 	private final StudentMapper mapper;
@@ -88,15 +86,15 @@ public class StudentService {
 		Student studentDao = mapper.studentDtoToStudent(student, context);
 		Student studentTemp = repository.findById(studentDao.getId())
 				.orElseThrow(() -> new StudentException("Cann't find student = " + studentDao));
-		if (!studentTemp.getFirstName().equals(studentDao.getFirstName()))
+		if (student.getFirstName() != null && !studentTemp.getFirstName().equals(studentDao.getFirstName()))
 			studentTemp.setFirstName(studentDao.getFirstName());
-		if (!studentTemp.getLastName().equals(studentDao.getLastName()))
+		if (student.getLastName() != null && !studentTemp.getLastName().equals(studentDao.getLastName()))
 			studentTemp.setLastName(studentDao.getLastName());
-		if (!studentTemp.getCourse().equals(studentDao.getCourse()))
+		if (student.getCourse() != null && !studentTemp.getCourse().equals(studentDao.getCourse()))
 			studentTemp.setCourse(studentDao.getCourse());
-		if (!studentTemp.getGroups().equals(studentDao.getGroups()))
+		if (student.getGroups() != null && !studentTemp.getGroups().equals(studentDao.getGroups()))
 			studentTemp.setGroups(studentDao.getGroups());
-		if (!studentTemp.getPassword().equals(studentDao.getPassword()))
+		if (student.getPassword() != null && !studentTemp.getPassword().equals(studentDao.getPassword()))
 			studentTemp.setPassword(passwordEncoder.encode(studentDao.getPassword()));
 		Student studentResult = repository.saveAndFlush(studentTemp);
 		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);

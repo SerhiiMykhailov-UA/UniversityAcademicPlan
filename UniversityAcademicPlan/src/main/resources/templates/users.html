@@ -12,7 +12,7 @@
 	</h1>
 	<form th:action="@{/admin/user/{id} (id = ${usersDto.getId()}) }" th:method="POST" th:object="${usersDto}">
 		<leble> User name:
-			<input type="text" th:value="${usersDto.getName()}" th:field="*{name}" />
+			<input type="text" th:value="${usersDto.getNickName()}" th:field="*{nickName}" />
 			<input type="hidden" th:value="${usersDto.getUserType()}" th:field="*{userType}" />
 		</leble>
 		<lable> Password: 

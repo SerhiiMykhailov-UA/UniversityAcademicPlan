@@ -84,13 +84,13 @@ public class TeacherService {
 		Teacher teacherDao = mapper.teacherDtoToTeacher(teacher, context);
 		Teacher teacherTemp = repository.findById(teacherDao.getId())
 				.orElseThrow(() -> new TeacherException("Cann't find teacher = " + teacher));
-		if (!teacherTemp.getCourses().equals(teacherDao.getCourses()))
+		if (teacher.getCourses() != null && !teacherTemp.getCourses().equals(teacherDao.getCourses()))
 			teacherTemp.setCourses(teacherDao.getCourses());
-		if (!teacherTemp.getFirstName().equals(teacherDao.getFirstName()))
+		if (teacher.getFirstName() != null && !teacherTemp.getFirstName().equals(teacherDao.getFirstName()))
 			teacherTemp.setFirstName(teacherDao.getFirstName());
-		if (!teacherTemp.getLastName().equals(teacherDao.getLastName()))
+		if (teacher.getLastName() != null && !teacherTemp.getLastName().equals(teacherDao.getLastName()))
 			teacherTemp.setLastName(teacherDao.getLastName());
-		if (!teacherTemp.getPassword().equals(teacherDao.getPassword()))
+		if (teacher.getPassword() != null && !teacherTemp.getPassword().equals(teacherDao.getPassword()))
 			teacherTemp.setPassword(passwordEncoder.encode(teacherDao.getPassword()));
 		Teacher teacherResult = repository.saveAndFlush(teacherTemp);
 		TeacherDto teacherDto = mapper.teacherToTeacherDto(teacherResult, context);

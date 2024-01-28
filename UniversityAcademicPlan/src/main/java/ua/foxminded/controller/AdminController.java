@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.validation.Valid;
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.LocationDto;
@@ -70,9 +69,9 @@ public class AdminController {
 	}
 	
 	@PostMapping("/user/registration")
-	public String performUserRegistration(@ModelAttribute("users") @Valid UsersDto usersDto, BindingResult bindingResult) {
+	public String performUserRegistration(@ModelAttribute("users") UsersDto usersDto, BindingResult bindingResult) {
 		usersDtoValidator.validate(usersDto, bindingResult);
-		System.out.println(usersDto);
+		
 		if (bindingResult.hasErrors())
 			return "registration/user_registration";
 		
@@ -80,7 +79,7 @@ public class AdminController {
 		case "admin":
 			AdminDto adminDto = new AdminDto("----", "----");
 			adminDto.setId(usersDto.getId());
-			adminDto.setName(usersDto.getName());
+			adminDto.setNickName(usersDto.getNickName());
 			adminDto.setPassword(usersDto.getPassword());
 			adminDto.setUserType(usersDto.getUserType());
 			adminService.add(adminDto);
@@ -88,7 +87,7 @@ public class AdminController {
 		case "student":
 			StudentDto studentDto = new StudentDto("----", "----");
 			studentDto.setId(usersDto.getId());
-			studentDto.setName(usersDto.getName());
+			studentDto.setNickName(usersDto.getNickName());
 			studentDto.setPassword(usersDto.getPassword());
 			studentDto.setUserType(usersDto.getUserType());
 			studentService.add(studentDto);
@@ -96,7 +95,7 @@ public class AdminController {
 		case "teacher":
 			TeacherDto teacherDto = new TeacherDto("----", "----");
 			teacherDto.setId(usersDto.getId());
-			teacherDto.setName(usersDto.getName());
+			teacherDto.setNickName(usersDto.getNickName());
 			teacherDto.setPassword(usersDto.getPassword());
 			teacherDto.setUserType(usersDto.getUserType());
 			teacherService.add(teacherDto);
@@ -104,7 +103,7 @@ public class AdminController {
 		case "stuff":
 			StuffDto stuffDto = new StuffDto("----", "----");
 			stuffDto.setId(usersDto.getId());
-			stuffDto.setName(usersDto.getName());
+			stuffDto.setNickName(usersDto.getNickName());
 			stuffDto.setPassword(usersDto.getPassword());
 			stuffDto.setUserType(usersDto.getUserType());
 			stuffService.add(stuffDto);
@@ -159,7 +158,11 @@ public class AdminController {
 	@PostMapping("/course/{id}")
 	public String updateCourse(@PathVariable("id") long id, @ModelAttribute("courseDto") CourseDto courseDto) {
 		try {
-			courseService.update(courseDto);
+			CourseDto courseDtoTemp = courseService.get(id);
+			LocationDto locationDto = locationService.getByName(courseDto.getLocation().getName());
+			courseDtoTemp.setName(courseDto.getName());
+			courseDtoTemp.setLocation(locationDto);
+			courseService.update(courseDtoTemp);
 		} catch (CourseException | LocationException e) {
 			e.getMessage();
 		}

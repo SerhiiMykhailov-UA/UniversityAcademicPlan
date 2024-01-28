@@ -2,6 +2,7 @@ package ua.foxminded.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,10 +45,11 @@ public class Groups {
 
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "groups_course",
-				joinColumns = @JoinColumn(name = "groups_id"),
-				inverseJoinColumns = @JoinColumn(name = "course_id"))
+	@ManyToMany()
+	@JoinTable(
+			name = "groups_course", 
+			joinColumns = @JoinColumn(name = "groups_id"),
+			inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> course;
 
 }

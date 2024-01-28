@@ -4,6 +4,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -16,11 +18,19 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ua.foxminded.dto.CourseDto;
+import ua.foxminded.dto.LocationDto;
 import ua.foxminded.entity.Course;
+import ua.foxminded.entity.Groups;
+import ua.foxminded.entity.Lecture;
+import ua.foxminded.entity.Location;
+import ua.foxminded.entity.Schedule;
+import ua.foxminded.entity.Student;
+import ua.foxminded.entity.Teacher;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.LocationException;
 import ua.foxminded.mapper.CourseMapper;
 import ua.foxminded.repository.CourseJPARepository;
+import ua.foxminded.repository.LocationJPARepository;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceTest {
@@ -31,13 +41,25 @@ class CourseServiceTest {
 	private CourseJPARepository repository;
 	@Mock
 	private CourseMapper mapper;
+	@Mock
+	private LocationJPARepository locationJPARepository;
 	
 	Course entity;
 	CourseDto dto;
+	Location location;
 	
 	{
+		location = new Location(1, "location1", Arrays.asList(new Course()));
 		entity = new Course("c1");
+		entity.setLocation(new Location("location123"));
+		entity.setGroups(Arrays.asList(new Groups("gr123")));
+		entity.setLecture(Arrays.asList(new Lecture("lecture111")));
+		entity.setSchedule(Arrays.asList(new Schedule(LocalTime.parse("09:00:00"), LocalTime.parse("10:00:00"), DayOfWeek.FRIDAY)));
+		entity.setStudent(Arrays.asList(new Student("fn1", "ln1")));
+		entity.setTeacher(Arrays.asList(new Teacher("fn1", "ln1")));
 		dto = new CourseDto("c1");
+		dto.setLocation(new LocationDto("locationDto"));
+		
 	}
 	
 	@Test
@@ -77,6 +99,7 @@ class CourseServiceTest {
 	@Test
 	void testAdd() throws LocationException {
 		when(mapper.courseDtoToCourse(Mockito.any(), Mockito.any())).thenReturn(entity);
+		when(locationJPARepository.findByName(Mockito.anyString())).thenReturn(Optional.of(new Location("location1")));
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.courseToCourseDto(Mockito.any(), Mockito.any())).thenReturn(dto);
 		
@@ -99,16 +122,17 @@ class CourseServiceTest {
 
 	@Test
 	void testUpdate() throws CourseException, LocationException {
+		when(locationJPARepository.findByName(Mockito.anyString())).thenReturn(Optional.of(location));
 		when(mapper.courseDtoToCourse(Mockito.any(), Mockito.any())).thenReturn(entity);		
-		when(repository.findByName(Mockito.anyString())).thenReturn(Optional.of(entity));
-		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(entity));
+		when(repository.save(Mockito.any())).thenReturn(entity);
 		when(mapper.courseToCourseDto(Mockito.any(), Mockito.any())).thenReturn(dto);
 		
 		service.update(dto);
 		
 		verify(mapper, times(1)).courseDtoToCourse(Mockito.any(), Mockito.any());
-		verify(repository, times(1)).findByName(Mockito.anyString());
-		verify(repository, times(1)).saveAndFlush(Mockito.any());
+		verify(repository, times(1)).findById(Mockito.anyLong());
+		verify(repository, times(1)).save(Mockito.any());
 		verify(mapper, times(1)).courseToCourseDto(Mockito.any(), Mockito.any());
 	}
 

@@ -55,12 +55,15 @@
 		<h2>User type:
 			<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 		</h2>
-		<h4> First name:
+		<h2 th:if="${studentDto.getGroups()} != null">Group:
+			<a th:text="${studentDto.getGroups().getName()}">VALUE</a>
+		</h2>
+		<h3> First name:
 			<a th:text="${studentDto.getFirstName()}"> VALUE</a>
-		</h4>
-		<h4> Last name:
+		</h3>
+		<h3> Last name:
 			<a th:text="${studentDto.getLastName()}"> VALUE</a>
-		</h4>
+		</h3>
 		<p>
 			<a th:href="@{/student/updateprofile (id=${studentDto.getId()})}"> Update profile</a>
 		</p>

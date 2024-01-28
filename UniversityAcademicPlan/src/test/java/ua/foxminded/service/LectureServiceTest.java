@@ -72,7 +72,7 @@ class LectureServiceTest {
 	}
 
 	@Test
-	void testAdd() {
+	void testAdd() throws LectureException {
 		when(mapper.lectureDtoToLecture(Mockito.any(), Mockito.any())).thenReturn(entity);
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.lectureToLectureDto(Mockito.any(), Mockito.any())).thenReturn(dto);

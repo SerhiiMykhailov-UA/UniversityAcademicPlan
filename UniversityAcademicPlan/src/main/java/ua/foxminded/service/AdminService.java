@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import ua.foxminded.repository.AdminJPARepository;
 
 @Service
 @Transactional(readOnly = true)
-@CascadeOnDelete
 public class AdminService {
 	
 	private final AdminMapper mapper;
@@ -88,11 +86,11 @@ public class AdminService {
 		Admin adminDao = mapper.adminDtoToAdmin(adminDto, context);
 		Admin adminTemp = repository.findById(adminDao.getId())
 				.orElseThrow(()-> new AdminException("Cann't find Admin = " + adminDto));
-		if (!adminTemp.getFirstName().equals(adminDao.getFirstName()))
+		if (adminDto.getFirstName() != null && !adminTemp.getFirstName().equals(adminDao.getFirstName()))
 			adminTemp.setFirstName(adminDao.getFirstName());
-		if (!adminTemp.getLastName().equals(adminDao.getLastName()))
+		if (adminDto.getLastName() != null && !adminTemp.getLastName().equals(adminDao.getLastName()))
 			adminTemp.setLastName(adminDao.getLastName());
-		if (!adminTemp.getPassword().equals(adminDao.getPassword()))
+		if (adminDto.getPassword() != null && !adminTemp.getPassword().equals(adminDao.getPassword()))
 			adminTemp.setPassword(passwordEncoder.encode(adminDao.getPassword()));
 		Admin adminResult = repository.saveAndFlush(adminTemp);
 		AdminDto adminDtoResult = mapper.adminToAdminDto(adminResult, context);

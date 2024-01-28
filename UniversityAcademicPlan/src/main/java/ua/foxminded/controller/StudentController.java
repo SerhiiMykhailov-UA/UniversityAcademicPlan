@@ -2,7 +2,6 @@ package ua.foxminded.controller;
 
 import java.util.List;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.entity.UserType;
-import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LectureDto;

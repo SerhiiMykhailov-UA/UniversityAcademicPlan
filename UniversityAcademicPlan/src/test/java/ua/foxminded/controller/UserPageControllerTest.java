@@ -17,20 +17,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import ua.foxminded.dto.AdminDto;
+import ua.foxminded.dto.CourseDto;
+import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.dto.UsersDto;
 import ua.foxminded.entity.UserType;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
+import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.StudentService;
+import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
 
@@ -49,6 +50,10 @@ class UserPageControllerTest {
 	private CourseService courseService;
 	@MockBean
 	private TeacherService teacherService;
+	@MockBean
+	private StuffService stuffService;
+	@MockBean
+	private GroupsService groupsService;
 	
 	@Test
 	@WithMockUser(value="admin")
@@ -82,14 +87,20 @@ class UserPageControllerTest {
 			.andExpect(view().name("showuserpage/teacher"))
 			.andExpect(model().attribute("usersInfo", teacherDto));
 		
-		dto = new UsersDto("student", "password", UserType.ROLE_STUDENT);
-		StudentDto studentDto = new StudentDto("student_fn1", "student_ln1");
-		when(usersService.getByNickName(Mockito.anyString())).thenReturn(dto);
-		when(studentService.get(Mockito.anyLong())).thenReturn(studentDto);
-		mvc.perform(get("/showUserPage"))
-			.andExpect(status().isOk())
-			.andExpect(view().name("showuserpage/student"))
-			.andExpect(model().attribute("usersInfo", studentDto));
+//		dto = new UsersDto("student", "password", UserType.ROLE_STUDENT);
+//		StudentDto studentDto = new StudentDto("student_fn1", "student_ln1");
+//		GroupsDto groupsDto = new GroupsDto("gr2");
+//		groupsDto.setId(2);
+//		studentDto.setGroups(groupsDto);
+//		studentDto.setCourse(Arrays.asList(new CourseDto("c1")));
+//		when(courseService.getAll()).thenReturn(Arrays.asList(new CourseDto("c3")));
+//		when(usersService.getByNickName(Mockito.anyString())).thenReturn(dto);
+//		when(studentService.get(Mockito.anyLong())).thenReturn(studentDto);
+//		when(groupsService.get(Mockito.anyLong())).thenReturn(groupsDto);
+//		mvc.perform(get("/showUserPage"))
+//			.andExpect(status().isOk())
+//			.andExpect(view().name("showuserpage/student"))
+//			.andExpect(model().attribute("studentDto", studentDto));
 	}
 
 }

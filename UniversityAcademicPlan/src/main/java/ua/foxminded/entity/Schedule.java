@@ -16,7 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,12 +38,16 @@ public class Schedule implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column
 	@GeneratedValue(strategy = IDENTITY)
 	private long id;
+	
+	@Transient
+	private String nameSchedule;
+	
 	@NonNull
 	@Column
 	private LocalTime startTime;
+	
 	@NonNull
 	@Column
 	private LocalTime endTime;

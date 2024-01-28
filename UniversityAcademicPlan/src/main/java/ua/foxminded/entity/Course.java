@@ -17,12 +17,15 @@ public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
 	@Column
 	@NonNull
 	private String name;
+	
 	@EqualsAndHashCode.Exclude
-	@ManyToMany(mappedBy = "course", cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToMany(mappedBy = "course")
 	private List<Student> student;
+	
 	@EqualsAndHashCode.Exclude
 	@ManyToMany()
 	@JoinTable(
@@ -30,21 +33,23 @@ public class Course {
 			joinColumns = @JoinColumn(name = "course_id"),
 			inverseJoinColumns = @JoinColumn(name = "teacher_id"))
 	private List<Teacher> teacher;
+	
 	@EqualsAndHashCode.Exclude
-	@ManyToOne (cascade = {CascadeType.ALL})
+	@ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Location location;
+	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(mappedBy = "course", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "course", cascade = CascadeType.PERSIST)
 	private List<Schedule> schedule;
+	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	private List<Lecture> lecture;
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	@ManyToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+	@ManyToMany(mappedBy = "course")
 	private List<Groups> groups;
 
 }

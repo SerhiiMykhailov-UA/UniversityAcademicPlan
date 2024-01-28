@@ -56,12 +56,18 @@ public class LectureService {
 	}
 	
 	@Transactional(readOnly = false)
-	public LectureDto add(LectureDto lecture) {
+	public LectureDto add(LectureDto lecture) throws LectureException {
 		logger.info("Add new lecture = {}", lecture);
-		Lecture lectureDao = mapper.lectureDtoToLecture(lecture, context);
-		Lecture lectureResult = repository.saveAndFlush(lectureDao);
-		LectureDto lectureDto = mapper.lectureToLectureDto(lectureResult, context);
-		logger.info("OUT result lecture = {}", lectureDto);
+		LectureDto lectureDto;
+		if (!repository.existsByName(lecture.getName())) {
+			Lecture lectureDao = mapper.lectureDtoToLecture(lecture, context);
+			Lecture lectureResult = repository.saveAndFlush(lectureDao);
+			lectureDto = mapper.lectureToLectureDto(lectureResult, context);
+			logger.info("OUT result lecture = {}", lectureDto);
+		}else {
+			throw new LectureException("Lecture already exists");
+		}
+
 		return lectureDto;
 	}
 	
@@ -69,8 +75,9 @@ public class LectureService {
 	public boolean delete(long id) {
 		logger.info("Delete lecture by id = {}", id);
 		if (repository.existsById(id)) {
+			
 			repository.deleteById(id);
-			logger.info("Deleting result = {}", true);
+			logger.info("Deleting lecture by id = {} result = {}", id, true);
 			return true;
 		} else {
 			logger.info("Deleting result = {}", false);

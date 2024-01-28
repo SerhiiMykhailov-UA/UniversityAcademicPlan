@@ -2,7 +2,6 @@ package ua.foxminded.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.securityContext;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.testSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,12 +15,10 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.validation.BindingResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,6 +29,7 @@ import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.LocationService;
 import ua.foxminded.service.StudentService;
+import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
 import ua.foxminded.util.CourseDtoValidator;
@@ -59,12 +57,11 @@ class AdminControllerTest {
 	private CourseService courseService;
 	@MockBean
 	private LocationService locationService;
+	@MockBean
+	private StuffService stuffService;
 	
 	
 	private final ObjectMapper objectMapper = new ObjectMapper();
-
-//	@MockBean
-//	private BindingResult bindingResult;
 
 	@Test
 	@WithMockUser(value="admin")
@@ -80,7 +77,7 @@ class AdminControllerTest {
 		UsersDto usersdto = new UsersDto("nickname", "password", UserType.ROLE_ADMIN);
 		AdminDto adminDto = new AdminDto("----", "----");
 		adminDto.setId(usersdto.getId());
-		adminDto.setName(usersdto.getName());
+		adminDto.setNickName(usersdto.getNickName());
 		adminDto.setPassword(usersdto.getPassword());
 		adminDto.setUserType(usersdto.getUserType());
 		when(adminService.add(Mockito.any())).thenReturn(adminDto);
@@ -100,7 +97,7 @@ class AdminControllerTest {
 		when(service.get(Mockito.anyLong())).thenReturn(usersDto);
 		mvc.perform(MockMvcRequestBuilders.get("/admin/user/{id}", 1))
 			.andExpect(status().is(200))
-			.andExpect(view().name("adminpanel/users"))
+			.andExpect(view().name("users"))
 			.andExpect(model().attribute("usersDto", usersDto));
 	}
 

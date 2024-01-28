@@ -16,7 +16,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 @Entity
@@ -37,13 +36,13 @@ public class Student extends Users {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne()
 	@JoinColumn(name = "groups_id", referencedColumnName = "id")
 	private Groups groups;
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToMany(cascade = {CascadeType.PERSIST})
+	@ManyToMany()
 	@JoinTable(
 			name = "student_course",
 			joinColumns = @JoinColumn(name = "student_id"),

@@ -26,7 +26,7 @@ public class UsersDtoValidator implements Validator{
 	public void validate(Object target, Errors errors) {
 		UsersDto dto = (UsersDto) target;
 		
-		if (!service.isExistsByNickName(dto.getName()))
+		if (!service.isExistsByNickName(dto.getNickName()))
 			return;
 		errors.rejectValue("nickName", "", "User is allready exists");
 	}

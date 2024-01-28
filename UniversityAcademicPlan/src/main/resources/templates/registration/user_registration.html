@@ -9,9 +9,9 @@
 <body>
 	<h1> Register new user</h1>
 	<form name="update_users" th:method="POST" th:action="@{/admin/user/registration}" th:object="${users}">
-		<lable for="name"> Enter new user name: </lable>
-		<input type="text" th:field="*{name}" id="name" />
-		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Username
+		<lable for="nickName"> Enter new user name: </lable>
+		<input type="text" th:field="*{nickName}" id="nickName" />
+		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}"> Username
 			error</div>
 		<br />
 		<lable for="password"> Enter the password: </lable>

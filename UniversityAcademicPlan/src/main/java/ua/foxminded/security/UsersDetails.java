@@ -23,7 +23,7 @@ public class UsersDetails implements UserDetails {
 	
 	public UsersDetails(User user) {
 		this.usersDto = new UsersDto();
-		this.usersDto.setName(user.getUsername());
+		this.usersDto.setNickName(user.getUsername());
 		this.usersDto.setPassword(user.getPassword());
 	}
 
@@ -40,7 +40,7 @@ public class UsersDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return usersDto.getName();
+		return usersDto.getNickName();
 	}
 
 	@Override

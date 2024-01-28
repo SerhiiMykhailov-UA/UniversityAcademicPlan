@@ -105,7 +105,7 @@
 							<a th:href="@{/admin/user/{id} (id = ${usersDto.getId()})}"
 								th:text="${usersDto.getId()}"></a>
 						</td>
-						<td class="user_info" th:text="${usersDto.getName()}"></td>
+						<td class="user_info" th:text="${usersDto.getNickName()}"></td>
 						<td class="user_info" th:text="${usersDto.getUserType()}"></td>
 					</tr>
 				</tbody>

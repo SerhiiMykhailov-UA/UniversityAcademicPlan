@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import ua.foxminded.repository.StuffJPARepository;
 
 @Service
 @Transactional
-@CascadeOnDelete
 public class StuffService {
 	
 	private final StuffMapper mapper;
@@ -90,11 +88,11 @@ public class StuffService {
 		Stuff stuffDao = mapper.stuffDtoToStuff(stuffDto, context);
 		Stuff stuffTemp = repository.findById(stuffDao.getId())
 				.orElseThrow(()-> new StuffException("Cann't find stuff = " + stuffDto));
-		if (!stuffTemp.getFirstName().equals(stuffDao.getFirstName()))
+		if (stuffDto.getFirstName() != null && !stuffTemp.getFirstName().equals(stuffDao.getFirstName()))
 			stuffTemp.setFirstName(stuffDao.getFirstName());
-		if (!stuffTemp.getLastName().equals(stuffDao.getLastName()))
+		if (stuffDto.getLastName() != null && !stuffTemp.getLastName().equals(stuffDao.getLastName()))
 			stuffTemp.setLastName(stuffDao.getLastName());
-		if (!stuffTemp.getPassword().equals(stuffDao.getPassword()))
+		if (stuffDto.getPassword() != null && !stuffTemp.getPassword().equals(stuffDao.getPassword()))
 			stuffTemp.setPassword(passwordEncoder.encode(stuffDao.getPassword()));
 		Stuff stuffDaoResult = repository.saveAndFlush(stuffTemp);
 		StuffDto stuffDtoResult = mapper.stuffToStuffDto(stuffDaoResult, context);

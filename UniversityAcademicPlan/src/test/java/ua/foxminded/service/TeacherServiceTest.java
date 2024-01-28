@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.entity.Teacher;
@@ -30,17 +31,21 @@ class TeacherServiceTest {
 	TeacherJPARepository repository;
 	@Mock
 	TeacherMapper mapper;
+	@Mock
+	PasswordEncoder passwordEncoder;
 	
 	Teacher entity;
 	TeacherDto dto;
 	{
 		entity = new Teacher("fn1", "ln1");
 		dto = new TeacherDto("fn1", "ln1");
+		dto.setPassword("111");
 	}
 
 	@Test
 	void testAdd() {
 		when(mapper.teacherDtoToTeacher(Mockito.any(), Mockito.any())).thenReturn(entity);
+		when(passwordEncoder.encode(Mockito.anyString())).thenReturn("111");
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.teacherToTeacherDto(Mockito.any(), Mockito.any())).thenReturn(dto);
 		

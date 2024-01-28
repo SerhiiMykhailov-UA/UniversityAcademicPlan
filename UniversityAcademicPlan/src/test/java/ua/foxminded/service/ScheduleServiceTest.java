@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ua.foxminded.dto.ScheduleDto;
+import ua.foxminded.entity.Course;
 import ua.foxminded.entity.Schedule;
 import ua.foxminded.exceptions.ScheduleException;
 import ua.foxminded.mapper.ScheduleMapper;
@@ -38,6 +39,7 @@ class ScheduleServiceTest {
 	
 	{
 		entity = new Schedule(LocalTime.of(8, 0), LocalTime.of(9, 40), DayOfWeek.MONDAY);
+		entity.setCourse(Arrays.asList(new Course("c1")));
 		dto = new ScheduleDto(LocalTime.of(8, 0), LocalTime.of(9, 40), DayOfWeek.MONDAY);
 	}
 	

@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.GroupsDto;
-import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.dto.UsersDto;
@@ -31,7 +29,7 @@ import ua.foxminded.exceptions.UsersException;
 import ua.foxminded.security.UsersDetails;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
-import ua.foxminded.service.ScheduleService;
+import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
@@ -46,15 +44,17 @@ public class UserPageController {
 	private final TeacherService teacherService;
 	private final StuffService stuffService;
 	private final CourseService courseService;
+	private final GroupsService groupsService;
 
 	public UserPageController(UsersService usersService, StudentService studentService, TeacherService teacherService,
-			AdminService adminService, CourseService courseService, StuffService stuffService) {
+			AdminService adminService, CourseService courseService, StuffService stuffService, GroupsService groupsService) {
 		this.usersService = usersService;
 		this.adminService = adminService;
 		this.studentService = studentService;
 		this.teacherService = teacherService;
 		this.stuffService = stuffService;
 		this.courseService = courseService;
+		this.groupsService = groupsService;
 	}
 
 	@GetMapping("/")
@@ -93,12 +93,11 @@ public class UserPageController {
 			case "student":
 				StudentDto studentDto = studentService.get(usersDto.getId());
 				model.addAttribute("studentDto", studentDto);
-				Optional<GroupsDto> groupsOptional = Optional.ofNullable(studentDto.getGroups());
 				List<CourseDto> courseDtoGroup = new ArrayList<>();
 				List<CourseDto> courseStudentList = new ArrayList<>();
 				List<CourseDto> courseDtoAdditional = new ArrayList<>();
-				if (groupsOptional.isPresent()) {
-					GroupsDto groupsDto = groupsOptional.orElseThrow(() -> new GroupsException(""));
+				if (studentDto.getGroups() != null) {
+					GroupsDto groupsDto = groupsService.get(studentDto.getGroups().getId());
 					courseDtoGroup = groupsDto.getCourse().stream()
 							.sorted(Comparator.comparingLong(CourseDto::getId)).collect(Collectors.toList());
 					courseStudentList = studentDto.getCourse().stream()
