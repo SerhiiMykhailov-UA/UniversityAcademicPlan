@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
@@ -63,7 +64,7 @@ public class UserPageController {
 	}
 
 	@GetMapping("/showUserPage")
-	public String showUserInfo(Model model) {
+	public String showUserInfo(@ModelAttribute("group") GroupsDto groups, Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UsersDetails details;
 		if (authentication.getPrincipal() instanceof UsersDetails) {
@@ -79,8 +80,14 @@ public class UserPageController {
 			UsersDto usersDto = usersService.getByNickName(details.getUsername());
 			model.addAttribute("usersDto", usersDto);
 			List<CourseDto> courseDtoList = courseService.getAll().stream()
-					.sorted(Comparator.comparingLong(CourseDto::getId)).collect(Collectors.toList());
+					.sorted(Comparator.comparingLong(CourseDto::getId))
+					.collect(Collectors.toList());
+			List<GroupsDto> groupsDtoList = groupsService.getAll()
+					.stream()
+					.sorted(Comparator.comparingLong(GroupsDto::getId))
+					.collect(Collectors.toList());
 			model.addAttribute("courseDtoList", courseDtoList);
+			model.addAttribute("groupsDtoList", groupsDtoList);
 			linkPage = linkPage + usersDto.getUserType().getUserType();
 			switch (usersDto.getUserType().getUserType()) {
 			case "admin":
