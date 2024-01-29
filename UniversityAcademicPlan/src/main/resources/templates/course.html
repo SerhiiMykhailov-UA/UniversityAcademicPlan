@@ -17,7 +17,7 @@
 
 		.course_teacher_group_block {
 			float: inline-start;
-			width: 22%;
+			width: 25%;
 			height: 150px;
 		}
 
@@ -143,9 +143,9 @@
 						<table class="table_list">
 							<thead>
 								<tr>
-									<th class="table_info" width="50px" align="center"> ID </th>
-									<th class="table_info" width="150px" align="center"> First name </th>
-									<th class="table_info" width="150px" align="center"> Last name </th>
+									<th class="table_info" width="30px" align="center"> ID </th>
+									<th class="table_info" width="120px" align="center"> First name </th>
+									<th class="table_info" width="120px" align="center"> Last name </th>
 									<th class="table_info" width="50px" align="center"> Select </th>
 								</tr>
 							</thead>
@@ -176,7 +176,7 @@
 						<table class="table_list">
 							<thead>
 								<tr>
-									<th class="table_info" width="50px" align="center"> ID </th>
+									<th class="table_info" width="30px" align="center"> ID </th>
 									<th class="table_info" width="100px" align="center"> Name </th>
 									<th class="table_info" width="50px" align="center"> Select </th>
 								</tr>
@@ -232,6 +232,7 @@
 					</div>
 				</form>
 			</div>
+
 		</div>
 		<div class="course_lecture_block">
 			<h2> Lecture list:</h2>
@@ -245,23 +246,25 @@
 					<input type="submit" value="Add">
 				</form>
 			</div>
-			<br><br><br><br><br>
+			<br><br>
+			
 			<div>
 				<form th:action="@{/stuff/deleteLectureFromCourse}" th:method="post">
 					<input type="hidden" th:value="${courseDto.getId()}" name="id">
 					<table class="table_list">
 						<tread>
 							<tr>
-								<th class="table_info" width="50px" align="center"> N </th>
+								<th class="table_info" width="30px" align="center"> N </th>
 								<th class="table_info" width="200px" align="center"> Name </th>
 								<th class="table_info" width="50px" align="center"> Select </th>
 							</tr>
 						</tread>
 						<tbody>
 							<tr th:each="lectureDto : ${lectureDtoList}">
-								<td align="center"  class="table_info" th:text="${lectureDtoList.indexOf(lectureDto)}+1"></td>
-								<td align="center"  class="table_info" th:text="${lectureDto.getName()}"></td>
-								<td align="center"  class="table_info">
+								<td align="center" class="table_info" th:text="${lectureDtoList.indexOf(lectureDto)}+1">
+								</td>
+								<td align="center" class="table_info" th:text="${lectureDto.getName()}"></td>
+								<td align="center" class="table_info">
 									<input name="name" required="required" type="radio"
 										th:value="${lectureDto.getName()}">
 								</td>

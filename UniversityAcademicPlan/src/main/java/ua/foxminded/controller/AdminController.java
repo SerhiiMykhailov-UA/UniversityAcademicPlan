@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
+import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LocationDto;
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.StuffDto;
@@ -22,16 +23,19 @@ import ua.foxminded.dto.UsersDto;
 import ua.foxminded.entity.UserType;
 import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
+import ua.foxminded.exceptions.GroupsException;
 import ua.foxminded.exceptions.LocationException;
 import ua.foxminded.exceptions.UsersException;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
+import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.LocationService;
 import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
 import ua.foxminded.util.CourseDtoValidator;
+import ua.foxminded.util.GroupsDtoValidator;
 import ua.foxminded.util.UsersDtoValidator;
 
 @Controller
@@ -47,11 +51,13 @@ public class AdminController {
 	private final StuffService stuffService;
 	private final CourseService courseService;
 	private final LocationService locationService;
+	private final GroupsService groupsService;
+	private final GroupsDtoValidator groupsDtoValidator;
 	
 	private String userType = UserType.ROLE_ADMIN.getUserType();
 	
 	public AdminController(UsersDtoValidator usersDtoValidator, UsersService usersService, TeacherService teacherService,
-			StudentService studentService, AdminService adminService, CourseService courseService, LocationService locationService, CourseDtoValidator courseDtoValidator, StuffService stuffService) {
+			StudentService studentService, AdminService adminService, CourseService courseService, LocationService locationService, CourseDtoValidator courseDtoValidator, StuffService stuffService, GroupsService groupsService, GroupsDtoValidator groupsDtoValidator) {
 		this.usersDtoValidator = usersDtoValidator;
 		this.courseDtoValidator = courseDtoValidator;
 		this.usersService = usersService;
@@ -61,6 +67,8 @@ public class AdminController {
 		this.stuffService = stuffService;
 		this.courseService = courseService;
 		this.locationService = locationService;
+		this.groupsService = groupsService;
+		this.groupsDtoValidator = groupsDtoValidator;
 	}
 	
 	@GetMapping("/user/registration")
@@ -175,10 +183,50 @@ public class AdminController {
 		return "redirect:/showUserPage";
 	}
 	
+	@GetMapping("/group/{id}")
+	public String updateGroup(@PathVariable("id") long id, Model model) {
+		GroupsDto groupsDto;
+		try {
+			groupsDto = groupsService.get(id);
+			model.addAttribute("group", groupsDto);
+			model.addAttribute("userType", userType);
+		} catch ( GroupsException e) {
+			e.printStackTrace();
+		}
+		return "group";
+	}
+	
+	@GetMapping("/group/registration")
+	public String groupRegistrationPage(@ModelAttribute("group") GroupsDto group, Model model) {
+		model.addAttribute("userType", userType);
+		return "registration/group_registration";
+	}
+	
+	@PostMapping("/group/registration")
+	public String performGroupRegistration(@ModelAttribute("group") GroupsDto group, BindingResult bindingResult, Model model) {
+		List<LocationDto> locationDtoList = locationService.getAll();
+		model.addAttribute("locationDtoList", locationDtoList);
+		groupsDtoValidator.validate(group, bindingResult);
+		
+		if (bindingResult.hasErrors())
+			return "registration/group_registration";
+		
+		groupsService.add(group);
+		
+		return "redirect:/showUserPage";
+	}
+	
+	@PostMapping("/deleteGroup")
+	public String deletGroup(@ModelAttribute("group") GroupsDto group) {
+		groupsService.delete(group.getId());
+		return "redirect:/showUserPage";
+	}
+	
 	@GetMapping("/course/registration")
 	public String courseRegistrationPage(@ModelAttribute("course") CourseDto courseDto, Model model) {
 		List<LocationDto> locationDtoList = locationService.getAll();
 		model.addAttribute("locationDtoList", locationDtoList);
+		model.addAttribute("userType", userType);
 		return "registration/course_registration";
 	}
 	

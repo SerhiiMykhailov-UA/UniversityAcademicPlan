@@ -32,7 +32,7 @@ public class Groups {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	@Column
+	@Column()
 	@NonNull
 	private String name;
 

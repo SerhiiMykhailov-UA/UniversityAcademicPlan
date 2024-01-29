@@ -11,12 +11,11 @@
 	<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('course')}"
 		 th:errors="*{course}"> Add course error. Contact the administrator</div>
 	<form name="course"  th:object="${course}" th:method="POST"
-		 th:action="@{/admin/course/registration}">
+		 th:action="@{/{userType}/course/registration (userType = ${userType})}">
 		<lable> Enter new Course name:</lable>
 		<input type="text" th:field="*{name}" required="required" />
 		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('name')}"
 		 th:errors="*{name}"> Course name error</div>
-		<br />
 		<lable for="location"> Select location:
 			<select name="location" required="required" id="location">
 				<option th:each="locationDto : ${locationDtoList}">

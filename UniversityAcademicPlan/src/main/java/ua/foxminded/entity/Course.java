@@ -46,7 +46,7 @@ public class Course {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "course")
 	private List<Lecture> lecture;
 
 	@ManyToMany(mappedBy = "course")

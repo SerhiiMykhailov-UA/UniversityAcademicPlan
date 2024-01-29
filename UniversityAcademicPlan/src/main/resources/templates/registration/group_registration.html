@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Add new Group</title>
+</head>
+
+<body>
+	<h1> Add new Group</h1>
+	<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('group')}"
+		 th:errors="*{group}"> Add group error. Contact the administrator</div>
+	<form name="group"  th:object="${group}" th:method="POST"
+		 th:action="@{/{userType}/group/registration (userType = ${userType})}">
+		<lable> Groyp name:</lable>
+		<input type="text" th:field="*{name}" required="required" />
+		<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('name')}"
+		 th:errors="*{name}"> Group name error</div>
+		<input type="submit" value="Add new group" />
+	</form>
+	<p>
+		<a href="/showUserPage"> Back to main page</a>
+	</p>
+</body>
+</html>

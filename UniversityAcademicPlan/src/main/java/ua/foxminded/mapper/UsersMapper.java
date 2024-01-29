@@ -9,8 +9,7 @@ import ua.foxminded.entity.Users;
 @Mapper(componentModel = "spring")
 public interface UsersMapper {
 	
-//	UsersMapper INSTANCE = Mappers.getMapper(UsersMapper.class);
-	
+
 	UsersDto usersToUsersDto (Users users, @Context CycleAvoidingMappingContext context);
 	
 	Users usersDtoToUsers (UsersDto usersDto, @Context CycleAvoidingMappingContext context);
