@@ -36,7 +36,7 @@ public class Student extends Users {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "groups_id", referencedColumnName = "id")
 	private Groups groups;
 	

@@ -42,14 +42,19 @@
 			width: 50%;
 		}
 
-		.course_list {
+		.group_block {
+			float: inline-start;
+			width: 8%;
+		}
+
+		.table_list {
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
 			float: inline-start;
 		}
 
-		.course_info {
+		.table_info {
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
@@ -90,53 +95,54 @@
 			<p>
 				<a href="/stuff/course/registration">Add new course</a>
 			</p>
-			<table class="course_list">
+			<table class="table_list">
 				<thead>
 					<tr>
-						<th class="course_info"> ID </th>
-						<th class="course_info"> Name </th>
-						<th class="course_info"> Location </th>
-						<th class="course_info"> Teacher </th>
-						<th class="course_info"> Group </th>
-						<th class="course_info"> Day of week </th>
-						<th class="course_info"> Start time </th>
-						<th class="course_info"> End time </th>
+						<th class="table_info" width="30px" align="center"> N </th>
+						<th class="table_info" width="100px" align="center"> Name </th>
+						<th class="table_info" width="75px" align="center"> Location </th>
+						<th class="table_info" width="150px" align="center"> Teacher </th>
+						<th class="table_info" width="75px" align="center"> Group </th>
+						<th class="table_info" width="75px" align="center"> Day of week </th>
+						<th class="table_info" width="50px" align="center"> Start time </th>
+						<th class="table_info" width="50px" align="center"> End time </th>
 
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="courseDto : ${courseDtoList}">
-						<td class="course_info">
-							<a th:href="@{/stuff/course/{id} (id = ${courseDto.getId()})}"
-								th:text="${courseDto.getId()}"></a>
+						<td class="table_info" th:text="${courseDtoList.indexOf(courseDto)}+1" align="center">
 						</td>
-						<td class="course_info" th:text="${courseDto.getName()}"></td>
-						<td class="course_info" th:text="${courseDto.getLocation().getName()}"></td>
-						<td class="course_info">
+						<td class="table_info" align="center">
+							<a th:href="@{/stuff/course/{id} (id = ${courseDto.getId()})}"
+								th:text="${courseDto.getName()}"></a>
+						</td>
+						<td class="table_info" th:text="${courseDto.getLocation().getName()}" align="center"></td>
+						<td class="table_info" align="center">
 							<a th:each="teacherDto : ${courseDto.getTeacher()}">
 								<span th:text="${teacherDto.getFirstName()} + ' ' + ${teacherDto.getLastName()}"></span>
 								<br>
 							</a>
 						</td>
-						<td class="course_info">
+						<td class="table_info" align="center">
 							<a th:each="groupsDto : ${courseDto.getGroups()}">
 								<span th:text="${groupsDto.getName()}"></span>
 								<span>;</span>
 							</a>
 						</td>
-						<td class="course_info">
+						<td class="table_info" align="center">
 							<a th:each="scheduleDto : ${courseDto.getSchedule()}">
 								<span th:text="${scheduleDto.getDayOfWeek()}"></span>
 								<br>
 							</a>
 						</td>
-						<td class="course_info">
+						<td class="table_info" align="center">
 							<a th:each="scheduleDto : ${courseDto.getSchedule()}">
 								<span th:text="${scheduleDto.getStartTime()}"></span>
 								<br>
 							</a>
 						</td>
-						<td class="course_info">
+						<td class="table_info" align="center">
 							<a th:each="scheduleDto : ${courseDto.getSchedule()}">
 								<span th:text="${scheduleDto.getEndTime()}"></span>
 								<br>
@@ -146,7 +152,43 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="group_block">
+			<h2>Group list</h2>
+			<p>
+				<a href="/stuff/group/registration">Add new group</a>
+			</p>
 
+			<form th:action="@{/stuff/deleteGroup}" th:method="post" th:object="${group}">
+				<div>
+					<table class="table_list">
+						<thead>
+							<tr>
+								<th class="table_info" width="50px" align="center"> N </th>
+								<th class="table_info" width="100px" align="center"> Name </th>
+								<th class="table_info" width="50px" align="center"> Select </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="group : ${groupsDtoList}">
+								<td class="table_info" align="center" th:text="${groupsDtoList.indexOf(group)}+1"></td>
+								<td class="table_info" align="center">
+									<a th:href="@{/stuff/group/{id} (id = ${group.getId()})}"
+										th:text="${group.getName()}"></a>
+								</td>
+								<td class="table_info" align="center">
+									<input required="required" type="radio" th:value="${group.getId()}"
+										th:field="*{id}">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br>
+				<div>
+					<input type="submit" value="Delet" />
+				</div>
+			</form>
+		</div>
 	</div>
 
 </body>

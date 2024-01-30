@@ -22,6 +22,7 @@ import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LectureDto;
 import ua.foxminded.dto.LocationDto;
 import ua.foxminded.dto.ScheduleDto;
+import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.StuffDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.entity.UserType;
@@ -30,6 +31,7 @@ import ua.foxminded.exceptions.GroupsException;
 import ua.foxminded.exceptions.LectureException;
 import ua.foxminded.exceptions.LocationException;
 import ua.foxminded.exceptions.ScheduleException;
+import ua.foxminded.exceptions.StudentException;
 import ua.foxminded.exceptions.StuffException;
 import ua.foxminded.exceptions.TeacherException;
 import ua.foxminded.service.CourseService;
@@ -37,9 +39,11 @@ import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.LectureService;
 import ua.foxminded.service.LocationService;
 import ua.foxminded.service.ScheduleService;
+import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
 import ua.foxminded.util.CourseDtoValidator;
+import ua.foxminded.util.GroupsDtoValidator;
 
 @Controller
 @RequestMapping("/stuff")
@@ -53,13 +57,15 @@ public class StuffController {
 	private final LocationService locationService;
 	private final ScheduleService scheduleService;
 	private final LectureService lectureService;
+	private final GroupsDtoValidator groupsDtoValidator;
+	private final StudentService studentService;
 	
 	private String userType = UserType.ROLE_STUFF.getUserType();
 	
 	public StuffController(CourseDtoValidator courseDtoValidator,
 			StuffService stuffService, CourseService courseService,
 			LocationService locationService, TeacherService teacherService,
-			GroupsService groupsService, ScheduleService scheduleService, LectureService lectureService) {
+			GroupsService groupsService, ScheduleService scheduleService, LectureService lectureService, GroupsDtoValidator groupsDtoValidator, StudentService studentService) {
 		this.courseDtoValidator = courseDtoValidator;
 		this.stuffService = stuffService;
 		this.courseService = courseService;
@@ -68,6 +74,8 @@ public class StuffController {
 		this.locationService = locationService;
 		this.scheduleService = scheduleService;
 		this.lectureService = lectureService;
+		this.groupsDtoValidator = groupsDtoValidator;
+		this.studentService = studentService;
 	}
 
 	@GetMapping("/course/{id}")
@@ -111,6 +119,135 @@ public class StuffController {
 		return "course";
 	}
 	
+	@GetMapping("/group/{id}")
+	public String updateGroup(@PathVariable("id") long id, Model model) {
+		GroupsDto groupsDto;
+		try {
+			groupsDto = groupsService.get(id);
+			List<StudentDto> studentLeftList = studentService.getAll()
+					.stream()
+					.filter(el->el.getGroups() == null)
+					.collect(Collectors.toList());
+			List<CourseDto> courseGroupsList = groupsDto.getCourse();
+			List<CourseDto> courseLeftList = courseService.getAll()
+					.stream()
+					.filter(el->!courseGroupsList.contains(el))
+					.collect(Collectors.toList());
+			List<StudentDto> studentGroupList = groupsDto.getStudent()
+					.stream()
+					.sorted(Comparator.comparing(StudentDto::getFirstName))
+					.collect(Collectors.toList());
+			model.addAttribute("group", groupsDto);
+			model.addAttribute("studentLeftList", studentLeftList);
+			model.addAttribute("courseLeftList", courseLeftList);
+			model.addAttribute("studentGroupList", studentGroupList);
+			model.addAttribute("courseGroupsList", courseGroupsList);
+			model.addAttribute("userType", userType);
+		} catch ( GroupsException e) {
+			e.printStackTrace();
+		}
+		return "group";
+	}
+	
+	@PostMapping("/addStudentToGroup")
+	public String addStudentToGroup(@ModelAttribute("student") StudentDto student, @ModelAttribute("group") GroupsDto group, Errors errors) {
+		String[] s = student.getFirstName().split(" ");
+		long idStudent = Long.valueOf(s[0]);
+		try {
+			StudentDto studentDtoTemp = studentService.get(idStudent);
+			GroupsDto groupsDtoTemp = groupsService.get(group.getId());
+			studentDtoTemp.setGroups(groupsDtoTemp);
+			
+			studentService.update(studentDtoTemp);
+			
+		} catch (StudentException | GroupsException e) {
+			e.printStackTrace();
+			errors.rejectValue("group", "", e.getMessage() + " Contact administrator");
+			return "redirect:/stuff/group/" + group.getId();
+		}
+		return "redirect:/stuff/group/" + group.getId();
+	}
+	
+	@PostMapping("/addCourseToGroup")
+	public String addCourseToGroup(@ModelAttribute("group") GroupsDto group, Errors errors) {
+		try {
+			GroupsDto groupsDto = groupsService.get(group.getId());
+			CourseDto courseDtoTemp = courseService.getByName(group.getCourse().get(0).getName());
+			List<CourseDto> courseDtoList = groupsDto.getCourse();
+			courseDtoList.add(courseDtoTemp);
+			groupsDto.setCourse(courseDtoList);
+			
+			groupsService.update(groupsDto);
+			
+		} catch (CourseException | GroupsException  e) {
+			e.printStackTrace();
+			errors.rejectValue("group", "", e.getMessage() + " Contact administrator");
+			return "redirect:/stuff/course/" + group.getId();
+		}
+		
+		return "redirect:/stuff/group/" + group.getId();
+	}
+	
+	@PostMapping("/deletStudentFromGroup")
+	public String deleteStudentFromGroup(@ModelAttribute("student") StudentDto student, @ModelAttribute("group") GroupsDto group, Errors errors) {
+		long idStudent = Long.valueOf(student.getFirstName());
+		
+		try {
+			StudentDto studentTemp = studentService.get(idStudent);
+			
+			studentService.deletStudentFromGroup(studentTemp);
+			
+		} catch (StudentException  e) {
+			e.printStackTrace();
+		}
+		return "redirect:/stuff/group/" + group.getId();
+	}
+	
+	@GetMapping("/group/registration")
+	public String groupRegistrationPage(@ModelAttribute("group") GroupsDto group, Model model) {
+		model.addAttribute("userType", userType);
+		return "registration/group_registration";
+	}
+	
+	@PostMapping("/deletCourseFromGroup")
+	public String deletCourseFromGroup(@ModelAttribute("group") GroupsDto group, Errors errors) {
+		try {
+			GroupsDto groupsDto = groupsService.get(group.getId());
+			CourseDto courseDtoTemp = courseService.getByName(group.getCourse().get(0).getName());
+			List<CourseDto> courseDtoList = groupsDto.getCourse();
+			courseDtoList.remove(courseDtoTemp);
+			groupsDto.setCourse(courseDtoList);
+			
+			groupsService.update(groupsDto);
+			
+		} catch (GroupsException | CourseException e) {
+			e.printStackTrace();
+			errors.rejectValue("group", "", e.getMessage() + " Contact administrator");
+			return "redirect:/stuff/course/" + group.getId();
+		}
+		return "redirect:/stuff/group/" + group.getId();
+	}
+	
+	@PostMapping("/group/registration")
+	public String performGroupRegistration(@ModelAttribute("group") GroupsDto group, BindingResult bindingResult, Model model) {
+		List<LocationDto> locationDtoList = locationService.getAll();
+		model.addAttribute("locationDtoList", locationDtoList);
+		groupsDtoValidator.validate(group, bindingResult);
+		
+		if (bindingResult.hasErrors())
+			return "registration/group_registration";
+		
+		groupsService.add(group);
+		
+		return "redirect:/showUserPage";
+	}
+	
+	@PostMapping("/deleteGroup")
+	public String deletGroup(@ModelAttribute("group") GroupsDto group) {
+		groupsService.delete(group.getId());
+		return "redirect:/showUserPage";
+	}
+	
 	@PostMapping("/course/{id}")
 	public String updateCourse(@PathVariable("id") long id, @ModelAttribute("courseDto") CourseDto courseDto) {
 		try {
@@ -137,10 +274,9 @@ public class StuffController {
 	@PostMapping("/addTeacherToCourse")
 	public String addTeacherToCourse(@ModelAttribute("courseDto") CourseDto course, @ModelAttribute("teacherDto") TeacherDto teacher, Errors errors) {
 		String[] s = teacher.getFirstName().split(" ");
-		String firstName = s[0];
-		String lastName = s[1];
+		long idTeacher = Long.valueOf(s[0]);
 		try {
-			TeacherDto teacherDtoTemp = teacherService.getByFirstNameAndLastName(firstName, lastName);
+			TeacherDto teacherDtoTemp = teacherService.get(idTeacher);
 			CourseDto courseDtoTemp = courseService.get(course.getId());
 			List<TeacherDto> teacherDtoList = courseDtoTemp.getTeacher();
 			teacherDtoList.add(teacherDtoTemp);
@@ -237,11 +373,9 @@ public class StuffController {
 	
 	@PostMapping("/deletTeacherFromCourse")
 	public String deleteTeacherFromCourse(@ModelAttribute("teacher") TeacherDto teacher, @ModelAttribute("course") CourseDto course, Errors errors) {
-		String[] s = teacher.getFirstName().split(" ");
-		String firstName = s[0];
-		String lastName = s[1];
+		long idTeacher = Long.valueOf(teacher.getFirstName());
 		try {
-			TeacherDto teacherDtoTemp = teacherService.getByFirstNameAndLastName(firstName, lastName);
+			TeacherDto teacherDtoTemp = teacherService.get(idTeacher);
 			CourseDto courseDtoTemp = courseService.get(course.getId());
 			List<TeacherDto> teacherDtoList = courseDtoTemp.getTeacher();
 			teacherDtoList.remove(teacherDtoTemp);

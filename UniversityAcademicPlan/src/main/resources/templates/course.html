@@ -90,6 +90,8 @@
 							<select name="firstName" required="required">
 								<option></option>
 								<option th:each="teacherDto : ${teacherLeftList}">
+									<a th:text="${teacherDto.getId()}"></a>
+									<a th:text="${teacherDto.getNickName()}"></a>
 									<a th:text="${teacherDto.getFirstName()}"></a>
 									<a th:text="${teacherDto.getLastName()}"></a>
 								</option>
@@ -143,7 +145,8 @@
 						<table class="table_list">
 							<thead>
 								<tr>
-									<th class="table_info" width="30px" align="center"> ID </th>
+									<th class="table_info" width="30px" align="center"> N </th>
+									<th class="table_info" width="75px" align="center"> Nick name </th>
 									<th class="table_info" width="120px" align="center"> First name </th>
 									<th class="table_info" width="120px" align="center"> Last name </th>
 									<th class="table_info" width="50px" align="center"> Select </th>
@@ -151,12 +154,13 @@
 							</thead>
 							<tbody>
 								<tr th:each="teacherDto : ${teacherDtoList}">
-									<td class="table_info" th:text="${teacherDto.getId()}" align="center"></td>
+									<td class="table_info" th:text="${teacherDtoList.indexOf(teacherDto)}+1" align="center"></td>
+									<td class="table_info" th:text="${teacherDto.getNickName()}" align="center"></td>
 									<td class="table_info" th:text="${teacherDto.getFirstName()}" align="center"></td>
 									<td class="table_info" th:text="${teacherDto.getLastName()}" align="center"></td>
 									<td class="table_info" align="center">
 										<input required="required" type="radio"
-											th:value="${teacherDto.getFirstName()} + ' ' + ${teacherDto.getLastName()}"
+											th:value="${teacherDto.getId()}"
 											name="firstName">
 									</td>
 								</tr>
@@ -234,7 +238,7 @@
 			</div>
 
 		</div>
-		<div class="course_lecture_block">
+		<div class="course_lecture_block" th:if="${userType == 'stuff'}">
 			<h2> Lecture list:</h2>
 			<div>
 				<form th:action="@{/stuff/addLectureToCourse}" th:method="post" th:object="${lecture}">

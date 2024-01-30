@@ -1,6 +1,8 @@
 package ua.foxminded.controller;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
+import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LectureDto;
 import ua.foxminded.dto.ScheduleDto;
+import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.entity.UserType;
-import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
+import ua.foxminded.exceptions.GroupsException;
 import ua.foxminded.exceptions.TeacherException;
 import ua.foxminded.service.CourseService;
+import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.TeacherService;
 
 @Controller
@@ -29,12 +33,14 @@ public class TeacherController {
 
 	private final TeacherService teacherService;
 	private final CourseService courseService;
+	private final GroupsService groupsService;
 	
 	private String userType = UserType.ROLE_TEACHER.getUserType();
 
-	public TeacherController(TeacherService teacherService, CourseService courseService) {
+	public TeacherController(TeacherService teacherService, CourseService courseService, GroupsService groupsService) {
 		this.teacherService = teacherService;
 		this.courseService = courseService;
+		this.groupsService = groupsService;
 	}
 	
 	@GetMapping()
@@ -67,6 +73,23 @@ public class TeacherController {
 			e.printStackTrace();
 		}
 		return "course";
+	}
+	
+	@GetMapping("/group/{id}")
+	public String showGroupPage(@PathVariable("id") long id, Model model) {
+		try {
+			GroupsDto group = groupsService.get(id);
+			model.addAttribute("studentGroupList", 
+					group.getStudent()
+					.stream()
+					.sorted(Comparator.comparing(StudentDto::getFirstName))
+					.collect(Collectors.toList()));
+			model.addAttribute("group", group);
+			model.addAttribute("userType", userType);
+		} catch (GroupsException e) {
+			e.printStackTrace();
+		}
+		return "group";
 	}
 	
 	@GetMapping("/updateprofile")

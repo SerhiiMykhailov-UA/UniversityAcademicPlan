@@ -82,7 +82,7 @@ public class StudentService {
 	
 	@Transactional(readOnly = false)
 	public StudentDto update(StudentDto student) throws StudentException {
-		logger.info("Update student = {} with courses", student);
+		logger.info("Update student = {}", student);
 		Student studentDao = mapper.studentDtoToStudent(student, context);
 		Student studentTemp = repository.findById(studentDao.getId())
 				.orElseThrow(() -> new StudentException("Cann't find student = " + studentDao));
@@ -92,13 +92,26 @@ public class StudentService {
 			studentTemp.setLastName(studentDao.getLastName());
 		if (student.getCourse() != null && !studentTemp.getCourse().equals(studentDao.getCourse()))
 			studentTemp.setCourse(studentDao.getCourse());
-		if (student.getGroups() != null && !studentTemp.getGroups().equals(studentDao.getGroups()))
+		if (student.getGroups() != null)
 			studentTemp.setGroups(studentDao.getGroups());
 		if (student.getPassword() != null && !studentTemp.getPassword().equals(studentDao.getPassword()))
 			studentTemp.setPassword(passwordEncoder.encode(studentDao.getPassword()));
 		Student studentResult = repository.saveAndFlush(studentTemp);
 		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
 		logger.info("OUT. Update student = {}", studentDto);
+		logger.info("------------------------------------------------");
+		return studentDto;
+	}
+	
+	@Transactional(readOnly = false)
+	public StudentDto deletStudentFromGroup(StudentDto student) throws StudentException {
+		logger.info("Delete student = {} from group ", student);
+		Student studentTemp = repository.findById(student.getId())
+				.orElseThrow(() -> new StudentException("Cann't find student = " + student));
+			studentTemp.setGroups(null);
+		Student studentResult = repository.saveAndFlush(studentTemp);
+		StudentDto studentDto = mapper.studentToStudentDto(studentResult, context);
+		logger.info("OUT. delete student = {} from group", studentDto);
 		logger.info("------------------------------------------------");
 		return studentDto;
 	}
