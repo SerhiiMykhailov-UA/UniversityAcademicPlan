@@ -10,6 +10,13 @@ INSERT INTO users (nick_name, password, user_type) VALUES ('user9', '$2a$10$P.Gw
 INSERT INTO users (nick_name, password, user_type) VALUES ('user10', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
 INSERT INTO users (nick_name, password, user_type) VALUES ('admin', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_ADMIN');
 INSERT INTO users (nick_name, password, user_type) VALUES ('stuff', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUFF');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user13', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user14', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user15', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user16', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user17', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user18', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_TEACHER');
+INSERT INTO users (nick_name, password, user_type) VALUES ('user19', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_TEACHER');
 ----------------------------------------------------------------------------------
 INSERT INTO groups (name) VALUES ('gr1');
 INSERT INTO groups (name) VALUES ('gr2');
@@ -95,10 +102,17 @@ INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn4', 'ln4',
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn5', 'ln5', 8, 1);
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn6', 'ln6', 9, 2);
 INSERT INTO student (first_name, last_name, id, groups_id) VALUES ('fn7', 'ln7', 10, 3);
+INSERT INTO student (first_name, last_name, id) VALUES ('----', '----', 13);
+INSERT INTO student (first_name, last_name, id) VALUES ('----', '----', 14);
+INSERT INTO student (first_name, last_name, id) VALUES ('----', '----', 15);
+INSERT INTO student (first_name, last_name, id) VALUES ('----', '----', 16);
 ---------------------------------------------------------------------
 INSERT INTO teacher (first_name, last_name, id) VALUES ('T-fn1', 'T-ln1', 1);
 INSERT INTO teacher (first_name, last_name, id) VALUES ('T-fn2', 'T-ln2', 2);
 INSERT INTO teacher (first_name, last_name, id) VALUES ('T-fn3', 'T-ln3', 3);
+INSERT INTO teacher (first_name, last_name, id) VALUES ('----', '----', 17);
+INSERT INTO teacher (first_name, last_name, id) VALUES ('----', '----', 18);
+INSERT INTO teacher (first_name, last_name, id) VALUES ('----', '----', 19);
 -----------------------------------------------------------------------------
 INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('MONDAY', '8:00', '9:40', 1);
 INSERT INTO schedule (day_of_week, start_time, end_time, course_id) VALUES ('MONDAY', '10:00', '11:40', 2);
