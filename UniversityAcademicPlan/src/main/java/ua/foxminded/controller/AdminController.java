@@ -25,6 +25,7 @@ import ua.foxminded.exceptions.AdminException;
 import ua.foxminded.exceptions.CourseException;
 import ua.foxminded.exceptions.GroupsException;
 import ua.foxminded.exceptions.LocationException;
+import ua.foxminded.exceptions.StudentException;
 import ua.foxminded.exceptions.UsersException;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
@@ -233,7 +234,23 @@ public class AdminController {
 	
 	@PostMapping("/deleteGroup")
 	public String deletGroup(@ModelAttribute("group") GroupsDto group) {
-		groupsService.delete(group.getId());
+		try {
+			GroupsDto groupsTemp = groupsService.get(group.getId());
+			groupsTemp.getStudent()
+			.stream()
+			.forEach(el->{
+				try {
+					studentService.deletStudentFromGroup(el);
+				} catch (StudentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			groupsService.delete(group.getId());
+		} catch (GroupsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "redirect:/showUserPage";
 	}
 	

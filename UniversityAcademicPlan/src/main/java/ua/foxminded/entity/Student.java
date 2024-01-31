@@ -16,6 +16,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 @Entity
@@ -36,7 +37,7 @@ public class Student extends Users {
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "groups_id", referencedColumnName = "id")
 	private Groups groups;
 	

@@ -2,6 +2,7 @@ package ua.foxminded.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -260,7 +261,24 @@ public class StuffController {
 	
 	@PostMapping("/deleteGroup")
 	public String deletGroup(@ModelAttribute("group") GroupsDto group) {
-		groupsService.delete(group.getId());
+		try {
+			GroupsDto groupsTemp = groupsService.get(group.getId());
+			groupsTemp.getStudent()
+			.stream()
+			.forEach(el->{
+				try {
+					studentService.deletStudentFromGroup(el);
+				} catch (StudentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			groupsService.delete(group.getId());
+		} catch (GroupsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return "redirect:/showUserPage";
 	}
 	

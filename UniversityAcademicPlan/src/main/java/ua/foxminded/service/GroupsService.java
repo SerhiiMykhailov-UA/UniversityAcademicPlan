@@ -67,7 +67,7 @@ public class GroupsService {
 	
 	@Transactional(readOnly = false)
 	public boolean delete(long id) {
-		logger.info("Delete location by id = {}", id);
+		logger.info("Delete group by id = {}", id);
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
 			logger.info("Deleting result = {}", true);

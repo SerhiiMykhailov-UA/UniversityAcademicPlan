@@ -80,11 +80,11 @@ public class UserPageController {
 			UsersDto usersDto = usersService.getByNickName(details.getUsername());
 			model.addAttribute("usersDto", usersDto);
 			List<CourseDto> courseDtoList = courseService.getAll().stream()
-					.sorted(Comparator.comparingLong(CourseDto::getId))
+					.sorted(Comparator.comparing(CourseDto::getName))
 					.collect(Collectors.toList());
 			List<GroupsDto> groupsDtoList = groupsService.getAll()
 					.stream()
-					.sorted(Comparator.comparingLong(GroupsDto::getId))
+					.sorted(Comparator.comparing(GroupsDto::getName))
 					.collect(Collectors.toList());
 			model.addAttribute("courseDtoList", courseDtoList);
 			model.addAttribute("groupsDtoList", groupsDtoList);
