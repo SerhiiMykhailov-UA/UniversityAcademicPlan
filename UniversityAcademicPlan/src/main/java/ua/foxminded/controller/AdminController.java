@@ -196,6 +196,21 @@ public class AdminController {
 		return "group";
 	}
 	
+	@PostMapping("/group/{id}")
+	public String updateGroupName(@PathVariable("id") long id, @ModelAttribute("group") GroupsDto group) {
+		try {
+			GroupsDto groupsDto = groupsService.get(id);
+			groupsDto.setName(group.getName());
+			
+			groupsService.updateName(groupsDto);
+			
+		} catch (GroupsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "redirect:/showUserPage";
+	}
+	
 	@GetMapping("/group/registration")
 	public String groupRegistrationPage(@ModelAttribute("group") GroupsDto group, Model model) {
 		model.addAttribute("userType", userType);

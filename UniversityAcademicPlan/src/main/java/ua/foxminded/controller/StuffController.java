@@ -149,6 +149,22 @@ public class StuffController {
 		return "group";
 	}
 	
+	@PostMapping("/group/{id}")
+	public String updateGroupName(@PathVariable("id") long id, @ModelAttribute("group") GroupsDto group) {
+		try {
+			GroupsDto groupsDto = groupsService.get(id);
+			groupsDto.setName(group.getName());
+			
+			groupsService.updateName(groupsDto);
+			
+		} catch (GroupsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:/showUserPage";
+	}
+	
 	@PostMapping("/addStudentToGroup")
 	public String addStudentToGroup(@ModelAttribute("student") StudentDto student, @ModelAttribute("group") GroupsDto group, Errors errors) {
 		String[] s = student.getFirstName().split(" ");

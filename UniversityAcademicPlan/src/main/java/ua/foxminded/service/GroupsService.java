@@ -84,6 +84,7 @@ public class GroupsService {
 		Groups groupDao = mapper.groupsDtoToGroups(group, context);
 		Groups groupTemp = repository.findByName(groupDao.getName())
 				.orElseThrow(()-> new GroupsException("Cann't find group by name = " + groupDao.getName()));
+		groupTemp.setName(groupDao.getName());
 		groupTemp.setCourse(groupDao.getCourse());
 		groupTemp.setStudent(groupDao.getStudent());
 		Groups groupResult = repository.saveAndFlush(groupTemp);
@@ -91,6 +92,21 @@ public class GroupsService {
 		logger.info("OUT result group = {}", groupDto);
 		return groupDto;
 	}
+	
+	@Transactional(readOnly = false)
+	public GroupsDto updateName(GroupsDto group) throws GroupsException {
+		logger.info("Update group = {}", group);
+		Groups groupDao = mapper.groupsDtoToGroups(group, context);
+		Groups groupTemp = repository.findById(groupDao.getId())
+				.orElseThrow(()-> new GroupsException("Cann't find group by name = " + groupDao.getName()));
+		groupTemp.setName(groupDao.getName());
+		Groups groupResult = repository.saveAndFlush(groupTemp);
+		GroupsDto groupDto = mapper.groupsToGroupsDto(groupResult, context);
+		logger.info("OUT result group = {}", groupDto);
+		return groupDto;
+	}
+	
+	
 	
 	public boolean ifExistsByName(String name) {
 		logger.info("Find group by name = {}", name);
