@@ -1,6 +1,9 @@
 package ua.foxminded.controller;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +23,10 @@ import ua.foxminded.dto.GroupsDto;
 import ua.foxminded.dto.LectureDto;
 import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.exceptions.CourseException;
+import ua.foxminded.exceptions.GroupsException;
 import ua.foxminded.exceptions.StudentException;
 import ua.foxminded.service.CourseService;
+import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.StudentService;
 
 @Controller
@@ -30,12 +35,14 @@ public class StudentController {
 
 	private final StudentService studentService;
 	private final CourseService courseService;
+	private final GroupsService groupsService;
 	
 	private String userType = UserType.ROLE_STUDENT.getUserType();
 
-	public StudentController(StudentService studentService, CourseService courseService) {
+	public StudentController(StudentService studentService, CourseService courseService, GroupsService groupsService) {
 		this.studentService = studentService;
 		this.courseService = courseService;
+		this.groupsService = groupsService;
 	}
 	
 	@GetMapping()
@@ -96,6 +103,28 @@ public class StudentController {
 		return "redirect:/showUserPage";
 	}
 	
+	@GetMapping("/group/{id}")
+	public String showGroupPage(@PathVariable("id") long id, Model model) {
+		try {
+			GroupsDto group = groupsService.get(id);
+			model.addAttribute("studentGroupList", 
+					group.getStudent()
+					.stream()
+					.sorted(Comparator.comparing(StudentDto::getFirstName))
+					.collect(Collectors.toList()));
+			model.addAttribute("courseGroupsList",
+					group.getCourse()
+					.stream()
+					.sorted(Comparator.comparing(CourseDto::getName))
+					.collect(Collectors.toList()));
+			model.addAttribute("group", group);
+			model.addAttribute("userType", userType);
+		} catch (GroupsException e) {
+			e.printStackTrace();
+		}
+		return "group";
+	}
+	
 	@GetMapping("/course/{id}")
 	public String showCoursePage (@PathVariable("id") long id, Model model) {
 		try {
@@ -103,10 +132,24 @@ public class StudentController {
 			List<LectureDto> lectureDtoList = courseDto.getLecture();
 			List<TeacherDto> teacherDtoList = courseDto.getTeacher();
 			List<ScheduleDto> scheduleDtoList = courseDto.getSchedule();
+			List<GroupsDto> groupsCourseList = courseDto.getGroups();
+			List<StudentDto> studentAdditionalList = courseDto.getStudent();
+			List<StudentDto> studentMainList = new ArrayList<>();
+			for(GroupsDto g : groupsCourseList) {
+				studentMainList.addAll(g.getStudent());
+			}
+			studentMainList
+				.stream()
+				.sorted(Comparator.comparing(StudentDto::getFirstName));
+			studentAdditionalList
+			.stream()
+			.sorted(Comparator.comparing(StudentDto::getFirstName));
 			model.addAttribute("courseDto", courseDto);
 			model.addAttribute("teacherDtoList", teacherDtoList);
 			model.addAttribute("lectureDtoList", lectureDtoList);
 			model.addAttribute("scheduleDtoList", scheduleDtoList);
+			model.addAttribute("studentMainList", studentMainList);
+			model.addAttribute("studentAdditionalList", studentAdditionalList);
 			model.addAttribute("userType", userType);
 		} catch (CourseException e) {
 			// TODO Auto-generated catch block

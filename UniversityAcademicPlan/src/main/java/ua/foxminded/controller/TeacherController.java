@@ -1,5 +1,6 @@
 package ua.foxminded.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,10 +65,24 @@ public class TeacherController {
 			List<LectureDto> lectureDtoList = courseDto.getLecture();
 			List<TeacherDto> teacherDtoList = courseDto.getTeacher();
 			List<ScheduleDto> scheduleDtoList = courseDto.getSchedule();
+			List<GroupsDto> groupsCourseList = courseDto.getGroups();
+			List<StudentDto> studentAdditionalList = courseDto.getStudent();
+			List<StudentDto> studentMainList = new ArrayList<>();
+			for(GroupsDto g : groupsCourseList) {
+				studentMainList.addAll(g.getStudent());
+			}
+			studentMainList
+				.stream()
+				.sorted(Comparator.comparing(StudentDto::getFirstName));
+			studentAdditionalList
+			.stream()
+			.sorted(Comparator.comparing(StudentDto::getFirstName));
 			model.addAttribute("courseDto", courseDto);
 			model.addAttribute("teacherDtoList", teacherDtoList);
 			model.addAttribute("lectureDtoList", lectureDtoList);
 			model.addAttribute("scheduleDtoList", scheduleDtoList);
+			model.addAttribute("studentMainList", studentMainList);
+			model.addAttribute("studentAdditionalList", studentAdditionalList);
 			model.addAttribute("userType", userType);
 		} catch (CourseException e) {
 			e.printStackTrace();
@@ -83,6 +98,11 @@ public class TeacherController {
 					group.getStudent()
 					.stream()
 					.sorted(Comparator.comparing(StudentDto::getFirstName))
+					.collect(Collectors.toList()));
+			model.addAttribute("courseGroupsList",
+					group.getCourse()
+					.stream()
+					.sorted(Comparator.comparing(CourseDto::getName))
 					.collect(Collectors.toList()));
 			model.addAttribute("group", group);
 			model.addAttribute("userType", userType);

@@ -60,6 +60,9 @@
 					<th class="course_info" width="100px" align="center"> Name </th>
 					<th class="course_info" width="75px" align="center"> Location </th>
 					<th class="course_info" width="150px" align="center"> Groups list</th>
+					<th class="course_info" width="100px" align="center"> Day of Week </th>
+					<th class="course_info" width="75px" align="center"> Start time </th>
+					<th class="course_info" width="75px" align="center"> End time </th>
 				</tr>
 			</thead>
 			<tbody>
@@ -67,15 +70,30 @@
 
 					<td class="course_info" align="center" th:text="${courseTeacherList.indexOf(course)}+1"></td>
 					<td class="course_info" align="center">
-						<a th:href="@{/teacher/course/{id} (id = ${course.getId()})}"
-							th:text="${course.getName()}"></a>
+						<a th:href="@{/teacher/course/{id} (id = ${course.getId()})}" th:text="${course.getName()}"></a>
 					</td>
 					<td class="course_info" th:text="${course.getLocation().getName()}" align="center"></td>
-					<td class="course_info" align="center" >
+					<td class="course_info" align="center">
 						<span th:each="group : ${course.getGroups()}">
-							<a th:href="@{/teacher/group/{id} (id = ${group.getId()})}" th:text="${group.getName()}"></a>
+							<a th:href="@{/teacher/group/{id} (id = ${group.getId()})}"
+								th:text="${group.getName()}"></a>
 							<a th:if="${course.getGroups().size()-1 != course.getGroups().indexOf(group)}">; </a>
 						</span>
+					</td>
+					<td class="course_info" align="center">
+						<p th:each="schedule : ${course.getSchedule()}">
+							<a th:text="${schedule.getDayOfWeek()}"></a>
+						</p>
+					</td>
+					<td class="course_info" align="center">
+						<p th:each="schedule : ${course.getSchedule()}">
+							<a th:text="${schedule.getStartTime()}"></a>
+						</p>
+					</td>
+					<td class="course_info" align="center">
+						<p th:each="schedule : ${course.getSchedule()}">
+							<a th:text="${schedule.getEndTime()}"></a>
+						</p>
 					</td>
 				</tr>
 			</tbody>

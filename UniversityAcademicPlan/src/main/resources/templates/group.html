@@ -57,7 +57,7 @@
 			</form>
 
 			<p>
-				<a href="/showUserPage">Back to previos page</a>
+				<a href="/showUserPage">Back to users page</a>
 			</p>
 
 			<div th:if="${userType == 'stuff'}">
@@ -171,19 +171,48 @@
 		</div>
 
 	</div>
-	<!--		Page for Teachers-->
-	<div th:if="${userType == 'teacher'}">
-		<h1>Group ID:
-			<a th:text="${group.getId()}">VALUE</a>
-		</h1>
-		<h1>Group name:
-			<a th:text="${group.getName()}">VALUE</a>
-		</h1>
-		<p>
-			<a href="/showUserPage">Back to previos page</a>
-		</p>
-		<br>
-		<div th:if="${studentGroupList.size()} gt 0">
+	<!--		Page for Teachers and Students-->
+	<div th:if="${userType == 'teacher' or userType == 'student'}">
+		<div class="group_update_block">
+			<h1>Group ID:
+				<a th:text="${group.getId()}">VALUE</a>
+			</h1>
+			<h1>Group name:
+				<a th:text="${group.getName()}">VALUE</a>
+			</h1>
+			<p>
+				<a href="/showUserPage">Back to users page</a>
+			</p>
+
+			<br>
+			<div th:if="${userType == 'student'}">
+				<div th:if="${courseGroupsList.size()} gt 0">
+					<h2> Courses list: </h2>
+					<div>
+						<table class="table_list">
+							<thead>
+								<tr>
+									<th class="table_info" width="50px" align="center"> N </th>
+									<th class="table_info" width="100px" align="center"> Name </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="course : ${courseGroupsList}">
+									<td class="table_info" align="center"
+										th:text="${courseGroupsList.indexOf(course)}+1">
+									</td>
+									<td class="table_info" align="center">
+										<a th:href="@{/{userType}/course/{id} (userType = ${userType}, id = ${course.getId()})}"
+											th:text="${course.getName()}"></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="student_block" th:if="${studentGroupList.size()} gt 0">
 			<h2> Student list: </h2>
 			<div>
 				<table class="table_list">
