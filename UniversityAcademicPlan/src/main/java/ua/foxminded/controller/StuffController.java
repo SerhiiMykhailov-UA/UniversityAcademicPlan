@@ -45,6 +45,7 @@ import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
 import ua.foxminded.util.CourseDtoValidator;
 import ua.foxminded.util.GroupsDtoValidator;
+import ua.foxminded.util.ScheduleDtoValidator;
 
 @Controller
 @RequestMapping("/stuff")
@@ -57,6 +58,7 @@ public class StuffController {
 	private final GroupsService groupsService;
 	private final LocationService locationService;
 	private final ScheduleService scheduleService;
+	private final ScheduleDtoValidator scheduleDtoValidator;
 	private final LectureService lectureService;
 	private final GroupsDtoValidator groupsDtoValidator;
 	private final StudentService studentService;
@@ -66,7 +68,7 @@ public class StuffController {
 	public StuffController(CourseDtoValidator courseDtoValidator,
 			StuffService stuffService, CourseService courseService,
 			LocationService locationService, TeacherService teacherService,
-			GroupsService groupsService, ScheduleService scheduleService, LectureService lectureService, GroupsDtoValidator groupsDtoValidator, StudentService studentService) {
+			GroupsService groupsService, ScheduleService scheduleService, LectureService lectureService, GroupsDtoValidator groupsDtoValidator, StudentService studentService, ScheduleDtoValidator scheduleDtoValidator) {
 		this.courseDtoValidator = courseDtoValidator;
 		this.stuffService = stuffService;
 		this.courseService = courseService;
@@ -74,6 +76,7 @@ public class StuffController {
 		this.groupsService = groupsService;
 		this.locationService = locationService;
 		this.scheduleService = scheduleService;
+		this.scheduleDtoValidator = scheduleDtoValidator;
 		this.lectureService = lectureService;
 		this.groupsDtoValidator = groupsDtoValidator;
 		this.studentService = studentService;
@@ -275,6 +278,40 @@ public class StuffController {
 			});
 			groupsService.delete(group.getId());
 		} catch (GroupsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "redirect:/showUserPage";
+	}
+	
+	@GetMapping("/schedule/registration")
+	public String scheduleRegistrationPage(@ModelAttribute("schedule") ScheduleDto schedule, Model model) {
+		model.addAttribute("userType", userType);
+		return "registration/schedule_registration";
+	}
+	
+	@PostMapping("/schedule/registration")
+	public String performScheduleRegistration(@ModelAttribute("schedule") ScheduleDto schedule, BindingResult bindingResult, Model model) {
+
+		System.out.println(111111);
+		System.out.println(schedule);
+		scheduleDtoValidator.validate(schedule, bindingResult);
+		
+		if (bindingResult.hasErrors())
+			return "registration/schedule_registration";
+		
+		scheduleService.add(schedule);
+		
+		return "redirect:/showUserPage";
+	}
+	
+	@PostMapping("/deleteSchedule")
+	public String deletSchedule(@ModelAttribute("schedule") ScheduleDto schedule) {
+		try {
+			ScheduleDto scheduleTemp = scheduleService.get(schedule.getId());
+			scheduleService.delete(scheduleTemp.getId());
+		} catch (ScheduleException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

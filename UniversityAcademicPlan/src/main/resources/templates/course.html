@@ -17,7 +17,7 @@
 
 		.course_teacher_group_block {
 			float: inline-start;
-			width: 25%;
+			width: 30%;
 			height: 150px;
 		}
 
@@ -193,7 +193,10 @@
 							<tbody>
 								<tr th:each="groupsDto : ${groupsDtoList}">
 									<td class="table_info" align="center" th:text="${groupsDto.getId()}"></td>
-									<td class="table_info" align="center" th:text="${groupsDto.getName()}"></td>
+									<td class="table_info" align="center" >
+										<a th:href="@{/stuff/group/{id} (id = ${groupsDto.getId()})}"
+										 th:text="${groupsDto.getName()}"></a>
+									</td>
 									<td class="table_info" align="center">
 										<input name="groups_delet" required="required" type="radio"
 											th:value="${groupsDto.getName()}" th:field="*{groups}">
@@ -236,6 +239,7 @@
 						</table>
 
 					</div>
+					<br><br><br><br><br><br><br>
 					<div>
 						<input type="submit" value="Delet" />
 					</div>

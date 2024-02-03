@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import ua.foxminded.dto.AdminDto;
 import ua.foxminded.dto.CourseDto;
 import ua.foxminded.dto.GroupsDto;
+import ua.foxminded.dto.ScheduleDto;
 import ua.foxminded.dto.StudentDto;
 import ua.foxminded.dto.TeacherDto;
 import ua.foxminded.dto.UsersDto;
@@ -31,6 +32,7 @@ import ua.foxminded.security.UsersDetails;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.GroupsService;
+import ua.foxminded.service.ScheduleService;
 import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
@@ -46,9 +48,10 @@ public class UserPageController {
 	private final StuffService stuffService;
 	private final CourseService courseService;
 	private final GroupsService groupsService;
+	private final ScheduleService scheduleService;
 
 	public UserPageController(UsersService usersService, StudentService studentService, TeacherService teacherService,
-			AdminService adminService, CourseService courseService, StuffService stuffService, GroupsService groupsService) {
+			AdminService adminService, CourseService courseService, StuffService stuffService, GroupsService groupsService, ScheduleService scheduleService) {
 		this.usersService = usersService;
 		this.adminService = adminService;
 		this.studentService = studentService;
@@ -56,6 +59,7 @@ public class UserPageController {
 		this.stuffService = stuffService;
 		this.courseService = courseService;
 		this.groupsService = groupsService;
+		this.scheduleService = scheduleService;
 	}
 
 	@GetMapping("/")
@@ -64,7 +68,7 @@ public class UserPageController {
 	}
 
 	@GetMapping("/showUserPage")
-	public String showUserInfo(@ModelAttribute("group") GroupsDto groups, Model model) {
+	public String showUserInfo(@ModelAttribute("schedule") ScheduleDto schedule ,@ModelAttribute("group") GroupsDto groups, Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UsersDetails details;
 		if (authentication.getPrincipal() instanceof UsersDetails) {
@@ -86,8 +90,13 @@ public class UserPageController {
 					.stream()
 					.sorted(Comparator.comparing(GroupsDto::getName))
 					.collect(Collectors.toList());
+			List<ScheduleDto> scheduleDtoList = scheduleService.getAll()
+					.stream()
+					.sorted(Comparator.comparing(ScheduleDto::getDayOfWeek))
+					.collect(Collectors.toList());
 			model.addAttribute("courseDtoList", courseDtoList);
 			model.addAttribute("groupsDtoList", groupsDtoList);
+			model.addAttribute("scheduleDtoList", scheduleDtoList);
 			linkPage = linkPage + usersDto.getUserType().getUserType();
 			switch (usersDto.getUserType().getUserType()) {
 			case "admin":

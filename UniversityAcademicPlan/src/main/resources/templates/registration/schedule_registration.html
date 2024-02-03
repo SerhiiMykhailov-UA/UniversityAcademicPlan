@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Registration new Course</title>
+</head>
+
+<body>
+	<h1> Register new Schedule</h1>
+	<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('schedule')}" th:errors="*{schedule}"> Add course error.
+		Contact the administrator</div>
+	<form name="schedule" th:object="${schedule}" th:method="POST"
+		th:action="@{/{userType}/schedule/registration (userType = ${userType})}">
+		<lable> Choose day of week:
+			<select th:field="*{dayOfWeek}" required="required">
+				<option value=""></option>
+				<option type="text" value="MONDAY">MONDAY</option>
+				<option type="text" value="TUESDAY">TUESDAY</option>
+				<option type="text" value="WEDNESDAY">WEDNESDAY</option>
+				<option type="text" value="THURSDAY">THURSDAY</option>
+				<option type="text" value="FRIDAY">FRIDAY</option>
+				<option type="text" value="SATURDAY">SATURDAY</option>
+				<option type="text" value="SUNDAY">SUNDAY</option>
+			</select>
+		</lable>
+		<lable> Choose Start time		</lable>
+			<input type="text" th:field="*{startTime}" required="required">
+
+		<lable> Choose End time		</lable>
+			<input type="text" th:field="*{endTime}" required="required">
+
+		<br />
+		<input type="submit" value="Add new schedule" />
+	</form>
+	<p>
+		<a href="/showUserPage"> Back to main page</a>
+	</p>
+</body>
+
+</html>

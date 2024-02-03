@@ -39,12 +39,17 @@
 
 		.course_block {
 			float: inline-start;
-			width: 50%;
+			width: 46%;
 		}
 
 		.group_block {
 			float: inline-start;
-			width: 8%;
+			width: 16%;
+		}
+
+		.schedule_block {
+			float: inline-start;
+			width: 20%;
 		}
 
 		.table_list {
@@ -184,6 +189,45 @@
 					</table>
 				</div>
 				<br>
+				<div>
+					<input type="submit" value="Delet" />
+				</div>
+			</form>
+		</div>
+		<div class="schedule_block" th:if="${scheduleDtoList.size()} gt 0">
+			<h2> Schedule list</h2>
+			<p>
+				<a href="/stuff/schedule/registration">Add new schedule</a>
+			</p>
+			<form th:action="@{/stuff/deleteSchedule}" th:method="post" th:object="${schedule}">
+				<div>
+					<table class="table_list">
+						<thead>
+							<tr>
+								<th class="table_info" width="150px" align="center"> Day of week </th>
+								<th class="table_info" width="75px" align="center"> Start time</th>
+								<th class="table_info" width="75px" align="center"> End time</th>
+								<th class="table_info" width="50px" align="center"> Select</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="scheduleDto : ${scheduleDtoList}">
+								<td class="table_info" align="center" >
+									<a th:href="@{/stuff/schedule/{id} (id=${scheduleDto.getId()})}"
+									th:text="${scheduleDto.getDayOfWeek}"></a>
+								</td>
+								<td class="table_info" align="center" th:text="${scheduleDto.getStartTime}"></td>
+								<td class="table_info" align="center" th:text="${scheduleDto.getEndTime}"></td>
+								<td class="table_info" align="center">
+									<input name="nameSchedule" required="required" type="radio"
+										th:value="${scheduleDto.getId()}" th:field="*{id}">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				<br><br><br><br><br><br><br>
 				<div>
 					<input type="submit" value="Delet" />
 				</div>
