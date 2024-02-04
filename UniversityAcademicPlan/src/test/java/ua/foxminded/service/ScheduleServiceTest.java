@@ -103,14 +103,14 @@ class ScheduleServiceTest {
 	@Test
 	void testUpdate() throws ScheduleException {
 		when(mapper.scheduleDtoToSchedule(Mockito.any(), Mockito.any())).thenReturn(entity);		
-		when(repository.findByStartTimeAndEndTimeAndDayOfWeek(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Optional.of(entity));
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(entity));
 		when(repository.saveAndFlush(Mockito.any())).thenReturn(entity);
 		when(mapper.scheduleToScheduleDto(Mockito.any(), Mockito.any())).thenReturn(dto);
 		
 		service.update(dto);
 		
 		verify(mapper, times(1)).scheduleDtoToSchedule(Mockito.any(), Mockito.any());
-		verify(repository, times(1)).findByStartTimeAndEndTimeAndDayOfWeek(Mockito.any(), Mockito.any(), Mockito.any());
+		verify(repository, times(1)).findById(Mockito.anyLong());
 		verify(repository, times(1)).saveAndFlush(Mockito.any());
 		verify(mapper, times(1)).scheduleToScheduleDto(Mockito.any(), Mockito.any());
 	}

@@ -30,6 +30,7 @@ import ua.foxminded.entity.UserType;
 import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.GroupsService;
+import ua.foxminded.service.ScheduleService;
 import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
@@ -54,6 +55,8 @@ class UserPageControllerTest {
 	private StuffService stuffService;
 	@MockBean
 	private GroupsService groupsService;
+	@MockBean
+	private ScheduleService scheduleService;
 	
 	@Test
 	@WithMockUser(value="admin")

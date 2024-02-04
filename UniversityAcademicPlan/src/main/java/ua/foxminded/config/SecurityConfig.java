@@ -25,12 +25,12 @@ public class SecurityConfig {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(requests -> requests
-        		.antMatchers("/showuserpage", "/admin/course/{id}", "/admin/course/registration", "/admin/course/delet", "/admin/user/{id}", "admin/user/delet", "/admin/user/registration").hasRole("ADMIN")
-        		.antMatchers("/showuserpage").hasRole("TEACHER")
-        		.antMatchers("/showuserpage").hasRole("STUDENT")
-        		.antMatchers("/showuserpage", "/stuff/course/{id}", "/stuff/course/registration", "/stuff/course/delet").hasRole("STUFF")
+        		.antMatchers("/showUserPage/", "/admin/**").hasRole("ADMIN")
+        		.antMatchers("/showUserPage/", "/teacher/**").hasRole("TEACHER")
+        		.antMatchers("/showUserPage/", "/student/**").hasRole("STUDENT")
+        		.antMatchers("/showUserPage/", "/stuff/**").hasRole("STUFF")
                 .antMatchers("/auth/login", "/error").permitAll()
-                .anyRequest().hasAnyRole("STUDENT", "TEACHER", "ADMIN", "STUFF"))
+                .anyRequest().hasAnyRole("ADMIN", "STUFF", "STUDENT", "TEACHER"))
              .formLogin(login -> login
             	.loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")

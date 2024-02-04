@@ -89,13 +89,14 @@ class StudentServiceTest {
 	}
 
 	@Test
-	void testUpdate() {
-		when(repository.existsById(Mockito.anyLong())).thenReturn(true);
+	void testUpdate() throws StudentException {
+		when(mapper.studentDtoToStudent(Mockito.any(), Mockito.any())).thenReturn(entity);
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(entity));
 		
-		service.delete((long)1);
+		service.update(new StudentDto("www", "eee"));
 		
-		verify(repository, times(1)).existsById(Mockito.anyLong());
-		verify(repository, times(1)).deleteById(Mockito.anyLong());
+		verify(repository, times(1)).findById(Mockito.anyLong());
+		verify(repository, times(1)).saveAndFlush(Mockito.any());
 	}
 
 	@Test

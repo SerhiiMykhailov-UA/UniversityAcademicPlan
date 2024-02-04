@@ -29,12 +29,14 @@ import ua.foxminded.service.AdminService;
 import ua.foxminded.service.CourseService;
 import ua.foxminded.service.GroupsService;
 import ua.foxminded.service.LocationService;
+import ua.foxminded.service.ScheduleService;
 import ua.foxminded.service.StudentService;
 import ua.foxminded.service.StuffService;
 import ua.foxminded.service.TeacherService;
 import ua.foxminded.service.UsersService;
 import ua.foxminded.util.CourseDtoValidator;
 import ua.foxminded.util.GroupsDtoValidator;
+import ua.foxminded.util.ScheduleDtoValidator;
 import ua.foxminded.util.UsersDtoValidator;
 
 @WebMvcTest(AdminController.class)
@@ -65,7 +67,10 @@ class AdminControllerTest {
 	private GroupsService groupsService;
 	@MockBean
 	private GroupsDtoValidator groupsDtoValidator;
-	
+	@MockBean
+	private ScheduleService scheduleService;
+	@MockBean
+	private ScheduleDtoValidator scheduleDtoValidator;
 	
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
