@@ -11,14 +11,24 @@
 			height: 200px;
 		}
 
-		.course_list {
+		.course_block {
+			float: inline-start;
+			width: 45%;
+		}
+		
+		.schedule_block {
+			float: inline-start;
+			width: 30%;
+		}
+
+		.table_list {
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
 			float: inline-start;
 		}
 
-		.course_info {
+		.table_info {
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
@@ -51,46 +61,46 @@
 			<a th:href="@{/teacher/updatePassword (id=${usersInfo.getId()})}"> Update Password</a>
 		</p>
 	</div>
-	<div>
+	<div class="course_block">
 		<h3> Taughting courses: </h3>
-		<table class="course_list">
+		<table class="table_list">
 			<thead>
 				<tr>
-					<th class="course_info" width="30px" align="center"> N </th>
-					<th class="course_info" width="100px" align="center"> Name </th>
-					<th class="course_info" width="75px" align="center"> Location </th>
-					<th class="course_info" width="150px" align="center"> Groups list</th>
-					<th class="course_info" width="100px" align="center"> Day of Week </th>
-					<th class="course_info" width="75px" align="center"> Start time </th>
-					<th class="course_info" width="75px" align="center"> End time </th>
+					<th class="table_info" width="30px" align="center"> N </th>
+					<th class="table_info" width="100px" align="center"> Name </th>
+					<th class="table_info" width="75px" align="center"> Location </th>
+					<th class="table_info" width="150px" align="center"> Groups list</th>
+					<th class="table_info" width="100px" align="center"> Day of Week </th>
+					<th class="table_info" width="75px" align="center"> Start time </th>
+					<th class="table_info" width="75px" align="center"> End time </th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="course : ${courseTeacherList}">
 
-					<td class="course_info" align="center" th:text="${courseTeacherList.indexOf(course)}+1"></td>
-					<td class="course_info" align="center">
+					<td class="table_info" align="center" th:text="${courseTeacherList.indexOf(course)}+1"></td>
+					<td class="table_info" align="center">
 						<a th:href="@{/teacher/course/{id} (id = ${course.getId()})}" th:text="${course.getName()}"></a>
 					</td>
-					<td class="course_info" th:text="${course.getLocation().getName()}" align="center"></td>
-					<td class="course_info" align="center">
+					<td class="table_info" th:text="${course.getLocation().getName()}" align="center"></td>
+					<td class="table_info" align="center">
 						<span th:each="group : ${course.getGroups()}">
 							<a th:href="@{/teacher/group/{id} (id = ${group.getId()})}"
 								th:text="${group.getName()}"></a>
 							<a th:if="${course.getGroups().size()-1 != course.getGroups().indexOf(group)}">; </a>
 						</span>
 					</td>
-					<td class="course_info" align="center">
+					<td class="table_info" align="center">
 						<p th:each="schedule : ${course.getSchedule()}">
 							<a th:text="${schedule.getDayOfWeek()}"></a>
 						</p>
 					</td>
-					<td class="course_info" align="center">
+					<td class="table_info" align="center">
 						<p th:each="schedule : ${course.getSchedule()}">
 							<a th:text="${schedule.getStartTime()}"></a>
 						</p>
 					</td>
-					<td class="course_info" align="center">
+					<td class="table_info" align="center">
 						<p th:each="schedule : ${course.getSchedule()}">
 							<a th:text="${schedule.getEndTime()}"></a>
 						</p>
@@ -98,6 +108,37 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+	<div class="schedule_block" th:if="${scheduleDtoList.size()} gt 0">
+		<h2> Schedule list</h2>
+			<div>
+				<table class="table_list">
+					<thead>
+						<tr>
+							<th class="table_info" width="150px" align="center"> Day of week </th>
+							<th class="table_info" width="75px" align="center"> Start time</th>
+							<th class="table_info" width="75px" align="center"> End time</th>
+							<th class="table_info" width="100px" align="center"> Course list</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="scheduleDto : ${scheduleDtoList}">
+							<td class="table_info" align="center">
+								<a th:text="${scheduleDto.getDayOfWeek}"></a>
+							</td>
+							<td class="table_info" th:text="${scheduleDto.getStartTime}" align="center"></td>
+							<td class="table_info" th:text="${scheduleDto.getEndTime}" align="center"></td>
+							<td class="table_info" align="center">
+								<a th:each=" course : ${scheduleDto.getCourse()}">
+									<a th:href="@{/teacher/course/{id} (id = ${course.getId()})}"
+										th:text="${course.getName}"></a>
+									<a th:if="${scheduleDto.getCourse().size()} != ${scheduleDto.getCourse().indexOf(course)}+1">;</a>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 	</div>
 </body>
 

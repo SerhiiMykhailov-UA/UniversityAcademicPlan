@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 
+<head>
+	<meta charset="UTF-8">
+	<title>Schedule</title>
+</head>
+
+<body>
+	<h1> Schedule</h1>
+	<div style="color:rgb(255, 0, 0)" th:if="${#fields.hasErrors('schedule')}" th:errors="*{schedule}"> Add course error.
+		Contact the administrator</div>
+	<form name="schedule" th:method="POST"
+		th:action="@{/{userType}/schedule/{id} (userType = ${userType}, id = ${schedule.getId()})}">
+		<lable> Choose day of week:
+			<select name="dayOfWeek" required="required">
+				<option type="text" th:text="${schedule.getDayOfWeek()}"></option>
+				<option type="text" value="MONDAY">MONDAY</option>
+				<option type="text" value="TUESDAY">TUESDAY</option>
+				<option type="text" value="WEDNESDAY">WEDNESDAY</option>
+				<option type="text" value="THURSDAY">THURSDAY</option>
+				<option type="text" value="FRIDAY">FRIDAY</option>
+				<option type="text" value="SATURDAY">SATURDAY</option>
+				<option type="text" value="SUNDAY">SUNDAY</option>
+			</select>
+		</lable>
+		<lable> Choose Start time		</lable>
+			<input type="time" th:value="${schedule.getStartTime()}" name="nameSchedule" required="required">
+
+		<lable> Choose End time		</lable>
+			<input type="time" th:value="${schedule.getEndTime()}" name="nameSchedule" required="required">
+
+		<br />
+		<input type="submit" value="Update" />
+	</form>
+	<p>
+		<a href="/showUserPage"> Back to main page</a>
+	</p>
 </body>
+
 </html>

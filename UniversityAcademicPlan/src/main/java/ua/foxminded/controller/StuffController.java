@@ -293,15 +293,59 @@ public class StuffController {
 	
 	@PostMapping("/schedule/registration")
 	public String performScheduleRegistration(@ModelAttribute("schedule") ScheduleDto schedule, BindingResult bindingResult, Model model) {
-
-		System.out.println(111111);
-		System.out.println(schedule);
-		scheduleDtoValidator.validate(schedule, bindingResult);
+		String[] s = schedule.getNameSchedule().split(",");
+		LocalTime startTime = LocalTime.parse(s[0]);
+		LocalTime endTime = LocalTime.parse(s[1]);
+		
+		ScheduleDto scheduleDto = new ScheduleDto(startTime, endTime, schedule.getDayOfWeek());
+		
+		scheduleDtoValidator.validate(scheduleDto, bindingResult);
 		
 		if (bindingResult.hasErrors())
 			return "registration/schedule_registration";
 		
-		scheduleService.add(schedule);
+		scheduleService.add(scheduleDto);
+		
+		return "redirect:/showUserPage";
+	}
+	
+	@GetMapping("/schedule/{id}")
+	public String updateSchedule(@PathVariable("id") long id, Model model) {
+		ScheduleDto scheduleDto;
+		try {
+			scheduleDto = scheduleService.get(id);
+			List<CourseDto> courseScheduleList = scheduleDto.getCourse();
+			List<CourseDto> courseLeftList = courseService.getAll()
+					.stream()
+					.filter(el->!courseScheduleList.contains(el))
+					.collect(Collectors.toList());
+			model.addAttribute("schedule", scheduleDto);
+			model.addAttribute("courseLeftList", courseLeftList);
+			model.addAttribute("courseScheduleList", courseScheduleList);
+			model.addAttribute("userType", userType);
+		} catch ( ScheduleException e) {
+			e.printStackTrace();
+		}
+		return "schedule";
+	}
+	
+	@PostMapping("/schedule/{id}")
+	public String updateGroupName(@PathVariable("id") long id, @ModelAttribute("schedule") ScheduleDto schedule) {
+		try {
+			String[] s = schedule.getNameSchedule().split(",");
+			LocalTime startTime = LocalTime.parse(s[0]);
+			LocalTime endTime = LocalTime.parse(s[1]);
+			ScheduleDto schedulesDto = scheduleService.get(id);
+			schedulesDto.setDayOfWeek(schedule.getDayOfWeek());
+			schedulesDto.setStartTime(startTime);
+			schedulesDto.setEndTime(endTime);
+			
+			scheduleService.update(schedulesDto);
+			
+		} catch (ScheduleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return "redirect:/showUserPage";
 	}

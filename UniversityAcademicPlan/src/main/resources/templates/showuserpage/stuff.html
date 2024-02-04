@@ -7,13 +7,13 @@
 	<style>
 		.stuff_info {
 			float: inline-start;
-			width: 15%;
+			width: 13%;
 			height: 200px;
 		}
 
 		.users_block {
 			float: inline-start;
-			width: 20%;
+			width: 16%;
 		}
 
 		.users_list {
@@ -44,12 +44,17 @@
 
 		.group_block {
 			float: inline-start;
-			width: 16%;
+			width: 25%;
 		}
 
 		.schedule_block {
 			float: inline-start;
 			width: 20%;
+		}
+
+		.group_schedule_block {
+			float: inline-start;
+			width: 40%;
 		}
 
 		.table_list {
@@ -158,80 +163,101 @@
 			</table>
 		</div>
 		<div class="group_block">
-			<h2>Group list</h2>
-			<p>
-				<a href="/stuff/group/registration">Add new group</a>
-			</p>
+			<div th:if="${groupsDtoList.size()} gt 0">
+				<h2>Group list</h2>
+				<p>
+					<a href="/stuff/group/registration">Add new group</a>
+				</p>
 
-			<form th:action="@{/stuff/deleteGroup}" th:method="post" th:object="${group}">
-				<div>
-					<table class="table_list">
-						<thead>
-							<tr>
-								<th class="table_info" width="50px" align="center"> N </th>
-								<th class="table_info" width="100px" align="center"> Name </th>
-								<th class="table_info" width="50px" align="center"> Select </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="group : ${groupsDtoList}">
-								<td class="table_info" align="center" th:text="${groupsDtoList.indexOf(group)}+1"></td>
-								<td class="table_info" align="center">
-									<a th:href="@{/stuff/group/{id} (id = ${group.getId()})}"
-										th:text="${group.getName()}"></a>
-								</td>
-								<td class="table_info" align="center">
-									<input required="required" type="radio" th:value="${group.getId()}"
-										th:field="*{id}">
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<br>
-				<div>
-					<input type="submit" value="Delet" />
-				</div>
-			</form>
-		</div>
-		<div class="schedule_block" th:if="${scheduleDtoList.size()} gt 0">
-			<h2> Schedule list</h2>
-			<p>
-				<a href="/stuff/schedule/registration">Add new schedule</a>
-			</p>
-			<form th:action="@{/stuff/deleteSchedule}" th:method="post" th:object="${schedule}">
-				<div>
-					<table class="table_list">
-						<thead>
-							<tr>
-								<th class="table_info" width="150px" align="center"> Day of week </th>
-								<th class="table_info" width="75px" align="center"> Start time</th>
-								<th class="table_info" width="75px" align="center"> End time</th>
-								<th class="table_info" width="50px" align="center"> Select</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="scheduleDto : ${scheduleDtoList}">
-								<td class="table_info" align="center" >
-									<a th:href="@{/stuff/schedule/{id} (id=${scheduleDto.getId()})}"
-									th:text="${scheduleDto.getDayOfWeek}"></a>
-								</td>
-								<td class="table_info" align="center" th:text="${scheduleDto.getStartTime}"></td>
-								<td class="table_info" align="center" th:text="${scheduleDto.getEndTime}"></td>
-								<td class="table_info" align="center">
-									<input name="nameSchedule" required="required" type="radio"
-										th:value="${scheduleDto.getId()}" th:field="*{id}">
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				<form th:action="@{/stuff/deleteGroup}" th:method="post" th:object="${group}">
+					<div>
+						<table class="table_list">
+							<thead>
+								<tr>
+									<th class="table_info" width="30px" align="center"> N </th>
+									<th class="table_info" width="75px" align="center"> Name </th>
+									<th class="table_info" width="150px" align="center"> Course list </th>
+									<th class="table_info" width="50px" align="center"> Select </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="group : ${groupsDtoList}">
+									<td class="table_info" align="center" th:text="${groupsDtoList.indexOf(group)}+1">
+									</td>
+									<td class="table_info" align="center">
+										<a th:href="@{/stuff/group/{id} (id = ${group.getId()})}"
+											th:text="${group.getName()}"></a>
+									</td>
+									<td class="table_info" align="center">
+										<a th:each="course : ${group.getCourse()}">
+											<a th:href="@{/stuff/course/{id} (id = ${course.getId()})}"
+												th:text="${course.getName()}"></a>
+											<a
+												th:if="${group.getCourse().size()} != ${group.getCourse().indexOf(course)}+1">;</a>
+										</a>
+									</td>
+									<td th:if="${group.getCourse().size()} == 0" class="table_info" align="center">---
+									</td>
+									<td class="table_info" align="center">
+										<input required="required" type="radio" th:value="${group.getId()}"
+											th:field="*{id}">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<br>
+					<div>
+						<input type="submit" value="Delet" />
+					</div>
+				</form>
+			</div>
+			<div th:if="${scheduleDtoList.size()} gt 0">
+				<h2> Schedule list</h2>
+				<p>
+					<a href="/stuff/schedule/registration">Add new schedule</a>
+				</p>
+				<form th:action="@{/stuff/deleteSchedule}" th:method="post" th:object="${schedule}">
+					<div>
+						<table class="table_list">
+							<thead>
+								<tr>
+									<th class="table_info" width="150px" align="center"> Day of week </th>
+									<th class="table_info" width="75px" align="center"> Start time</th>
+									<th class="table_info" width="75px" align="center"> End time</th>
+									<th class="table_info" width="100px" align="center"> Course list</th>
+									<th class="table_info" width="50px" align="center"> Select</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="scheduleDto : ${scheduleDtoList}">
+									<td class="table_info" align="center">
+										<a th:href="@{/stuff/schedule/{id} (id=${scheduleDto.getId()})}"
+											th:text="${scheduleDto.getDayOfWeek}"></a>
+									</td>
+									<td class="table_info" th:text="${scheduleDto.getStartTime}" align="center"></td>
+									<td class="table_info" th:text="${scheduleDto.getEndTime}" align="center"></td>
+									<td class="table_info" align="center">
+										<a th:each=" course : ${scheduleDto.getCourse()}">
+											<a th:href="@{/stuff/course/{id} (id = ${course.getId()})}" th:text="${course.getName}"></a>
+											<a th:if="${scheduleDto.getCourse().size()} != ${scheduleDto.getCourse().indexOf(course)}+1">;</a>
+										</a>
+									</td>
+									<td class="table_info" align="center">
+										<input name="nameSchedule" required="required" type="radio"
+											th:value="${scheduleDto.getId()}" th:field="*{id}">
+									</td>
+								</tr>
+							</tbody>
+						</table>
 
-				</div>
-				<br><br><br><br><br><br><br>
-				<div>
-					<input type="submit" value="Delet" />
-				</div>
-			</form>
+					</div>
+					<br><br><br><br><br><br><br>
+					<div>
+						<input type="submit" value="Delet" />
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 

@@ -24,17 +24,22 @@
 
 		.courseStudent_block {
 			float: inline-start;
-			width: 20%;
+			width: 25%;
 		}
 
-		.course_list {
+		.schedule_block {
+			float: inline-start;
+			width: 30%;
+		}
+
+		.table_list {
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
 			float: inline-start;
 		}
 
-		.course_info {
+		.table_info {
 			border: 1px solid black;
 			margin: 1px;
 			padding: 1px;
@@ -55,7 +60,8 @@
 			<a th:text="${usersDto.getUserType().getUserType()}">VALUE</a>
 		</h2>
 		<h2 th:if="${studentDto.getGroups()} != null">Group:
-			<a th:href="@{/student/group/{id} (id = ${studentDto.getGroups().getId()})}" th:text="${studentDto.getGroups().getName()}">VALUE</a>
+			<a th:href="@{/student/group/{id} (id = ${studentDto.getGroups().getId()})}"
+				th:text="${studentDto.getGroups().getName()}">VALUE</a>
 		</h2>
 		<h3> First name:
 			<a th:text="${studentDto.getFirstName()}"> VALUE</a>
@@ -98,22 +104,22 @@
 	</div>
 	<div class="courseGroup_block" th:if="${studentDto.getGroups() != null}">
 		<h2>Main courses:</h2>
-		<table class="course_list">
+		<table class="table_list">
 			<thead>
 				<tr>
-					<th class="course_info" width="30px" align="center"> N </th>
-					<th class="course_info" width="100px" align="center"> Name </th>
-					<th class="course_info" width="75px" align="center"> Location </th>
+					<th class="table_info" width="30px" align="center"> N </th>
+					<th class="table_info" width="100px" align="center"> Name </th>
+					<th class="table_info" width="75px" align="center"> Location </th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="courseDto : ${courseGroupList}">
-					<td class="course_info" th:text="${courseGroupList.indexOf(courseDto)}+1" align="center"></td>
-					<td class="course_info"  align="center">
+					<td class="table_info" th:text="${courseGroupList.indexOf(courseDto)}+1" align="center"></td>
+					<td class="table_info" align="center">
 						<a th:href="@{/student/course/{id} (id = ${courseDto.getId()})}"
-							th:text="${courseDto.getName()}"></a>						
+							th:text="${courseDto.getName()}"></a>
 					</td>
-					<td class="course_info" th:text="${courseDto.getLocation().getName()}" align="center"></td>
+					<td class="table_info" th:text="${courseDto.getLocation().getName()}" align="center"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -125,24 +131,25 @@
 			<input type="hidden" th:value="${studentDto.getFirstName()}" th:field="*{firstName}" />
 			<input type="hidden" th:value="${studentDto.getLastName()}" th:field="*{lastName}" />
 			<div>
-				<table class="course_list">
+				<table class="table_list">
 					<thead>
 						<tr>
-							<th class="course_info" width="30px" align="center"> ID </th>
-							<th class="course_info" width="150px" align="center"> Name </th>
-							<th class="course_info" width="75px" align="center"> Location </th>
-							<th class="course_info" width="50px" align="center"> Select </th>
+							<th class="table_info" width="30px" align="center"> ID </th>
+							<th class="table_info" width="150px" align="center"> Name </th>
+							<th class="table_info" width="75px" align="center"> Location </th>
+							<th class="table_info" width="50px" align="center"> Select </th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="courseDto : ${courseStudentList}">
-							<td class="course_info" th:text="${courseStudentList.indexOf(courseDto)}+1"  align="center"></td>
-							<td class="course_info" align="center">
-								<a th:href="@{/student/course/{id} (id = ${courseDto.getId()})}"
-									th:text="${courseDto.getName()}"></a>								
+							<td class="table_info" th:text="${courseStudentList.indexOf(courseDto)}+1" align="center">
 							</td>
-							<td class="course_info" th:text="${courseDto.getLocation().getName()}" align="center"></td>
-							<td class="course_info" align="center">
+							<td class="table_info" align="center">
+								<a th:href="@{/student/course/{id} (id = ${courseDto.getId()})}"
+									th:text="${courseDto.getName()}"></a>
+							</td>
+							<td class="table_info" th:text="${courseDto.getLocation().getName()}" align="center"></td>
+							<td class="table_info" align="center">
 								<input name="course_delet" required="required" type="radio"
 									th:value="${courseDto.getName()}" th:field="*{course}" />
 							</td>
@@ -154,6 +161,37 @@
 			<br><br><br><br><br>
 			<input type="submit" value="Delet" />
 		</form>
+	</div>
+	<div class="schedule_block" th:if="${scheduleDtoList.size()} gt 0">
+		<h2> Schedule list</h2>
+			<div>
+				<table class="table_list">
+					<thead>
+						<tr>
+							<th class="table_info" width="150px" align="center"> Day of week </th>
+							<th class="table_info" width="75px" align="center"> Start time</th>
+							<th class="table_info" width="75px" align="center"> End time</th>
+							<th class="table_info" width="100px" align="center"> Course list</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="scheduleDto : ${scheduleDtoList}">
+							<td class="table_info" align="center">
+								<a th:text="${scheduleDto.getDayOfWeek}"></a>
+							</td>
+							<td class="table_info" th:text="${scheduleDto.getStartTime}" align="center"></td>
+							<td class="table_info" th:text="${scheduleDto.getEndTime}" align="center"></td>
+							<td class="table_info" align="center">
+								<a th:each=" course : ${scheduleDto.getCourse()}">
+									<a th:href="@{/student/course/{id} (id = ${course.getId()})}"
+										th:text="${course.getName}"></a>
+									<a th:if="${scheduleDto.getCourse().size()} != ${scheduleDto.getCourse().indexOf(course)}+1">;</a>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 	</div>
 </body>
 
