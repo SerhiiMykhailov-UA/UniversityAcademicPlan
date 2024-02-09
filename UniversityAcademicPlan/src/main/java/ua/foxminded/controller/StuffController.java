@@ -2,7 +2,6 @@ package ua.foxminded.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -387,12 +386,12 @@ public class StuffController {
 	}
 	
 	@PostMapping("/addTeacherToCourse")
-	public String addTeacherToCourse(@ModelAttribute("courseDto") CourseDto course, @ModelAttribute("teacherDto") TeacherDto teacher, Errors errors) {
+	public String addTeacherToCourse(@ModelAttribute("courseDto") CourseDto courseDto, @ModelAttribute("teacherDto") TeacherDto teacher, Errors errors) {
 		String[] s = teacher.getFirstName().split(" ");
 		long idTeacher = Long.valueOf(s[0]);
 		try {
 			TeacherDto teacherDtoTemp = teacherService.get(idTeacher);
-			CourseDto courseDtoTemp = courseService.get(course.getId());
+			CourseDto courseDtoTemp = courseService.get(courseDto.getId());
 			List<TeacherDto> teacherDtoList = courseDtoTemp.getTeacher();
 			teacherDtoList.add(teacherDtoTemp);
 			courseDtoTemp.setTeacher(teacherDtoList);
@@ -402,9 +401,9 @@ public class StuffController {
 		} catch (TeacherException | CourseException | LocationException e) {
 			e.printStackTrace();
 			errors.rejectValue("courseDto", "", e.getMessage() + " Contact administrator");
-			return "redirect:/stuff/course/" + course.getId();
+			return "redirect:/stuff/course/" + courseDto.getId();
 		}
-		return "redirect:/stuff/course/" + course.getId();
+		return "redirect:/stuff/course/" + courseDto.getId();
 	}
 	
 	@PostMapping("/addGroupToCourse")
@@ -428,14 +427,14 @@ public class StuffController {
 	}
 	
 	@PostMapping("/addScheduleToCourse")
-	public String addScheduleToCourse(@ModelAttribute("scheduleDto") ScheduleDto schedule, @ModelAttribute("courseDto") CourseDto course, Errors errors) {
+	public String addScheduleToCourse(@ModelAttribute("scheduleDto") ScheduleDto schedule, @ModelAttribute("courseDto") CourseDto courseDto, Errors errors) {
 		String[] s = schedule.getNameSchedule().split(" ");
 		LocalTime startTime = LocalTime.parse(s[0]);
 		LocalTime endTime = LocalTime.parse(s[1]);
 		DayOfWeek dayOfWeek = DayOfWeek.valueOf(s[2]);
 		try {
 			ScheduleDto scheduleDto = scheduleService.getByStartTimeAndEndTimeAndDayOfWeek(startTime, endTime, dayOfWeek);
-			CourseDto courseDtoResult = courseService.get(course.getId());
+			CourseDto courseDtoResult = courseService.get(courseDto.getId());
 			System.out.println(scheduleDto);
 			System.out.println(courseDtoResult);
 			List<CourseDto> courseDtoList = scheduleDto.getCourse();
@@ -447,13 +446,13 @@ public class StuffController {
 		} catch (ScheduleException | CourseException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/stuff/course/" + course.getId();
+		return "redirect:/stuff/course/" + courseDto.getId();
 	}
 	
 	@PostMapping("/addLectureToCourse")
-	public String addLectureToCourse (@ModelAttribute("lecture") LectureDto lecture, @ModelAttribute("courseDto") CourseDto course, Errors errors) {
+	public String addLectureToCourse (@ModelAttribute("lecture") LectureDto lecture, @ModelAttribute("courseDto") CourseDto courseDto, Errors errors) {
 		try {
-			CourseDto courseDtoTemp = courseService.get(course.getId());
+			CourseDto courseDtoTemp = courseService.get(courseDto.getId());
 			LectureDto lectureDtoTemp = new LectureDto(lecture.getName());
 			
 			LectureDto lectureDtoResult = lectureService.add(lectureDtoTemp);
@@ -464,7 +463,7 @@ public class StuffController {
 		} catch (CourseException | LectureException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/stuff/course/" + course.getId();
+		return "redirect:/stuff/course/" + courseDto.getId();
 	}
 	
 	@PostMapping("/deletGroupFromCourse")
@@ -487,11 +486,11 @@ public class StuffController {
 	}
 	
 	@PostMapping("/deletTeacherFromCourse")
-	public String deleteTeacherFromCourse(@ModelAttribute("teacher") TeacherDto teacher, @ModelAttribute("course") CourseDto course, Errors errors) {
+	public String deleteTeacherFromCourse(@ModelAttribute("teacher") TeacherDto teacher, @ModelAttribute("course") CourseDto courseDto, Errors errors) {
 		long idTeacher = Long.valueOf(teacher.getFirstName());
 		try {
 			TeacherDto teacherDtoTemp = teacherService.get(idTeacher);
-			CourseDto courseDtoTemp = courseService.get(course.getId());
+			CourseDto courseDtoTemp = courseService.get(courseDto.getId());
 			List<TeacherDto> teacherDtoList = courseDtoTemp.getTeacher();
 			teacherDtoList.remove(teacherDtoTemp);
 			courseDtoTemp.setTeacher(teacherDtoList);
@@ -501,13 +500,13 @@ public class StuffController {
 		} catch (TeacherException | CourseException | LocationException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/stuff/course/" + course.getId();
+		return "redirect:/stuff/course/" + courseDto.getId();
 	}
 	
 	@PostMapping("/deletScheduleFromCourse")
-	public String deleteScheduleFrobCourse(@ModelAttribute("schedule") ScheduleDto schedule, @ModelAttribute("course") CourseDto course, Errors errors) {
+	public String deleteScheduleFrobCourse(@ModelAttribute("schedule") ScheduleDto schedule, @ModelAttribute("course") CourseDto courseDto, Errors errors) {
 		try {
-			CourseDto courseDtoTemp = courseService.getByName(course.getName());
+			CourseDto courseDtoTemp = courseService.getByName(courseDto.getName());
 			ScheduleDto scheduleDtoTemp = scheduleService.get(Long.parseLong(schedule.getNameSchedule()));
 			List<CourseDto> courseDtoList = scheduleDtoTemp.getCourse();
 			courseDtoList.remove(courseDtoTemp);
@@ -518,11 +517,11 @@ public class StuffController {
 		} catch (CourseException | ScheduleException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/stuff/course/" + course.getId();
+		return "redirect:/stuff/course/" + courseDto.getId();
 	}
 	
 	@PostMapping("/deleteLectureFromCourse")
-	public String deleteLectureFromCoures(@ModelAttribute("lecture") LectureDto lecture, @ModelAttribute("courseDto") CourseDto course, Errors errors) {
+	public String deleteLectureFromCoures(@ModelAttribute("lecture") LectureDto lecture, @ModelAttribute("courseDto") CourseDto courseDto, Errors errors) {
 		try {
 			LectureDto lectureDtoTemp = lectureService.getByName(lecture.getName());
 			lectureDtoTemp.setCourse(null);
@@ -533,26 +532,26 @@ public class StuffController {
 		} catch (LectureException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/stuff/course/" + course.getId();
+		return "redirect:/stuff/course/" + courseDto.getId();
 	}
 	
 	@GetMapping("/course/registration")
-	public String courseRegistrationPage(@ModelAttribute("course") CourseDto course, Model model) {
+	public String courseRegistrationPage(@ModelAttribute("course") CourseDto courseDto, Model model) {
 		List<LocationDto> locationDtoList = locationService.getAll();
 		model.addAttribute("locationDtoList", locationDtoList);
 		return "registration/course_registration";
 	}
 	
 	@PostMapping("/course/registration")
-	public String performCourseRegistration(@ModelAttribute("course") CourseDto course, BindingResult bindingResult, Model model) {
+	public String performCourseRegistration(@ModelAttribute("course") CourseDto courseDto, BindingResult bindingResult, Model model) {
 		List<LocationDto> locationDtoList = locationService.getAll();
 		model.addAttribute("locationDtoList", locationDtoList);
-		courseDtoValidator.validate(course, bindingResult);
+		courseDtoValidator.validate(courseDto, bindingResult);
 		
 		if (bindingResult.hasErrors())
 			return "registration/course_registration";
 		try {
-			courseService.add(course);
+			courseService.add(courseDto);
 		} catch (LocationException e) {
 			bindingResult.rejectValue("courseError", "", "Add course error. Contact the Administrator");
 			return "registration/course_registration";

@@ -351,15 +351,15 @@ public class AdminController {
 	}
 	
 	@PostMapping("/course/registration")
-	public String performCourseRegistration(@ModelAttribute("course") CourseDto course, BindingResult bindingResult, Model model) {
+	public String performCourseRegistration(@ModelAttribute("course") CourseDto courseDto, BindingResult bindingResult, Model model) {
 		List<LocationDto> locationDtoList = locationService.getAll();
 		model.addAttribute("locationDtoList", locationDtoList);
-		courseDtoValidator.validate(course, bindingResult);
+		courseDtoValidator.validate(courseDto, bindingResult);
 		
 		if (bindingResult.hasErrors())
 			return "registration/course_registration";
 		try {
-			courseService.add(course);
+			courseService.add(courseDto);
 		} catch (LocationException e) {
 			bindingResult.rejectValue("courseError", "", "Add course error. Contact the Administrator");
 			return "registration/course_registration";

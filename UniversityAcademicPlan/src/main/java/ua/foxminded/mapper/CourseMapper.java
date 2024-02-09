@@ -9,7 +9,7 @@ import ua.foxminded.entity.Course;
 @Mapper(componentModel = "spring")
 public interface CourseMapper {
 	
-	CourseDto courseToCourseDto (Course course, @Context CycleAvoidingMappingContext context);
+	CourseDto courseToCourseDto (Course courseDto, @Context CycleAvoidingMappingContext context);
 	
 	Course courseDtoToCourse (CourseDto courseDto,  @Context CycleAvoidingMappingContext context);
 	

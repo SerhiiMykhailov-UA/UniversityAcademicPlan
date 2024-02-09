@@ -16,6 +16,7 @@ public class AuthController {
 	
 	@GetMapping("/login")
 	public String logingPage(@ModelAttribute("users") UsersDto users) throws MalformedURLException {
+		
 		return "auth/login";
 	}
 }

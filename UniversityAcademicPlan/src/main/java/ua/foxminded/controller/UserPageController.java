@@ -118,9 +118,9 @@ public class UserPageController {
 							.sorted(Comparator.comparingLong(CourseDto::getId)).collect(Collectors.toList());
 					courseStudentList = studentDto.getCourse().stream()
 							.sorted(Comparator.comparingLong(CourseDto::getId)).collect(Collectors.toList());
-					for (CourseDto course : courseDtoList) {
-						if (!courseDtoGroup.contains(course) & !courseStudentList.contains(course))
-							courseDtoAdditional.add(course);
+					for (CourseDto courseDto : courseDtoList) {
+						if (!courseDtoGroup.contains(courseDto) & !courseStudentList.contains(courseDto))
+							courseDtoAdditional.add(courseDto);
 					}
 				}
 					model.addAttribute("courseGroupList", courseDtoGroup);

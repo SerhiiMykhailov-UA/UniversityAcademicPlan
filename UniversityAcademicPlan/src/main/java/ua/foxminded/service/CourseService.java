@@ -22,7 +22,7 @@ import ua.foxminded.repository.LocationJPARepository;
 @Transactional(readOnly = true)
 public class CourseService {
 
-	private final CourseMapper mapper;
+	private CourseMapper mapper;
 	private final CourseJPARepository courseJPARepository;
 	private final LocationJPARepository locationJPARepository;
 	private final Logger logger = LogManager.getLogger();
@@ -56,10 +56,12 @@ public class CourseService {
 	public List<CourseDto> getAll() {
 		logger.info("Get all courses");
 		List<Course> courseDao = courseJPARepository.findAll();
-		List<CourseDto> courses = courseDao
-				.stream().map(el -> mapper.courseToCourseDto(el, context)).collect(Collectors.toList());
-		logger.info("OUT: result get all courses = {}", courses);
-		return courses;
+		List<CourseDto> courseDtos = courseDao
+				.stream()
+				.map(el -> mapper.courseToCourseDto(el, context))
+				.collect(Collectors.toList());
+		logger.info("OUT: result get all courses = {}", courseDtos);
+		return courseDtos;
 	}
 	
 	@Transactional(readOnly = false)
@@ -90,12 +92,14 @@ public class CourseService {
 	
 	@Transactional(readOnly = false)
 	public CourseDto update(CourseDto course) throws CourseException, LocationException {
-		logger.info("Update course = {}", course);
+		logger.info("Update course = {} teacher = {}", course, course.getTeacher());
 		Location location = locationJPARepository.findByName(course.getLocation().getName())
 				.orElseThrow(()->new LocationException("Location isn't exist"));
 		Course courseDao = mapper.courseDtoToCourse(course, context);
+		logger.info("Update teacherDao = {}", courseDao.getTeacher());
 		Course courseTemp = courseJPARepository.findById(courseDao.getId())
 				.orElseThrow(()-> new CourseException("Cann't find group by name = " + course.getName()));
+		logger.info("Update teacherTemp = {}", courseTemp.getTeacher());
 		if (course.getName() != null && !courseTemp.getName().equals(courseDao.getName())) 
 			courseTemp.setName(courseDao.getName());
 		if (course.getGroups() != null && !courseTemp.getGroups().equals(courseDao.getGroups()))
@@ -106,13 +110,30 @@ public class CourseService {
 			courseTemp.setLocation(location);
 		if (course.getSchedule() != null && !courseTemp.getSchedule().equals(courseDao.getSchedule()))
 			courseTemp.setSchedule(courseDao.getSchedule());
-		if (course.getTeacher() != null && !courseTemp.getTeacher().equals(courseDao.getTeacher()))
+		if (course.getTeacher() != null )
 			courseTemp.setTeacher(courseDao.getTeacher());
 		if (course.getStudent() != null && !courseTemp.getStudent().equals(courseDao.getStudent()))
 			courseTemp.setStudent(courseDao.getStudent());
 		Course courseResult = courseJPARepository.save(courseTemp);
 		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
-		logger.info("OUT result course = {}", courseDto);
+		logger.info("OUT result course = {} teacher = {}", courseDto, courseDto.getTeacher());
+		return courseDto;
+	}
+	
+	@Transactional(readOnly = false)
+	public CourseDto addOrDeleteTeacherToCourse (CourseDto course) throws CourseException {
+		logger.info("Update course = {} teacher = {}", course, course.getTeacher());
+		Course courseDao = mapper.courseDtoToCourse(course, context);
+		logger.info("Update teacherDao = {}", courseDao.getTeacher());
+		Course courseTemp = courseJPARepository.findById(courseDao.getId())
+				.orElseThrow(()-> new CourseException("Cann't find group by name = " + course.getName()));
+		logger.info("Update teacherTemp = {}", courseTemp.getTeacher());
+		courseTemp.setTeacher(courseDao.getTeacher());
+		
+		Course courseResult = courseJPARepository.save(courseTemp);
+		
+		CourseDto courseDto = mapper.courseToCourseDto(courseResult, context);
+		logger.info("OUT result course = {} teacher = {}", courseDto, courseDto.getTeacher());
 		return courseDto;
 	}
 	

@@ -35,7 +35,7 @@ public class Course {
 	private List<Teacher> teacher;
 	
 	@EqualsAndHashCode.Exclude
-	@ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne ()
 	@JoinColumn(name = "location_id", referencedColumnName = "id")
 	private Location location;
 	
@@ -49,7 +49,7 @@ public class Course {
 	@OneToMany(mappedBy = "course")
 	private List<Lecture> lecture;
 
-	@ManyToMany(mappedBy = "course")
+	@ManyToMany(mappedBy = "course", fetch = FetchType.EAGER)
 	private List<Groups> groups;
 
 }
