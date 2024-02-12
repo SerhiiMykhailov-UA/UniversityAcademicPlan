@@ -29,7 +29,7 @@ public class SecurityConfig {
         		.antMatchers("/showUserPage/", "/teacher/**").hasRole("TEACHER")
         		.antMatchers("/showUserPage/", "/student/**").hasRole("STUDENT")
         		.antMatchers("/showUserPage/", "/stuff/**").hasRole("STUFF")
-                .antMatchers("/auth/login", "/error").permitAll()
+                .antMatchers("/auth/login", "/error", "/newApplicantsPage").permitAll()
                 .anyRequest().hasAnyRole("ADMIN", "STUFF", "STUDENT", "TEACHER"))
              .formLogin(login -> login
             	.loginPage("/auth/login")

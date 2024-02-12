@@ -8,16 +8,25 @@ import ua.foxminded.databasegeneration.FillUpDataBase;
 @Profile("!test")
 @Component
 public class UniversityAcademicPlan {
-	
+
 	private static FillUpDataBase fillUpDataBase;
-	
+
 	public UniversityAcademicPlan(FillUpDataBase fillUpDataBase) {
 		UniversityAcademicPlan.fillUpDataBase = fillUpDataBase;
 	}
 
 	public static void universityAcademicPlan() {
-		System.out.println(11111111);
-		fillUpDataBase.dataBaseConfiguration();
+		if (fillUpDataBase.isDataBaseEmpty()) {
+			fillUpDataBase.fillUpCourseDataTable();
+			fillUpDataBase.fillUpLectureToCourse();
+			fillUpDataBase.fillUpGroupDataTable();
+			fillUpDataBase.fillUpTeacherDataTable();
+			fillUpDataBase.fillUpStudentDataTable();
+			fillUpDataBase.assignStudentsToGroup();
+			fillUpDataBase.assignCoursesToGroup();
+			fillUpDataBase.assignTeachersToCourse();
+			fillUpDataBase.assignScheduleListToCourse();
+		}
 	}
 
 }

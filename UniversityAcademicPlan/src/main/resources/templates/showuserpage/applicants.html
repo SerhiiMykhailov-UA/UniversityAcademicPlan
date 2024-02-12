@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Applicants Page</title>
+	<style>
+		.course_block {
+			float: inline-start;
+			position: fixed;
+			top: 3%;
+			left: 35%;
+		}
+
+		.table_list {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+			float: inline-start;
+		}
+
+		.table_info {
+			border: 1px solid black;
+			margin: 1px;
+			padding: 1px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="course_block">
+		<h1>
+			<a>
+				<center> Welcome. At our University you will study</center>
+			</a>
+		</h1>
+		<h3>
+			<a href="/auth/login">
+				<center>Back to previos page</center>
+			</a>
+		</h3>
+
+		<h2>
+			<center> Course list: </center>
+		</h2>
+		<table class="table_list">
+			<thead>
+				<tr>
+					<th class="table_info" width="30px" align="center"> N </th>
+					<th class="table_info" width="300px" align="center"> Name </th>
+					<th class="table_info" width="200px" align="center"> Teacher </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="course : ${coursesList}">
+					<td class="table_info" th:text="${coursesList.indexOf(course)}+1" align="center">
+					</td>
+					<td class="table_info" align="center">
+						<a th:text="${course.getName()}"></a>
+					</td>
+					<td class="table_info" align="center">
+						<a th:each="teacher : ${course.getTeacher()}">
+							<span th:text="${teacher.getFirstName()} + ' ' + ${teacher.getLastName()}"></span>
+							<br>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>

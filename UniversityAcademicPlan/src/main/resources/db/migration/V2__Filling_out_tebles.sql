@@ -25,16 +25,16 @@ INSERT INTO users (nick_name, password, user_type) VALUES ('stuff', '$2a$10$P.Gw
 --INSERT INTO users (nick_name, password, user_type) VALUES ('student11', '$2a$10$P.Gwfw2tdh5amkQg/MaVpOsUFwkPxJwFi1GbF07F6PvqE0ToIKwJy', 'ROLE_STUDENT');
 
 ----------------------------------------------------------------------------------
-INSERT INTO groups (name) VALUES ('gr1');
-INSERT INTO groups (name) VALUES ('gr2');
-INSERT INTO groups (name) VALUES ('gr3');
-INSERT INTO groups (name) VALUES ('gr4');
-INSERT INTO groups (name) VALUES ('gr5');
-INSERT INTO groups (name) VALUES ('gr6');
-INSERT INTO groups (name) VALUES ('gr7');
-INSERT INTO groups (name) VALUES ('gr8');
-INSERT INTO groups (name) VALUES ('gr9');
-INSERT INTO groups (name) VALUES ('gr10');
+--INSERT INTO groups (name) VALUES ('gr1');
+--INSERT INTO groups (name) VALUES ('gr2');
+--INSERT INTO groups (name) VALUES ('gr3');
+--INSERT INTO groups (name) VALUES ('gr4');
+--INSERT INTO groups (name) VALUES ('gr5');
+--INSERT INTO groups (name) VALUES ('gr6');
+--INSERT INTO groups (name) VALUES ('gr7');
+--INSERT INTO groups (name) VALUES ('gr8');
+--INSERT INTO groups (name) VALUES ('gr9');
+--INSERT INTO groups (name) VALUES ('gr10');
 --------------------------------------------------------
 INSERT INTO location (name) VALUES ('auditory1');
 INSERT INTO location (name) VALUES ('auditory2');
